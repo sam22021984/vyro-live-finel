@@ -8,7 +8,7 @@ import { useAuth } from "@/lib/AuthContext";
 import {
   Radio, Home, Users, Gift, BarChart3, LogOut,
   Bell, Search, Wallet, Building2, Settings, Star,
-  ChevronLeft, ChevronRight, Shield, TrendingUp, Menu, X
+  ChevronLeft, ChevronRight, Shield, TrendingUp, Menu, X, Award
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +33,7 @@ const navByRole = {
     { label: "Go Live", icon: Radio, path: "/host/go-live" },
     { label: "Earnings", icon: Wallet, path: "/host/earnings" },
     { label: "Followers", icon: Users, path: "/host/followers" },
+    { label: "Levels", icon: Award, path: "/levels" },
     { label: "Profile", icon: Star, path: "/host/profile" },
   ],
   agency: [
@@ -46,6 +47,7 @@ const navByRole = {
     { label: "Discover", icon: Home, path: "/" },
     { label: "Live Rooms", icon: Radio, path: "/rooms" },
     { label: "My Wallet", icon: Wallet, path: "/wallet" },
+    { label: "Levels", icon: Award, path: "/levels" },
     { label: "Profile", icon: Star, path: "/profile" },
   ],
   vip: [
@@ -53,6 +55,7 @@ const navByRole = {
     { label: "Live Rooms", icon: Radio, path: "/rooms" },
     { label: "My Wallet", icon: Wallet, path: "/wallet" },
     { label: "VIP Lounge", icon: Star, path: "/vip" },
+    { label: "Levels", icon: Award, path: "/levels" },
     { label: "Profile", icon: Star, path: "/profile" },
   ],
 };

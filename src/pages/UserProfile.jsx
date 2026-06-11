@@ -12,7 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import UserAvatar from "@/components/shared/UserAvatar";
 import LevelBadge from "@/components/shared/LevelBadge";
 import { toast } from "sonner";
-import { formatNumber, getListenerLevel } from "@/lib/utils";
+import { formatNumber } from "@/lib/utils";
+import { getUserLevelFromCoins } from "@/lib/constants";
 
 export default function UserProfile() {
   const { user } = useAuth();
@@ -52,7 +53,7 @@ export default function UserProfile() {
   });
 
   const totalCoinsSpent = giftsSent.reduce((s, t) => s + (t.coins_spent || 0), 0);
-  const level = getListenerLevel(user?.xp || 0);
+  const level = getUserLevelFromCoins(user?.coin_balance || 0);
   const activeVIP = vipSubs[0];
 
   const vipInfo = {
@@ -82,7 +83,7 @@ export default function UserProfile() {
                   {user?.is_verified && <span className="text-blue-400 text-sm">✓</span>}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
-                  <LevelBadge type="listener" xp={user?.xp || 0} />
+                  <LevelBadge type="user" coins={user?.coin_balance || 0} />
                   {activeVIP && (
                     <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ backgroundColor: vipInfo[activeVIP.tier]?.color + "20", color: vipInfo[activeVIP.tier]?.color }}>
                       {vipInfo[activeVIP.tier]?.icon} {vipInfo[activeVIP.tier]?.name}
@@ -134,7 +135,7 @@ export default function UserProfile() {
             <Star className="w-4 h-4 text-yellow-400" />
             <span className="text-white font-semibold">Level Progress</span>
           </div>
-          <LevelBadge type="listener" xp={user?.xp || 0} size="md" />
+          <LevelBadge type="user" coins={user?.coin_balance || 0} size="md" />
         </div>
         <div className="w-full bg-white/5 rounded-full h-2 mb-2">
           <div

@@ -29,6 +29,9 @@ import HostEarnings from '@/pages/HostEarnings';
 // Agency Pages
 import AgencyDashboard from '@/pages/AgencyDashboard';
 
+// Levels Page
+import Levels from '@/pages/Levels';
+
 // Admin Pages
 import AdminDashboard from '@/pages/admin/AdminDashboard';
 import AdminUsers from '@/pages/admin/AdminUsers';
@@ -104,6 +107,9 @@ const AuthenticatedApp = () => {
 
           {/* VIP */}
           <Route path="/vip" element={<Wallet />} />
+
+          {/* Levels */}
+          <Route path="/levels" element={<Levels />} />
         </Route>
       </Route>
 
