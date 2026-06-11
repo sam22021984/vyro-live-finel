@@ -7,14 +7,11 @@
       "enum": [
         "admin",
         "host",
-        "listener",
         "agency",
+        "listener",
         "vip"
       ],
       "default": "listener"
-    },
-    "username": {
-      "type": "string"
     },
     "display_name": {
       "type": "string"
@@ -28,36 +25,32 @@
     "country": {
       "type": "string"
     },
-    "level": {
-      "type": "number",
-      "default": 1
-    },
-    "xp_points": {
-      "type": "number",
-      "default": 0
+    "website": {
+      "type": "string"
     },
     "coin_balance": {
       "type": "number",
       "default": 0
     },
-    "diamond_balance": {
+    "xp": {
       "type": "number",
       "default": 0
+    },
+    "level": {
+      "type": "number",
+      "default": 1
     },
     "total_earned_diamonds": {
       "type": "number",
       "default": 0
     },
-    "is_verified": {
-      "type": "boolean",
-      "default": false
+    "followers_count": {
+      "type": "number",
+      "default": 0
     },
-    "is_banned": {
-      "type": "boolean",
-      "default": false
-    },
-    "agency_id": {
-      "type": "string"
+    "following_count": {
+      "type": "number",
+      "default": 0
     },
     "vip_tier": {
       "type": "string",
@@ -71,54 +64,19 @@
       ],
       "default": "none"
     },
-    "vip_expires_at": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "followers_count": {
-      "type": "number",
-      "default": 0
-    },
-    "following_count": {
-      "type": "number",
-      "default": 0
-    },
-    "total_live_minutes": {
-      "type": "number",
-      "default": 0
-    },
-    "frame_id": {
-      "type": "string"
-    },
-    "entry_effect_id": {
-      "type": "string"
-    },
-    "is_online": {
+    "is_verified": {
       "type": "boolean",
       "default": false
     },
-    "last_seen": {
-      "type": "string",
-      "format": "date-time"
+    "is_banned": {
+      "type": "boolean",
+      "default": false
     },
-    "phone": {
+    "agency_id": {
       "type": "string"
     },
-    "gender": {
-      "type": "string",
-      "enum": [
-        "male",
-        "female",
-        "other",
-        "prefer_not_to_say"
-      ]
-    },
-    "date_of_birth": {
-      "type": "string",
-      "format": "date"
+    "language": {
+      "type": "string"
     }
-  },
-  "required": [
-    "role"
-  ]
+  }
 }

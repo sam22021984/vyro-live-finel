@@ -139,14 +139,13 @@ export default function AppLayout() {
     <div className="flex h-screen bg-[#0D0D1A] overflow-hidden">
       {/* Desktop Sidebar */}
       <aside className={cn(
-        "hidden lg:flex flex-col transition-all duration-300 bg-[#12122A] border-r border-white/10",
+        "hidden lg:flex flex-col transition-all duration-300 bg-[#12122A] border-r border-white/10 relative",
         collapsed ? "w-16" : "w-60"
       )}>
         <SidebarContent />
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-full bg-[#12122A] border border-white/10 rounded-r-lg p-1 text-slate-400 hover:text-white z-10"
-          style={{ marginLeft: collapsed ? "4rem" : "15rem", transition: "margin 0.3s" }}
+          className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-[#12122A] border border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-white z-20"
         >
           {collapsed ? <ChevronRight className="w-3 h-3" /> : <ChevronLeft className="w-3 h-3" />}
         </button>
