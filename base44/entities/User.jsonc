@@ -1,0 +1,124 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "host",
+        "listener",
+        "agency",
+        "vip"
+      ],
+      "default": "listener"
+    },
+    "username": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "avatar_url": {
+      "type": "string"
+    },
+    "bio": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "level": {
+      "type": "number",
+      "default": 1
+    },
+    "xp_points": {
+      "type": "number",
+      "default": 0
+    },
+    "coin_balance": {
+      "type": "number",
+      "default": 0
+    },
+    "diamond_balance": {
+      "type": "number",
+      "default": 0
+    },
+    "total_earned_diamonds": {
+      "type": "number",
+      "default": 0
+    },
+    "is_verified": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_banned": {
+      "type": "boolean",
+      "default": false
+    },
+    "agency_id": {
+      "type": "string"
+    },
+    "vip_tier": {
+      "type": "string",
+      "enum": [
+        "none",
+        "vip1",
+        "vip2",
+        "vip3",
+        "vip4",
+        "vip5"
+      ],
+      "default": "none"
+    },
+    "vip_expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "followers_count": {
+      "type": "number",
+      "default": 0
+    },
+    "following_count": {
+      "type": "number",
+      "default": 0
+    },
+    "total_live_minutes": {
+      "type": "number",
+      "default": 0
+    },
+    "frame_id": {
+      "type": "string"
+    },
+    "entry_effect_id": {
+      "type": "string"
+    },
+    "is_online": {
+      "type": "boolean",
+      "default": false
+    },
+    "last_seen": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "male",
+        "female",
+        "other",
+        "prefer_not_to_say"
+      ]
+    },
+    "date_of_birth": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "role"
+  ]
+}

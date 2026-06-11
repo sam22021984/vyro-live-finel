@@ -1,0 +1,56 @@
+{
+  "name": "CoinPackage",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "coins_amount": {
+      "type": "number"
+    },
+    "bonus_coins": {
+      "type": "number",
+      "default": 0
+    },
+    "price_usd": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string",
+      "default": "USD"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "badge_label": {
+      "type": "string"
+    },
+    "sort_order": {
+      "type": "number",
+      "default": 0
+    },
+    "icon_url": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "all",
+        "ios",
+        "android",
+        "web"
+      ],
+      "default": "all"
+    }
+  },
+  "required": [
+    "name",
+    "coins_amount",
+    "price_usd"
+  ]
+}

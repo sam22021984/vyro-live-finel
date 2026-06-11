@@ -1,0 +1,59 @@
+{
+  "name": "Report",
+  "type": "object",
+  "properties": {
+    "reporter_id": {
+      "type": "string"
+    },
+    "reported_user_id": {
+      "type": "string"
+    },
+    "room_id": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "spam",
+        "harassment",
+        "inappropriate_content",
+        "fake_account",
+        "underage",
+        "scam",
+        "other"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "reviewed",
+        "resolved",
+        "dismissed"
+      ],
+      "default": "pending"
+    },
+    "admin_note": {
+      "type": "string"
+    },
+    "action_taken": {
+      "type": "string",
+      "enum": [
+        "none",
+        "warning",
+        "ban_temp",
+        "ban_permanent",
+        "room_closed"
+      ],
+      "default": "none"
+    }
+  },
+  "required": [
+    "reporter_id",
+    "reported_user_id",
+    "reason"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "name": "Follow",
+  "type": "object",
+  "properties": {
+    "follower_id": {
+      "type": "string"
+    },
+    "following_id": {
+      "type": "string"
+    },
+    "is_subscribed": {
+      "type": "boolean",
+      "default": false
+    },
+    "subscription_tier": {
+      "type": "string",
+      "enum": [
+        "none",
+        "basic",
+        "premium",
+        "elite"
+      ],
+      "default": "none"
+    },
+    "subscription_expires_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "follower_id",
+    "following_id"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "name": "Agency",
+  "type": "object",
+  "properties": {
+    "owner_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "logo_url": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "suspended",
+        "pending"
+      ],
+      "default": "pending"
+    },
+    "commission_rate": {
+      "type": "number",
+      "default": 30
+    },
+    "total_hosts": {
+      "type": "number",
+      "default": 0
+    },
+    "total_earnings_diamonds": {
+      "type": "number",
+      "default": 0
+    },
+    "contract_signed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "bronze",
+        "silver",
+        "gold",
+        "platinum"
+      ],
+      "default": "bronze"
+    },
+    "contact_email": {
+      "type": "string"
+    },
+    "contact_phone": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "owner_id",
+    "name"
+  ]
+}

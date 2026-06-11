@@ -1,0 +1,44 @@
+{
+  "name": "Notification",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "gift_received",
+        "new_follower",
+        "room_live",
+        "withdraw_update",
+        "level_up",
+        "vip_expiry",
+        "system",
+        "subscription"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false
+    },
+    "action_url": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "user_id",
+    "type",
+    "title",
+    "body"
+  ]
+}

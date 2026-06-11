@@ -1,0 +1,52 @@
+{
+  "name": "GiftTransaction",
+  "type": "object",
+  "properties": {
+    "sender_id": {
+      "type": "string"
+    },
+    "receiver_id": {
+      "type": "string"
+    },
+    "room_id": {
+      "type": "string"
+    },
+    "gift_id": {
+      "type": "string"
+    },
+    "gift_name": {
+      "type": "string"
+    },
+    "gift_icon_url": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "number",
+      "default": 1
+    },
+    "coins_spent": {
+      "type": "number"
+    },
+    "diamonds_earned": {
+      "type": "number"
+    },
+    "message": {
+      "type": "string"
+    },
+    "is_combo": {
+      "type": "boolean",
+      "default": false
+    },
+    "combo_count": {
+      "type": "number",
+      "default": 1
+    }
+  },
+  "required": [
+    "sender_id",
+    "receiver_id",
+    "gift_id",
+    "coins_spent",
+    "diamonds_earned"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "name": "WithdrawRequest",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "diamonds_amount": {
+      "type": "number"
+    },
+    "usd_equivalent": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "paid"
+      ],
+      "default": "pending"
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": [
+        "bank_transfer",
+        "paypal",
+        "wise",
+        "crypto",
+        "other"
+      ]
+    },
+    "payment_details": {
+      "type": "string"
+    },
+    "admin_note": {
+      "type": "string"
+    },
+    "processed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "processed_by": {
+      "type": "string"
+    },
+    "transaction_ref": {
+      "type": "string"
+    },
+    "exchange_rate": {
+      "type": "number"
+    },
+    "fee_amount": {
+      "type": "number",
+      "default": 0
+    },
+    "net_amount": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "user_id",
+    "diamonds_amount",
+    "payment_method"
+  ]
+}

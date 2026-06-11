@@ -1,0 +1,43 @@
+{
+  "name": "LevelConfig",
+  "type": "object",
+  "properties": {
+    "level": {
+      "type": "number"
+    },
+    "level_name": {
+      "type": "string"
+    },
+    "xp_required": {
+      "type": "number"
+    },
+    "icon_url": {
+      "type": "string"
+    },
+    "frame_unlocked": {
+      "type": "string"
+    },
+    "benefits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "listener",
+        "host"
+      ],
+      "default": "listener"
+    },
+    "badge_color": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "level",
+    "xp_required",
+    "type"
+  ]
+}

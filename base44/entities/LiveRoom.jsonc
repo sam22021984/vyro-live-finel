@@ -1,0 +1,122 @@
+{
+  "name": "LiveRoom",
+  "type": "object",
+  "properties": {
+    "host_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "cover_image_url": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "live",
+        "ended",
+        "scheduled"
+      ],
+      "default": "live"
+    },
+    "room_type": {
+      "type": "string",
+      "enum": [
+        "public",
+        "paid",
+        "vip_only",
+        "private"
+      ],
+      "default": "public"
+    },
+    "entry_price_coins": {
+      "type": "number",
+      "default": 0
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "music",
+        "talk",
+        "karaoke",
+        "storytelling",
+        "meditation",
+        "language",
+        "other"
+      ],
+      "default": "other"
+    },
+    "language": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "current_listeners": {
+      "type": "number",
+      "default": 0
+    },
+    "peak_listeners": {
+      "type": "number",
+      "default": 0
+    },
+    "total_diamonds_earned": {
+      "type": "number",
+      "default": 0
+    },
+    "total_gifts_received": {
+      "type": "number",
+      "default": 0
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ended_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "duration_minutes": {
+      "type": "number",
+      "default": 0
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "co_host_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pinned_message": {
+      "type": "string"
+    },
+    "welcome_message": {
+      "type": "string"
+    },
+    "level_restriction": {
+      "type": "number",
+      "default": 0
+    },
+    "room_rank": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "host_id",
+    "title"
+  ]
+}
