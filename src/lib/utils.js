@@ -3,20 +3,20 @@
 // Flutter Migration: lib/core/utils/app_utils.dart
 // ============================================================
 
-import { DIAMOND_TO_USD_RATE, COIN_TO_DIAMOND_RATE, LISTENER_LEVELS, HOST_LEVELS } from "./constants";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { DIAMOND_TO_USD_RATE, COIN_TO_DIAMOND_RATE, LISTENER_LEVELS, HOST_LEVELS } from "./constants";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
 export function diamondsToUSD(diamonds) {
-  return (diamonds * DIAMOND_TO_USD_RATE).toFixed(2);
+  return parseFloat((diamonds * DIAMOND_TO_USD_RATE).toFixed(2));
 }
 
 export function coinsToUSD(coins) {
-  return (coins * COIN_TO_DIAMOND_RATE * DIAMOND_TO_USD_RATE).toFixed(4);
+  return parseFloat((coins * COIN_TO_DIAMOND_RATE * DIAMOND_TO_USD_RATE).toFixed(4));
 }
 
 export function formatNumber(num) {
