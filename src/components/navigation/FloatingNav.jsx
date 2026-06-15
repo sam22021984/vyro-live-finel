@@ -1,146 +1,201 @@
+/**
+ * VYRO Floating Bottom Navigation
+ * Layout: Party | Moments | [GO LIVE] | Messages | Me
+ * Visibility: hidden by default, shows on touch/scroll/mousemove, hides after 4s
+ */
 import { useNavigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Mic, Sparkles, Radio, MessageCircle, User } from "lucide-react";
+import { Mic2, Sparkles, Radio, MessageCircle, UserCircle2 } from "lucide-react";
 import useNavVisibility from "@/hooks/useNavVisibility";
 
-const BUTTONS = [
-  { id: "party",    label: "Party",    icon: Mic,           path: "/party",    side: "left"  },
-  { id: "moments",  label: "Moments",  icon: Sparkles,      path: "/moments",  side: "left"  },
-  { id: "golive",   label: "Go Live",  icon: Radio,         path: "/go-live",  side: "center"},
-  { id: "messages", label: "Messages", icon: MessageCircle, path: "/messages", side: "right" },
-  { id: "me",       label: "Me",       icon: User,          path: "/me",       side: "right" },
+const NAV_ITEMS = [
+  { id: "party",    label: "Party",    icon: Mic2,          path: "/party"    },
+  { id: "moments",  label: "Moments",  icon: Sparkles,      path: "/moments"  },
+  { id: "golive",   label: "Go Live",  icon: Radio,         path: "/go-live",  center: true },
+  { id: "messages", label: "Messages", icon: MessageCircle, path: "/messages", badge: 3 },
+  { id: "me",       label: "Me",       icon: UserCircle2,   path: "/me"       },
 ];
+
+// Haptic feedback (mobile)
+function haptic() {
+  if (navigator.vibrate) navigator.vibrate(8);
+}
 
 export default function FloatingNav() {
   const visible  = useNavVisibility();
   const navigate = useNavigate();
-  const location = useLocation();
+  const { pathname } = useLocation();
 
   return (
     <AnimatePresence>
       {visible && (
         <motion.div
-          key="floating-nav"
-          className="fixed bottom-6 left-1/2 z-[9999] flex items-end gap-2 px-4 pointer-events-none"
-          style={{ transform: "translateX(-50%)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0, transition: { duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] } }}
-          exit={{    opacity: 0, y: 20, transition: { duration: 0.3, ease: [0.55, 0.06, 0.68, 0.19]  } }}
+          key="vyro-nav"
+          className="fixed left-1/2 z-[99999] pointer-events-none"
+          style={{
+            bottom: "max(24px, env(safe-area-inset-bottom, 24px))",
+            transform: "translateX(-50%)",
+          }}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 24 }}
+          transition={{ duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          {/* Glass pill container */}
+          {/* Pill container */}
           <div
-            className="flex items-end gap-2 px-4 py-3 pointer-events-auto"
+            className="pointer-events-auto flex items-end gap-1 px-5 py-3"
             style={{
-              background: "rgba(10, 8, 20, 0.45)",
-              backdropFilter: "blur(24px)",
-              WebkitBackdropFilter: "blur(24px)",
-              borderRadius: 40,
-              border: "1px solid rgba(255,255,255,0.13)",
-              boxShadow: "0 8px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.06) inset",
+              borderRadius: 56,
+              background: "rgba(255, 255, 255, 0.12)",
+              backdropFilter: "blur(28px)",
+              WebkitBackdropFilter: "blur(28px)",
+              border: "1px solid rgba(255, 255, 255, 0.22)",
+              boxShadow: [
+                "0 8px 48px rgba(0,0,0,0.28)",
+                "0 2px 8px rgba(0,0,0,0.18)",
+                "inset 0 1px 0 rgba(255,255,255,0.35)",
+                "inset 0 -1px 0 rgba(0,0,0,0.08)",
+              ].join(", "),
             }}
           >
-            {BUTTONS.map((btn) => {
-              const Icon     = btn.icon;
-              const isCenter = btn.side === "center";
-              const isActive = location.pathname === btn.path;
+            {NAV_ITEMS.map((item) => {
+              const Icon     = item.icon;
+              const isActive = pathname === item.path;
 
-              if (isCenter) {
+              if (item.center) {
                 return (
                   <motion.button
-                    key={btn.id}
-                    onClick={() => navigate(btn.path)}
-                    whileTap={{ scale: 0.88 }}
-                    whileHover={{ scale: 1.06 }}
-                    className="relative flex flex-col items-center gap-1 mx-2"
-                    style={{ marginBottom: 8 }}
+                    key={item.id}
+                    onClick={() => { haptic(); navigate(item.path); }}
+                    whileTap={{ scale: 0.86 }}
+                    className="relative flex flex-col items-center gap-1.5 mx-3"
+                    style={{ marginBottom: 10 }}
                   >
-                    {/* Pulsing glow ring */}
+                    {/* Pulsing ambient glow */}
                     <motion.div
-                      className="absolute inset-0 rounded-full"
-                      style={{ background: "linear-gradient(135deg,#7C3AED,#3B82F6,#EC4899)", filter: "blur(14px)", opacity: 0.5 }}
-                      animate={{ scale: [1, 1.18, 1], opacity: [0.5, 0.75, 0.5] }}
-                      transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                      style={{
+                        position: "absolute",
+                        inset: -6,
+                        borderRadius: "50%",
+                        background: "linear-gradient(135deg,#7C3AED,#3B82F6,#EC4899)",
+                        filter: "blur(18px)",
+                        opacity: 0.55,
+                        zIndex: 0,
+                      }}
+                      animate={{ scale: [1, 1.22, 1], opacity: [0.55, 0.80, 0.55] }}
+                      transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
                     />
-                    {/* Main button */}
+
+                    {/* Button disc */}
                     <div
                       style={{
-                        width: 62,
-                        height: 62,
+                        position: "relative",
+                        zIndex: 1,
+                        width: 64,
+                        height: 64,
                         borderRadius: "50%",
-                        background: "linear-gradient(135deg, #7C3AED 0%, #3B82F6 50%, #EC4899 100%)",
-                        boxShadow: "0 0 24px rgba(124,58,237,0.6), 0 4px 20px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.35)",
+                        background: "linear-gradient(145deg, #9333EA 0%, #3B82F6 50%, #EC4899 100%)",
+                        boxShadow: [
+                          "0 0 28px rgba(147,51,234,0.65)",
+                          "0 4px 24px rgba(0,0,0,0.45)",
+                          "inset 0 2px 2px rgba(255,255,255,0.40)",
+                          "inset 0 -2px 3px rgba(0,0,0,0.25)",
+                        ].join(", "),
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        position: "relative",
+                        border: "2px solid rgba(255,255,255,0.30)",
                       }}
                     >
-                      {/* Inner highlight */}
+                      {/* Gloss highlight */}
                       <div style={{
-                        position: "absolute", top: 8, left: "50%", transform: "translateX(-50%)",
-                        width: 34, height: 10, borderRadius: "50%",
-                        background: "rgba(255,255,255,0.28)", filter: "blur(3px)",
+                        position: "absolute", top: 8, left: "50%",
+                        transform: "translateX(-50%)",
+                        width: 36, height: 11, borderRadius: "50%",
+                        background: "rgba(255,255,255,0.35)", filter: "blur(3px)",
                       }} />
-                      <Icon size={26} color="#fff" strokeWidth={2.2} />
+                      <Icon size={28} color="#fff" strokeWidth={2.1} style={{ position: "relative" }} />
                     </div>
+
                     <span style={{
-                      fontSize: 10, fontWeight: 700, letterSpacing: "0.04em",
-                      background: "linear-gradient(180deg,#fff 0%,rgba(255,255,255,0.6) 100%)",
+                      fontSize: 10, fontWeight: 800, letterSpacing: "0.05em",
+                      background: "linear-gradient(135deg,#9333EA,#3B82F6,#EC4899)",
                       WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                      filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.25))",
                     }}>
-                      {btn.label}
+                      {item.label}
                     </span>
                   </motion.button>
                 );
               }
 
+              // Standard button
               return (
                 <motion.button
-                  key={btn.id}
-                  onClick={() => navigate(btn.path)}
-                  whileTap={{ scale: 0.88 }}
-                  whileHover={{ scale: 1.07 }}
-                  className="flex flex-col items-center gap-1"
+                  key={item.id}
+                  onClick={() => { haptic(); navigate(item.path); }}
+                  whileTap={{ scale: 0.86 }}
+                  whileHover={{ scale: 1.08 }}
+                  className="relative flex flex-col items-center gap-1.5 px-1"
                 >
-                  {/* Icon circle */}
+                  {/* Icon disc */}
                   <div style={{
-                    width: 46,
-                    height: 46,
+                    position: "relative",
+                    width: 48,
+                    height: 48,
                     borderRadius: "50%",
                     background: isActive
-                      ? "radial-gradient(circle at 38% 30%, rgba(124,58,237,0.35), rgba(10,8,20,0.55))"
-                      : "radial-gradient(circle at 38% 30%, rgba(255,255,255,0.10), rgba(10,8,20,0.40))",
+                      ? "radial-gradient(circle at 38% 30%, rgba(147,51,234,0.28), rgba(0,0,0,0.18))"
+                      : "radial-gradient(circle at 38% 30%, rgba(255,255,255,0.20), rgba(255,255,255,0.05))",
                     border: isActive
-                      ? "1.5px solid rgba(167,139,250,0.6)"
-                      : "1.5px solid rgba(255,255,255,0.14)",
+                      ? "1.5px solid rgba(147,51,234,0.55)"
+                      : "1.5px solid rgba(255,255,255,0.22)",
                     boxShadow: isActive
-                      ? "0 0 14px rgba(124,58,237,0.4), inset 0 1px 1px rgba(255,255,255,0.18)"
-                      : "inset 0 1px 1px rgba(255,255,255,0.12), 0 3px 10px rgba(0,0,0,0.4)",
+                      ? "0 0 16px rgba(147,51,234,0.35), inset 0 1px 1px rgba(255,255,255,0.30)"
+                      : "inset 0 1.5px 1px rgba(255,255,255,0.30), 0 2px 8px rgba(0,0,0,0.15)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    position: "relative",
                   }}>
-                    {/* Inner highlight */}
+                    {/* Gloss highlight */}
                     <div style={{
-                      position: "absolute", top: 5, left: "50%", transform: "translateX(-50%)",
+                      position: "absolute", top: 5, left: "50%",
+                      transform: "translateX(-50%)",
                       width: 22, height: 7, borderRadius: "50%",
-                      background: "rgba(255,255,255,0.14)", filter: "blur(2px)",
+                      background: "rgba(255,255,255,0.28)", filter: "blur(2px)",
                     }} />
                     <Icon
-                      size={19}
-                      color={isActive ? "#a78bfa" : "rgba(255,255,255,0.78)"}
-                      strokeWidth={1.9}
+                      size={21}
+                      strokeWidth={1.85}
+                      style={{
+                        position: "relative",
+                        color: isActive ? "#9333EA" : "rgba(30,30,40,0.82)",
+                        filter: isActive ? "drop-shadow(0 0 6px rgba(147,51,234,0.6))" : "none",
+                      }}
                     />
+
+                    {/* Unread badge */}
+                    {item.badge && (
+                      <div style={{
+                        position: "absolute", top: 4, right: 4,
+                        width: 16, height: 16, borderRadius: "50%",
+                        background: "linear-gradient(135deg,#EF4444,#F97316)",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        border: "1.5px solid rgba(255,255,255,0.9)",
+                        fontSize: 9, fontWeight: 800, color: "#fff",
+                        boxShadow: "0 2px 6px rgba(239,68,68,0.5)",
+                      }}>
+                        {item.badge > 9 ? "9+" : item.badge}
+                      </div>
+                    )}
                   </div>
+
                   <span style={{
                     fontSize: 10, fontWeight: 700, letterSpacing: "0.04em",
-                    background: isActive
-                      ? "linear-gradient(180deg,#c4b5fd,#7C3AED)"
-                      : "linear-gradient(180deg,rgba(255,255,255,0.88),rgba(255,255,255,0.42))",
-                    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                    color: isActive ? "#9333EA" : "rgba(20,20,30,0.72)",
+                    filter: isActive ? "drop-shadow(0 0 4px rgba(147,51,234,0.4))" : "none",
                   }}>
-                    {btn.label}
+                    {item.label}
                   </span>
                 </motion.button>
               );

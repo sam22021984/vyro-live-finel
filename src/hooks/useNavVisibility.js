@@ -1,7 +1,5 @@
 /**
- * useNavVisibility
- * Triggers: touch, mousedown, scroll
- * Auto-hides after 4 seconds of inactivity
+ * useNavVisibility — show on touch/scroll, hide after 4s inactivity
  */
 import { useState, useEffect, useRef, useCallback } from "react";
 
@@ -18,13 +16,16 @@ export default function useNavVisibility() {
   }, []);
 
   useEffect(() => {
-    window.addEventListener("touchstart", show, { passive: true, capture: true });
+    const opts = { passive: true, capture: true };
+    window.addEventListener("touchstart", show, opts);
     window.addEventListener("mousedown",  show, { capture: true });
-    window.addEventListener("scroll",     show, { passive: true, capture: true });
+    window.addEventListener("scroll",     show, opts);
+    window.addEventListener("mousemove",  show, opts);
     return () => {
       window.removeEventListener("touchstart", show, { capture: true });
       window.removeEventListener("mousedown",  show, { capture: true });
       window.removeEventListener("scroll",     show, { capture: true });
+      window.removeEventListener("mousemove",  show, { capture: true });
       clearTimeout(timerRef.current);
     };
   }, [show]);
