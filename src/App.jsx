@@ -7,7 +7,6 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import AppLayout from '@/components/layout/AppLayout';
 
 // Auth Pages
 import Login from '@/pages/Login';
@@ -15,30 +14,8 @@ import Register from '@/pages/Register';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
 
-// Listener Pages
-import Discover from '@/pages/Discover';
-import LiveRoom from '@/pages/LiveRoom';
-import Wallet from '@/pages/Wallet';
-import UserProfile from '@/pages/UserProfile';
-
-// Host Pages
-import HostDashboard from '@/pages/HostDashboard';
-import GoLive from '@/pages/GoLive';
-import HostEarnings from '@/pages/HostEarnings';
-
-// Agency Pages
-import AgencyDashboard from '@/pages/AgencyDashboard';
-
-// Levels Page
-import Levels from '@/pages/Levels';
-
-// Admin Pages
-import AdminDashboard from '@/pages/admin/AdminDashboard';
-import AdminUsers from '@/pages/admin/AdminUsers';
-import AdminWithdrawals from '@/pages/admin/AdminWithdrawals';
-import AdminReports from '@/pages/admin/AdminReports';
-import AdminGifts from '@/pages/admin/AdminGifts';
-import AdminAgencies from '@/pages/admin/AdminAgencies';
+// App Pages
+import Home from '@/pages/Home';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -69,48 +46,9 @@ const AuthenticatedApp = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
-      {/* Protected App Routes — all wrapped in AppLayout */}
+      {/* Protected Routes */}
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
-        <Route element={<AppLayout />}>
-          {/* Listener / Home */}
-          <Route path="/" element={<Discover />} />
-          <Route path="/rooms" element={<Discover />} />
-          <Route path="/rooms/:id" element={<LiveRoom />} />
-          <Route path="/wallet" element={<Wallet />} />
-          <Route path="/profile" element={<UserProfile />} />
-
-          {/* Host */}
-          <Route path="/host" element={<HostDashboard />} />
-          <Route path="/host/go-live" element={<GoLive />} />
-          <Route path="/host/earnings" element={<HostEarnings />} />
-          <Route path="/host/streams" element={<HostDashboard />} />
-          <Route path="/host/followers" element={<HostDashboard />} />
-          <Route path="/host/profile" element={<UserProfile />} />
-
-          {/* Agency */}
-          <Route path="/agency" element={<AgencyDashboard />} />
-          <Route path="/agency/hosts" element={<AgencyDashboard />} />
-          <Route path="/agency/earnings" element={<AgencyDashboard />} />
-          <Route path="/agency/reports" element={<AgencyDashboard />} />
-          <Route path="/agency/profile" element={<AgencyDashboard />} />
-
-          {/* Admin */}
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/users" element={<AdminUsers />} />
-          <Route path="/admin/rooms" element={<Discover />} />
-          <Route path="/admin/gifts" element={<AdminGifts />} />
-          <Route path="/admin/withdrawals" element={<AdminWithdrawals />} />
-          <Route path="/admin/agencies" element={<AdminAgencies />} />
-          <Route path="/admin/reports" element={<AdminReports />} />
-          <Route path="/admin/levels" element={<AdminDashboard />} />
-          <Route path="/admin/settings" element={<AdminDashboard />} />
-
-          {/* VIP */}
-          <Route path="/vip" element={<Wallet />} />
-
-          {/* Levels */}
-          <Route path="/levels" element={<Levels />} />
-        </Route>
+        <Route path="/" element={<Home />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
