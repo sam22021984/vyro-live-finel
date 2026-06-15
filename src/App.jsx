@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import FloatingNav from '@/components/navigation/FloatingNav';
 
 // Auth Pages
 import Login from '@/pages/Login';
@@ -63,6 +64,7 @@ function App() {
         <Router>
           <ScrollToTop />
           <AuthenticatedApp />
+          <FloatingNav />
         </Router>
         <Toaster />
       </QueryClientProvider>

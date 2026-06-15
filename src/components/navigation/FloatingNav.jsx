@@ -1,85 +1,18 @@
-/**
- * FloatingNav — Floating Bottom Navigation
- *
- * Spec: bottom_navigation.type = "floating_buttons_navigation"
- * Theme: dark_premium | primary=#000000 | accent=#D4AF37 | secondary=#0F766E
- *
- * ─── FLUTTER MIGRATION MAP ──────────────────────────────────────────────────
- * File: lib/features/navigation/widgets/floating_nav.dart
- *
- * Widget tree:
- *   Positioned (bottom: 24 + MediaQuery.padding.bottom) inside a Stack
- *     AnimatedOpacity (show: 200ms, hide: 300ms) driven by NavVisibilityController
- *       Row(mainAxisSize: min, spacing: 12)
- *         × 5 FloatingNavButton widgets (see below)
- *
- * FloatingNavButton:
- *   GestureDetector(onTap: router.go(path))
- *     AnimatedScale (whileTap → scale 0.88, 80ms)
- *     Column(icon + label)
- *       Container(
- *         width: large ? 62 : 48,  height: large ? 62 : 48
- *         decoration: BoxDecoration(
- *           shape: BoxShape.circle,
- *           gradient: RadialGradient(center: (0.35,0.3), #1a1a1a→#000) [live only]
- *           color: Colors.black.withOpacity(0.55) [others]
- *           border: Border.all(color: GOLD, width: 2) [live] | white13 [others]
- *           boxShadow: glow + inset via CustomPainter
- *           backgroundBlendMode: BlendMode.srcOver
- *         )
- *         child: Stack [ inner-highlight Positioned + Icon ]
- *       )
- *       ShaderMask(
- *         shaderCallback: LinearGradient([#F5D97A, #D4AF37, #A07800]).createShader
- *         child: Text(label, style: bold, 10–11px, letterSpacing: 0.04em)
- *       )
- *
- * Route mapping (React path → Flutter GoRouter name):
- *   "party"     /rooms          → GoRoute(name:'rooms',     path:'/rooms')
- *   "community" /               → GoRoute(name:'discover',  path:'/')
- *   "live"      /host/go-live   → GoRoute(name:'go-live',   path:'/host/go-live')
- *   "messages"  /wallet         → GoRoute(name:'wallet',    path:'/wallet')
- *   "profile"   /profile        → GoRoute(name:'profile',   path:'/profile')
- *
- * Visibility behavior (Flutter):
- *   Wrap Scaffold body in GestureDetector(behavior: HitTestBehavior.translucent)
- *   onTapDown / onPanStart → navController.show() → Timer(3s, hide)
- *   AnimatedOpacity: show duration=200ms, hide duration=300ms
- * ────────────────────────────────────────────────────────────────────────────
- */
-
 import { useNavigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Users, Radio, MessageCircle, User, PartyPopper } from "lucide-react";
+import { Mic, Sparkles, Radio, MessageCircle, User } from "lucide-react";
 import useNavVisibility from "@/hooks/useNavVisibility";
 
-// ─── Route Config ────────────────────────────────────────────────────────────
 const BUTTONS = [
-  // position: left_1
-  { id: "party",     label: "Party",     icon: PartyPopper,   path: "/rooms",        large: false },
-  // position: left_2
-  { id: "community", label: "Community", icon: Users,         path: "/",             large: false },
-  // position: center — highlighted, larger
-  { id: "live",      label: "Live",      icon: Radio,         path: "/host/go-live", large: true  },
-  // position: right_2
-  { id: "messages",  label: "Message",   icon: MessageCircle, path: "/wallet",       large: false },
-  // position: right_1
-  { id: "profile",   label: "Profile",   icon: User,          path: "/profile",      large: false },
+  { id: "party",    label: "Party",    icon: Mic,           path: "/party",    side: "left"  },
+  { id: "moments",  label: "Moments",  icon: Sparkles,      path: "/moments",  side: "left"  },
+  { id: "golive",   label: "Go Live",  icon: Radio,         path: "/go-live",  side: "center"},
+  { id: "messages", label: "Messages", icon: MessageCircle, path: "/messages", side: "right" },
+  { id: "me",       label: "Me",       icon: User,          path: "/me",       side: "right" },
 ];
 
-// ─── Theme Tokens ─────────────────────────────────────────────────────────────
-const GOLD   = "#D4AF37";
-const BLACK  = "#000000";
-
-// ─── Animation Timings (per spec) ────────────────────────────────────────────
-// fade_in_duration_ms: 200  → show transition below
-// fade_out_duration_ms: 300 → exit transition below
-const FADE_IN  = 0.2;  // seconds
-const FADE_OUT = 0.3;  // seconds
-
-// ─── Component ───────────────────────────────────────────────────────────────
 export default function FloatingNav() {
-  const visible = useNavVisibility();           // auto-hides after 3s per spec
+  const visible  = useNavVisibility();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -88,111 +21,131 @@ export default function FloatingNav() {
       {visible && (
         <motion.div
           key="floating-nav"
-          // positioning: bottom_center, bottom_spacing: 24, safe_area_enabled: true
-          style={{ bottom: "calc(24px + env(safe-area-inset-bottom, 0px))" }}
-          className="fixed left-1/2 -translate-x-1/2 z-50 flex items-end gap-3 pointer-events-none select-none"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0, transition: { duration: FADE_IN, ease: [0.25, 0.46, 0.45, 0.94] } }}
-          exit={{ opacity: 0, y: 16, transition: { duration: FADE_OUT, ease: [0.55, 0.055, 0.675, 0.19] } }}
+          className="fixed bottom-6 left-1/2 z-[9999] flex items-end gap-2 px-4 pointer-events-none"
+          style={{ transform: "translateX(-50%)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0, transition: { duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] } }}
+          exit={{    opacity: 0, y: 20, transition: { duration: 0.3, ease: [0.55, 0.06, 0.68, 0.19]  } }}
         >
-          {BUTTONS.map((btn) => {
-            const Icon    = btn.icon;
-            const isLive  = btn.large;
-            const isActive = location.pathname === btn.path ||
-              (!isLive && btn.path !== "/" && location.pathname.startsWith(btn.path));
+          {/* Glass pill container */}
+          <div
+            className="flex items-end gap-2 px-4 py-3 pointer-events-auto"
+            style={{
+              background: "rgba(10, 8, 20, 0.45)",
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+              borderRadius: 40,
+              border: "1px solid rgba(255,255,255,0.13)",
+              boxShadow: "0 8px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.06) inset",
+            }}
+          >
+            {BUTTONS.map((btn) => {
+              const Icon     = btn.icon;
+              const isCenter = btn.side === "center";
+              const isActive = location.pathname === btn.path;
 
-            const btnSize = isLive ? 64 : 50;
+              if (isCenter) {
+                return (
+                  <motion.button
+                    key={btn.id}
+                    onClick={() => navigate(btn.path)}
+                    whileTap={{ scale: 0.88 }}
+                    whileHover={{ scale: 1.06 }}
+                    className="relative flex flex-col items-center gap-1 mx-2"
+                    style={{ marginBottom: 8 }}
+                  >
+                    {/* Pulsing glow ring */}
+                    <motion.div
+                      className="absolute inset-0 rounded-full"
+                      style={{ background: "linear-gradient(135deg,#7C3AED,#3B82F6,#EC4899)", filter: "blur(14px)", opacity: 0.5 }}
+                      animate={{ scale: [1, 1.18, 1], opacity: [0.5, 0.75, 0.5] }}
+                      transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    {/* Main button */}
+                    <div
+                      style={{
+                        width: 62,
+                        height: 62,
+                        borderRadius: "50%",
+                        background: "linear-gradient(135deg, #7C3AED 0%, #3B82F6 50%, #EC4899 100%)",
+                        boxShadow: "0 0 24px rgba(124,58,237,0.6), 0 4px 20px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.35)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        position: "relative",
+                      }}
+                    >
+                      {/* Inner highlight */}
+                      <div style={{
+                        position: "absolute", top: 8, left: "50%", transform: "translateX(-50%)",
+                        width: 34, height: 10, borderRadius: "50%",
+                        background: "rgba(255,255,255,0.28)", filter: "blur(3px)",
+                      }} />
+                      <Icon size={26} color="#fff" strokeWidth={2.2} />
+                    </div>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, letterSpacing: "0.04em",
+                      background: "linear-gradient(180deg,#fff 0%,rgba(255,255,255,0.6) 100%)",
+                      WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                    }}>
+                      {btn.label}
+                    </span>
+                  </motion.button>
+                );
+              }
 
-            return (
-              <motion.button
-                key={btn.id}
-                onClick={() => navigate(btn.path)}
-                // button_press_scale: true
-                whileTap={{ scale: 0.88, transition: { duration: 0.08 } }}
-                // button_hover_glow: true (desktop)
-                whileHover={{ scale: 1.07, transition: { duration: 0.15 } }}
-                className="pointer-events-auto flex flex-col items-center gap-1 focus:outline-none"
-                style={{ marginBottom: isLive ? 10 : 0 }}
-              >
-                {/* ── Circle Button ── */}
-                <div
-                  style={{
-                    width: btnSize,
-                    height: btnSize,
+              return (
+                <motion.button
+                  key={btn.id}
+                  onClick={() => navigate(btn.path)}
+                  whileTap={{ scale: 0.88 }}
+                  whileHover={{ scale: 1.07 }}
+                  className="flex flex-col items-center gap-1"
+                >
+                  {/* Icon circle */}
+                  <div style={{
+                    width: 46,
+                    height: 46,
                     borderRadius: "50%",
-                    position: "relative",
+                    background: isActive
+                      ? "radial-gradient(circle at 38% 30%, rgba(124,58,237,0.35), rgba(10,8,20,0.55))"
+                      : "radial-gradient(circle at 38% 30%, rgba(255,255,255,0.10), rgba(10,8,20,0.40))",
+                    border: isActive
+                      ? "1.5px solid rgba(167,139,250,0.6)"
+                      : "1.5px solid rgba(255,255,255,0.14)",
+                    boxShadow: isActive
+                      ? "0 0 14px rgba(124,58,237,0.4), inset 0 1px 1px rgba(255,255,255,0.18)"
+                      : "inset 0 1px 1px rgba(255,255,255,0.12), 0 3px 10px rgba(0,0,0,0.4)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    // glassmorphism
-                    backdropFilter: "blur(16px)",
-                    WebkitBackdropFilter: "blur(16px)",
-                    // 3d_effect background
-                    background: isLive
-                      ? `radial-gradient(circle at 35% 28%, #222, ${BLACK})`
-                      : `radial-gradient(circle at 40% 30%, rgba(255,255,255,0.07), rgba(0,0,0,0.60))`,
-                    // border
-                    border: isLive
-                      ? `2px solid ${GOLD}`
-                      : isActive
-                        ? `1.5px solid ${GOLD}88`
-                        : `1.5px solid rgba(255,255,255,0.14)`,
-                    // glow_effect + shadow
-                    boxShadow: isLive
-                      ? `0 0 22px 5px ${GOLD}44, 0 0 8px 2px ${GOLD}22, inset 0 1.5px 1.5px rgba(255,255,255,0.22), 0 6px 20px rgba(0,0,0,0.75)`
-                      : isActive
-                        ? `0 0 12px 3px ${GOLD}30, inset 0 1px 1px rgba(255,255,255,0.15), 0 4px 14px rgba(0,0,0,0.65)`
-                        : `inset 0 1px 1px rgba(255,255,255,0.13), 0 4px 12px rgba(0,0,0,0.60)`,
-                    transition: "box-shadow 0.2s, border 0.2s",
-                  }}
-                >
-                  {/* Inner specular highlight — 3D top-disc */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: isLive ? 7 : 5,
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      width: isLive ? 36 : 26,
-                      height: isLive ? 11 : 8,
-                      borderRadius: "50%",
-                      background: "rgba(255,255,255,0.11)",
-                      filter: "blur(3px)",
-                      pointerEvents: "none",
-                    }}
-                  />
-
-                  <Icon
-                    size={isLive ? 27 : 20}
-                    color={isLive ? GOLD : isActive ? GOLD : "rgba(255,255,255,0.72)"}
-                    strokeWidth={isLive ? 2.2 : 1.8}
-                  />
-                </div>
-
-                {/* ── Premium 3D Label ── */}
-                <span
-                  style={{
-                    fontSize: isLive ? 11 : 10,
-                    fontWeight: 700,
-                    letterSpacing: "0.045em",
-                    lineHeight: 1,
-                    // gradient text = "premium_3d_text"
-                    background: isActive || isLive
-                      ? `linear-gradient(180deg, #FAE68A 0%, ${GOLD} 55%, #8B6914 100%)`
-                      : `linear-gradient(180deg, rgba(255,255,255,0.90) 0%, rgba(255,255,255,0.42) 100%)`,
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    filter: isActive || isLive
-                      ? `drop-shadow(0 1px 4px ${GOLD}99)`
-                      : `drop-shadow(0 1px 3px rgba(0,0,0,0.90))`,
-                  }}
-                >
-                  {btn.label}
-                </span>
-              </motion.button>
-            );
-          })}
+                    position: "relative",
+                  }}>
+                    {/* Inner highlight */}
+                    <div style={{
+                      position: "absolute", top: 5, left: "50%", transform: "translateX(-50%)",
+                      width: 22, height: 7, borderRadius: "50%",
+                      background: "rgba(255,255,255,0.14)", filter: "blur(2px)",
+                    }} />
+                    <Icon
+                      size={19}
+                      color={isActive ? "#a78bfa" : "rgba(255,255,255,0.78)"}
+                      strokeWidth={1.9}
+                    />
+                  </div>
+                  <span style={{
+                    fontSize: 10, fontWeight: 700, letterSpacing: "0.04em",
+                    background: isActive
+                      ? "linear-gradient(180deg,#c4b5fd,#7C3AED)"
+                      : "linear-gradient(180deg,rgba(255,255,255,0.88),rgba(255,255,255,0.42))",
+                    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                  }}>
+                    {btn.label}
+                  </span>
+                </motion.button>
+              );
+            })}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
