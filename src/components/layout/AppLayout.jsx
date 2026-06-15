@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { APP_NAME } from "@/lib/constants";
+import FloatingNav from "@/components/navigation/FloatingNav";
 
 const navByRole = {
   admin: [
@@ -200,6 +201,9 @@ export default function AppLayout() {
           <Outlet />
         </main>
       </div>
+
+      {/* Floating Bottom Navigation */}
+      <FloatingNav />
     </div>
   );
 }
