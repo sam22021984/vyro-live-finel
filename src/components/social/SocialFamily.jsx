@@ -45,6 +45,45 @@ export default function SocialFamily() {
     { id: "ranking",  label: "Ranking"  },
   ];
 
+  const CreateModal = (
+    <AnimatePresence>
+      {showCreate && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          onClick={() => setShowCreate(false)}
+          style={{ position: "fixed", inset: 0, zIndex: 999, background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+          <motion.div initial={{ y: 80 }} animate={{ y: 0 }} exit={{ y: 80 }} transition={{ type: "spring", damping: 28 }}
+            onClick={e => e.stopPropagation()}
+            style={{ background: "#fff", borderRadius: "22px 22px 0 0", padding: "24px 20px 36px", width: "100%", maxWidth: 480 }}>
+            <div style={{ fontSize: 15, fontWeight: 900, color: "#0D1B3E", marginBottom: 16 }}>🏠 Create Family</div>
+            {["name", "description"].map(field => (
+              <input key={field} value={newFamily[field]}
+                onChange={e => setNewFamily(f => ({ ...f, [field]: e.target.value }))}
+                placeholder={field === "name" ? "Family Name (e.g. Dragon Clan 🐉)" : "Family Description"}
+                style={{ width: "100%", background: "#F5F7FA", border: "1px solid #E5E7EB", borderRadius: 12, padding: "12px 14px", fontSize: 13, outline: "none", boxSizing: "border-box", marginBottom: 10 }} />
+            ))}
+            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+              {["Public", "Private"].map(p => (
+                <button key={p} onClick={() => setNewFamily(f => ({ ...f, privacy: p }))}
+                  style={{ flex: 1, padding: "10px", borderRadius: 12, cursor: "pointer", fontWeight: 800, fontSize: 12, border: newFamily.privacy === p ? "2px solid #F59E0B" : "1px solid #E5E7EB", background: newFamily.privacy === p ? "#FFFBEB" : "#F5F7FA", color: newFamily.privacy === p ? "#D97706" : "#6B7280" }}>
+                  {p === "Public" ? "🌐 Public" : "🔒 Private"}
+                </button>
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button onClick={() => { setShowCreate(false); setNewFamily({ name: "", description: "", privacy: "Public" }); }}
+                style={{ flex: 1, padding: "13px", borderRadius: 12, background: "#F3F4F6", border: "none", fontWeight: 800, cursor: "pointer", color: "#374151" }}>Cancel</button>
+              <button disabled={!newFamily.name.trim()}
+                onClick={() => { setMyFamily({ name: newFamily.name, rank: 999, points: 0, members: 1, maxMembers: 20, privacy: newFamily.privacy, description: newFamily.description, members_list: [{ id: 1, name: "You (Leader)", avatar: "🧑", role: "Leader", online: true }] }); setShowCreate(false); setNewFamily({ name: "", description: "", privacy: "Public" }); toast.success(`Family "${newFamily.name}" created!`); }}
+                style={{ flex: 1, padding: "13px", borderRadius: 12, background: newFamily.name.trim() ? "linear-gradient(135deg,#F59E0B,#FCD34D)" : "#E5E7EB", border: "none", fontWeight: 800, cursor: newFamily.name.trim() ? "pointer" : "default", color: newFamily.name.trim() ? "#0D1B3E" : "#9CA3AF" }}>
+                Create
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+
   if (!myFamily) return (
     <div style={{ padding: "14px" }}>
       <div style={{ ...card, textAlign: "center", padding: "36px 20px" }}>
@@ -62,43 +101,7 @@ export default function SocialFamily() {
           </motion.button>
         </div>
       </div>
-
-      {/* Create Modal */}
-      <AnimatePresence>
-        {showCreate && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            onClick={() => setShowCreate(false)}
-            style={{ position: "fixed", inset: 0, zIndex: 999, background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
-            <motion.div initial={{ y: 80 }} animate={{ y: 0 }} exit={{ y: 80 }} transition={{ type: "spring", damping: 28 }}
-              onClick={e => e.stopPropagation()}
-              style={{ background: "#fff", borderRadius: "22px 22px 0 0", padding: "24px 20px 36px", width: "100%", maxWidth: 480 }}>
-              <div style={{ fontSize: 15, fontWeight: 900, color: "#0D1B3E", marginBottom: 16 }}>🏠 Create Family</div>
-              {["name", "description"].map(field => (
-                <input key={field} value={newFamily[field]}
-                  onChange={e => setNewFamily(f => ({ ...f, [field]: e.target.value }))}
-                  placeholder={field === "name" ? "Family Name (e.g. Dragon Clan 🐉)" : "Family Description"}
-                  style={{ width: "100%", background: "#F5F7FA", border: "1px solid #E5E7EB", borderRadius: 12, padding: "12px 14px", fontSize: 13, outline: "none", boxSizing: "border-box", marginBottom: 10 }} />
-              ))}
-              <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-                {["Public", "Private"].map(p => (
-                  <button key={p} onClick={() => setNewFamily(f => ({ ...f, privacy: p }))}
-                    style={{ flex: 1, padding: "10px", borderRadius: 12, cursor: "pointer", fontWeight: 800, fontSize: 12, border: newFamily.privacy === p ? "2px solid #F59E0B" : "1px solid #E5E7EB", background: newFamily.privacy === p ? "#FFFBEB" : "#F5F7FA", color: newFamily.privacy === p ? "#D97706" : "#6B7280" }}>
-                    {p === "Public" ? "🌐 Public" : "🔒 Private"}
-                  </button>
-                ))}
-              </div>
-              <div style={{ display: "flex", gap: 10 }}>
-                <button onClick={() => setShowCreate(false)} style={{ flex: 1, padding: "13px", borderRadius: 12, background: "#F3F4F6", border: "none", fontWeight: 800, cursor: "pointer", color: "#374151" }}>Cancel</button>
-                <button disabled={!newFamily.name.trim()}
-                  onClick={() => { setMyFamily({ name: newFamily.name, rank: 999, points: 0, members: 1, maxMembers: 20, privacy: newFamily.privacy, description: newFamily.description, members_list: [{ id: 1, name: "You (Leader)", avatar: "🧑", role: "Leader", online: true }] }); setShowCreate(false); toast.success(`Family "${newFamily.name}" created!`); }}
-                  style={{ flex: 1, padding: "13px", borderRadius: 12, background: newFamily.name.trim() ? "linear-gradient(135deg,#F59E0B,#FCD34D)" : "#E5E7EB", border: "none", fontWeight: 800, cursor: newFamily.name.trim() ? "pointer" : "default", color: newFamily.name.trim() ? "#0D1B3E" : "#9CA3AF" }}>
-                  Create
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {CreateModal}
     </div>
   );
 
@@ -223,6 +226,8 @@ export default function SocialFamily() {
           })}
         </div>
       )}
+
+      {CreateModal}
 
       {/* Leave confirmation */}
       <AnimatePresence>
