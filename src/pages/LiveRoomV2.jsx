@@ -3,7 +3,7 @@
  * Matches reference design: dark teal bg, 5-col seat grid, inline chat, compact bottom bar
  */
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import LiveRoomHeader from "@/components/liveroom2/LiveRoomHeader";
 import SeatGrid from "@/components/liveroom2/SeatGrid";
@@ -51,6 +51,23 @@ function buildSeats(count) {
 
 export default function LiveRoomV2() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const liveRoom = location.state?.room;
+
+  // Merge real room data from GoLive with defaults
+  const roomData = {
+    id: liveRoom?.id || "ROOM-4821",
+    title: liveRoom?.title || "Sajid Alam",
+    cover: liveRoom?.cover_image_url || "https://api.dicebear.com/7.x/adventurer/svg?seed=sam",
+    level: 7,
+    xp: 6800,
+    xpNext: 10000,
+    onlineUsers: liveRoom?.current_listeners || 0,
+    announcement: liveRoom?.welcome_message || MOCK_ROOM.announcement,
+    hostId: liveRoom?.host_id || "u1",
+    layout: 15,
+  };
+
   const [layout, setLayout] = useState(15);
   const [seats] = useState(() => buildSeats(25));
   const [activePanel, setActivePanel] = useState(null);
@@ -86,7 +103,7 @@ export default function LiveRoomV2() {
     }}>
       {/* Header */}
       <LiveRoomHeader
-        room={MOCK_ROOM}
+        room={roomData}
         timer={formatTimer(roomTimer)}
         onBack={() => navigate("/")}
         onSetup={() => setShowSetup(true)}
@@ -116,7 +133,7 @@ export default function LiveRoomV2() {
           gap: 6,
         }}>
           <span style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", lineHeight: 1.5, flex: 1 }}>
-            {MOCK_ROOM.announcement}
+            {roomData.announcement}
           </span>
         </div>
 

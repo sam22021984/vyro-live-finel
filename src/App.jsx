@@ -22,6 +22,7 @@ import Inbox from '@/pages/Inbox';
 import ChatRoom from '@/pages/ChatRoom';
 import AudioCallScreen from '@/pages/AudioCallScreen';
 import LiveRoomV2 from '@/pages/LiveRoomV2';
+import GoLive from '@/pages/GoLive';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -60,6 +61,7 @@ const AuthenticatedApp = () => {
         <Route path="/chat/:chatId" element={<ChatRoom />} />
         <Route path="/call" element={<AudioCallScreen />} />
         <Route path="/live-room" element={<LiveRoomV2 />} />
+        <Route path="/go-live" element={<GoLive />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

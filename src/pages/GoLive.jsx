@@ -43,7 +43,7 @@ export default function GoLive() {
     onSuccess: (room) => {
       toast.success("You're live! 🎙️");
       qc.invalidateQueries(["live-rooms"]);
-      navigate(`/rooms/${room.id}`);
+      navigate(`/live-room`, { state: { room } });
     },
     onError: () => toast.error("Failed to start stream"),
   });
