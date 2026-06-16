@@ -31,10 +31,16 @@ export default function FloatingNav() {
       {visible && (
         <motion.div
           key="vyro-nav"
-          className="fixed left-1/2 z-[99999] pointer-events-none"
+          className="fixed z-[99999] pointer-events-none"
           style={{
             bottom: "max(24px, env(safe-area-inset-bottom, 24px))",
-            transform: "translateX(-50%)",
+            left: 0,
+            right: 0,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-end",
+            paddingLeft: 16,
+            paddingRight: 16,
           }}
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
