@@ -45,9 +45,9 @@ export default function Me() {
           position: "absolute", inset: 0,
           background: "linear-gradient(180deg, transparent 30%, rgba(253,252,255,0.95) 100%)",
         }} />
-        {/* Action Buttons */}
+        {/* Action Buttons — minimal: share + more */}
         <div style={{ position: "absolute", top: 12, right: 12, display: "flex", gap: 8 }}>
-          {["💬", "🤝", "🔗"].map((icon, i) => (
+          {["🔗"].map((icon, i) => (
             <motion.button key={i} whileTap={{ scale: 0.88 }}
               style={{
                 width: 36, height: 36, borderRadius: 18,
@@ -72,29 +72,35 @@ export default function Me() {
       <div style={{ padding: "0 16px", marginTop: -70 }}>
         <MeHeader />
 
-        {/* Follow & Message Buttons */}
-        <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
-          <motion.button whileTap={{ scale: 0.96 }} style={{
-            flex: 1, padding: "10px 0", borderRadius: 24,
-            background: "linear-gradient(135deg, #7C3AED, #C084FC)",
-            color: "#fff", fontWeight: 800, fontSize: 13,
-            border: "none", cursor: "pointer",
-            boxShadow: "0 4px 16px rgba(124,58,237,0.35)",
-          }}>❤️ Follow</motion.button>
-          <motion.button whileTap={{ scale: 0.96 }} style={{
-            flex: 1, padding: "10px 0", borderRadius: 24,
-            background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)",
-            color: "#7C3AED", fontWeight: 800, fontSize: 13,
-            border: "1.5px solid rgba(124,58,237,0.25)", cursor: "pointer",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
-          }}>💬 Message</motion.button>
-          <motion.button whileTap={{ scale: 0.96 }} style={{
-            width: 44, height: 44, borderRadius: 22,
-            background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)",
-            color: "#7C3AED", fontWeight: 800, fontSize: 18,
-            border: "1.5px solid rgba(124,58,237,0.25)", cursor: "pointer",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
-          }}>+</motion.button>
+        {/* Social Stats Bar */}
+        <div style={{
+          display: "flex", marginTop: 14,
+          background: "rgba(255,255,255,0.85)", backdropFilter: "blur(16px)",
+          borderRadius: 20, overflow: "hidden",
+          border: "1px solid rgba(124,58,237,0.10)",
+          boxShadow: "0 4px 16px rgba(0,0,0,0.05)",
+        }}>
+          {[
+            { label: "Following", count: "1.2K" },
+            { label: "Followers", count: "48.5K" },
+            { label: "Friends",   count: "320" },
+            { label: "Visitors",  count: "9.1K" },
+          ].map((item, i, arr) => (
+            <motion.button key={item.label} whileTap={{ scale: 0.94 }}
+              style={{
+                flex: 1, padding: "10px 4px", border: "none", cursor: "pointer",
+                background: "transparent",
+                borderRight: i < arr.length - 1 ? "1px solid rgba(124,58,237,0.08)" : "none",
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
+              }}>
+              <span style={{ fontSize: 14, fontWeight: 900, color: "#7C3AED", lineHeight: 1 }}>
+                {item.count}
+              </span>
+              <span style={{ fontSize: 10, fontWeight: 600, color: "#9CA3AF", lineHeight: 1 }}>
+                {item.label}
+              </span>
+            </motion.button>
+          ))}
         </div>
 
         {/* Tabs */}
