@@ -1,11 +1,10 @@
 /**
- * SeatGrid — renders seat layout (4/8/10/15/20/25 seats)
- * Each seat shows: avatar, level badge, VIP frame, mic status, country flag
- * Active speaker: audio wave + glow + pulse
- * Flutter: GridView with SeatWidget
+ * SeatGrid — matches reference: teal-bordered circles on dark teal bg, 5-col grid
+ * States: empty (numbered mic icon), occupied, active (wave+glow), muted, locked
+ * Flutter: GridView.builder with SeatTile widget
  */
 import { motion, AnimatePresence } from "framer-motion";
-import { Mic, MicOff, Lock } from "lucide-react";
+import { MicOff, Lock } from "lucide-react";
 import AudioWave from "@/components/liveroom2/AudioWave";
 
 const VIP_COLORS = {
@@ -21,76 +20,89 @@ function SeatItem({ seat, onTap, index }) {
   const isActive = seat.state === "active";
   const isMuted = seat.state === "muted";
   const isLocked = seat.state === "locked";
-  const isOccupied = seat.state === "occupied" || isActive || isMuted;
+  const isOccupied = !isEmpty && !isLocked;
   const vipColor = seat.user?.vip ? VIP_COLORS[seat.user.vip] : null;
 
   return (
     <motion.button
-      whileTap={{ scale: 0.88 }}
+      whileTap={{ scale: 0.86 }}
       onClick={() => onTap(seat)}
-      initial={{ opacity: 0, scale: 0.7 }}
+      initial={{ opacity: 0, scale: 0.6 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: index * 0.03, type: "spring", stiffness: 300, damping: 20 }}
+      transition={{ delay: index * 0.025, type: "spring", stiffness: 320, damping: 22 }}
       style={{
-        display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+        display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
         background: "none", border: "none", cursor: "pointer",
-        position: "relative",
+        position: "relative", padding: "10px 2px 2px",
+        minWidth: 0,
       }}>
-      {/* Seat number */}
+
+      {/* Seat number label */}
       <span style={{
-        fontSize: 9, color: "rgba(255,255,255,0.35)", fontWeight: 700,
-        position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)",
+        position: "absolute", top: 2, left: "50%", transform: "translateX(-50%)",
+        fontSize: 8, color: "rgba(255,255,255,0.4)", fontWeight: 700,
+        lineHeight: 1,
       }}>{seat.id}</span>
 
       {/* Avatar container */}
       <div style={{ position: "relative" }}>
-        {/* Active glow pulse */}
+        {/* Active glow pulse ring */}
         {isActive && (
           <motion.div
-            animate={{ scale: [1, 1.35, 1], opacity: [0.5, 0.0, 0.5] }}
-            transition={{ duration: 1.4, repeat: Infinity }}
+            animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
+            transition={{ duration: 1.6, repeat: Infinity }}
             style={{
-              position: "absolute", inset: -6, borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(0,194,184,0.6) 0%, transparent 70%)",
+              position: "absolute", inset: -5, borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(0,194,184,0.55) 0%, transparent 70%)",
               zIndex: 0,
             }}
           />
         )}
 
-        {/* VIP frame ring */}
+        {/* VIP ring */}
         {vipColor && (
-          <div style={{
-            position: "absolute", inset: -3, borderRadius: "50%",
-            border: `2.5px solid ${vipColor}`,
-            boxShadow: `0 0 10px ${vipColor}80`,
-            zIndex: 1,
-          }} />
+          <motion.div
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 2.2, repeat: Infinity }}
+            style={{
+              position: "absolute", inset: -3, borderRadius: "50%",
+              border: `2px solid ${vipColor}`,
+              boxShadow: `0 0 8px ${vipColor}99`,
+              zIndex: 1,
+            }}
+          />
         )}
+
+        {/* Outer teal border ring — matches reference */}
+        <div style={{
+          position: "absolute", inset: -2, borderRadius: "50%",
+          border: isActive
+            ? "2px solid #00C2B8"
+            : isLocked
+            ? "2px solid rgba(255,255,255,0.1)"
+            : isEmpty
+            ? "2px solid rgba(0,194,184,0.5)"
+            : "2px solid rgba(0,194,184,0.6)",
+          boxShadow: isActive ? "0 0 14px rgba(0,194,184,0.6)" : "none",
+          zIndex: 2,
+        }} />
 
         {/* Avatar circle */}
         <div style={{
-          width: 52, height: 52, borderRadius: "50%",
-          position: "relative", zIndex: 2,
+          width: 46, height: 46, borderRadius: "50%",
+          position: "relative", zIndex: 3,
           background: isLocked
-            ? "rgba(255,255,255,0.06)"
+            ? "#1a3532"
             : isEmpty
-              ? "rgba(0,194,184,0.1)"
-              : "rgba(255,255,255,0.05)",
-          border: isActive
-            ? "2px solid #00C2B8"
-            : isEmpty
-              ? "2px dashed rgba(0,194,184,0.35)"
-              : "2px solid rgba(255,255,255,0.1)",
+            ? "#153530"
+            : "#1a3532",
           display: "flex", alignItems: "center", justifyContent: "center",
           overflow: "hidden",
-          boxShadow: isActive
-            ? "0 0 18px rgba(0,194,184,0.55)"
-            : "none",
         }}>
           {isLocked ? (
-            <Lock size={18} color="rgba(255,255,255,0.3)" />
+            <Lock size={16} color="rgba(255,255,255,0.3)" />
           ) : isEmpty ? (
-            <span style={{ fontSize: 18, opacity: 0.5 }}>🎙️</span>
+            <span style={{ fontSize: 16, opacity: 0.55 }}>🎙️</span>
           ) : (
             <img
               src={seat.user?.avatar}
@@ -104,56 +116,58 @@ function SeatItem({ seat, onTap, index }) {
         {/* Host crown */}
         {seat.isHost && (
           <div style={{
-            position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)",
-            fontSize: 13, zIndex: 3,
+            position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)",
+            fontSize: 12, zIndex: 4,
           }}>👑</div>
         )}
 
-        {/* Mic status overlay */}
-        {isOccupied && (
+        {/* Muted badge */}
+        {isMuted && (
           <div style={{
-            position: "absolute", bottom: 0, right: 0, zIndex: 3,
-            width: 16, height: 16, borderRadius: "50%",
-            background: isMuted ? "#FF5252" : isActive ? "#00C2B8" : "#333",
+            position: "absolute", bottom: -1, right: -1, zIndex: 4,
+            width: 14, height: 14, borderRadius: "50%",
+            background: "#FF5252",
             display: "flex", alignItems: "center", justifyContent: "center",
-            border: "1.5px solid #0B0B0B",
+            border: "1.5px solid #0D2B28",
           }}>
-            {isMuted
-              ? <MicOff size={8} color="#fff" />
-              : <Mic size={8} color="#fff" />
-            }
+            <MicOff size={7} color="#fff" />
           </div>
         )}
 
         {/* Country flag */}
-        {seat.user?.country && (
+        {seat.user?.country && !isMuted && (
           <div style={{
-            position: "absolute", bottom: 0, left: 0, zIndex: 3,
-            fontSize: 10,
+            position: "absolute", bottom: -2, right: -3, zIndex: 4,
+            fontSize: 9, lineHeight: 1,
           }}>{seat.user.country}</div>
         )}
       </div>
 
-      {/* Audio wave (active speaker) */}
-      {isActive && <AudioWave />}
+      {/* Audio wave below avatar for active speaker */}
+      {isActive && (
+        <div style={{ marginTop: 1 }}>
+          <AudioWave size="sm" color="#00C2B8" />
+        </div>
+      )}
 
-      {/* Name / label */}
+      {/* Name */}
       <span style={{
-        fontSize: 10, fontWeight: 700,
-        color: isActive ? "#00C2B8" : isEmpty ? "rgba(255,255,255,0.3)" : "#fff",
-        maxWidth: 56, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-        marginTop: isActive ? 0 : 2,
+        fontSize: 9, fontWeight: 700,
+        color: isActive ? "#00C2B8" : isEmpty ? "rgba(255,255,255,0.28)" : "#e0f7f5",
+        maxWidth: 52, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+        lineHeight: 1.2,
+        marginTop: isActive ? 0 : 1,
       }}>
-        {isLocked ? "Locked" : isEmpty ? `Seat ${seat.id}` : seat.user?.name}
+        {isLocked ? "Locked" : isEmpty ? `${seat.id}` : seat.user?.name}
       </span>
 
       {/* Level badge */}
       {seat.user?.level && (
         <span style={{
-          fontSize: 8, fontWeight: 800,
+          fontSize: 7, fontWeight: 800,
           background: "linear-gradient(135deg,#00C2B8,#006e6a)",
-          color: "#fff", padding: "1px 5px", borderRadius: 6,
-          marginTop: -2,
+          color: "#fff", padding: "1px 4px", borderRadius: 4,
+          marginTop: -1,
         }}>Lv.{seat.user.level}</span>
       )}
     </motion.button>
@@ -161,16 +175,15 @@ function SeatItem({ seat, onTap, index }) {
 }
 
 export default function SeatGrid({ seats, layout, onSeatTap }) {
-  // Determine grid columns based on layout
-  const cols = layout <= 4 ? 4 : layout <= 8 ? 4 : layout <= 10 ? 5 : layout <= 15 ? 5 : layout <= 20 ? 5 : 5;
+  // Always 5 columns to match reference design
+  const cols = layout <= 4 ? 4 : 5;
 
   return (
     <div style={{
       display: "grid",
       gridTemplateColumns: `repeat(${cols}, 1fr)`,
-      gap: "20px 8px",
-      paddingTop: 16,
-      paddingBottom: 8,
+      gap: "8px 4px",
+      paddingTop: 6,
     }}>
       {seats.map((seat, i) => (
         <SeatItem key={seat.id} seat={seat} onTap={onSeatTap} index={i} />

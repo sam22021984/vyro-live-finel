@@ -1,7 +1,6 @@
 /**
  * VYRO LIVE ROOM V2 — Enterprise Audio Live Room
- * Dark Premium theme, #0B0B0B bg, #00C2B8 primary, #FFD700 accent
- * Flutter migration: maps to LiveRoomScreen widget
+ * Matches reference design: dark teal bg, 5-col seat grid, inline chat, compact bottom bar
  */
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,51 +11,55 @@ import ChatPanel2 from "@/components/liveroom2/ChatPanel2";
 import GiftPanel2 from "@/components/liveroom2/GiftPanel2";
 import ToolsPanel from "@/components/liveroom2/ToolsPanel";
 import PKBattle from "@/components/liveroom2/PKBattle";
-import AnnouncementBanner from "@/components/liveroom2/AnnouncementBanner";
 import SpeakRequestQueue from "@/components/liveroom2/SpeakRequestQueue";
 import RoomSetupSheet from "@/components/liveroom2/RoomSetupSheet";
-import { Mic, Gift, Wrench } from "lucide-react";
+import { Gift, Wrench } from "lucide-react";
 
-// Mock room data
 const MOCK_ROOM = {
   id: "ROOM-4821",
-  title: "Late Night Vibes 🌙",
-  cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80",
-  level: 42,
+  title: "Sajid Alam",
+  cover: "https://api.dicebear.com/7.x/adventurer/svg?seed=sam",
+  level: 7,
   xp: 6800,
   xpNext: 10000,
   onlineUsers: 384,
-  announcement: "Welcome! No hate speech. Be respectful. Top gifters get VIP seat 🎁",
+  announcement: "⚠️ Warning: Pornography, vulgarity, violence, minors and other related situations are strictly prohibited during the live broadcast. The AI system will check 24 hours a day, and any violations will be severely punished!",
   hostId: "u1",
   layout: 15,
 };
 
-const MOCK_SEATS = Array.from({ length: 15 }, (_, i) => ({
-  id: i + 1,
-  state: i === 0 ? "occupied" : i === 1 ? "active" : i === 2 ? "muted" : i === 4 ? "locked" : i % 4 === 0 ? "occupied" : "empty",
-  user: (i === 0 || i === 1 || i === 2 || i % 4 === 0) ? {
-    id: `u${i}`,
-    name: ["SAM", "Luna", "Rex", "Nova", "Kai"][i % 5],
-    avatar: `https://api.dicebear.com/7.x/adventurer/svg?seed=${i}`,
-    level: 20 + i * 3,
-    vip: i < 3 ? `vip${Math.min(i + 1, 5)}` : null,
-    country: ["🇺🇸", "🇬🇧", "🇯🇵", "🇧🇷", "🇩🇪"][i % 5],
-  } : null,
-  isHost: i === 0,
-}));
+function buildSeats(count) {
+  return Array.from({ length: count }, (_, i) => ({
+    id: i + 1,
+    state: i === 0 ? "occupied"
+      : i === 1 ? "active"
+      : i === 2 ? "muted"
+      : i === 4 ? "locked"
+      : i === 7 ? "occupied"
+      : "empty",
+    user: (i === 0 || i === 1 || i === 2 || i === 7) ? {
+      id: `u${i}`,
+      name: ["SAM", "Luna", "Rex", "Nova"][i === 7 ? 3 : i],
+      avatar: `https://api.dicebear.com/7.x/adventurer/svg?seed=seat${i}`,
+      level: 20 + i * 3,
+      vip: i === 0 ? "vip3" : i === 1 ? "vip2" : null,
+      country: ["🇺🇸", "🇬🇧", "🇯🇵", "🇧🇷"][i % 4],
+    } : null,
+    isHost: i === 0,
+  }));
+}
 
 export default function LiveRoomV2() {
   const navigate = useNavigate();
-  const [seats, setSeats] = useState(MOCK_SEATS);
   const [layout, setLayout] = useState(15);
-  const [activePanel, setActivePanel] = useState(null); // "chat" | "gift" | "tools"
+  const [seats] = useState(() => buildSeats(25));
+  const [activePanel, setActivePanel] = useState(null);
   const [showPK, setShowPK] = useState(false);
   const [showSetup, setShowSetup] = useState(false);
   const [showRequests, setShowRequests] = useState(false);
   const [myHandRaised, setMyHandRaised] = useState(false);
   const [roomTimer, setRoomTimer] = useState(0);
 
-  // Room timer
   useEffect(() => {
     const t = setInterval(() => setRoomTimer(s => s + 1), 1000);
     return () => clearInterval(t);
@@ -71,14 +74,10 @@ export default function LiveRoomV2() {
       : `${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
   };
 
-  const handleSeatTap = (seat) => {
-    if (seat.state === "empty") setMyHandRaised(true);
-  };
-
   return (
     <div style={{
-      minHeight: "100vh",
-      background: "linear-gradient(180deg, #0D1F1E 0%, #0B0B0B 40%)",
+      height: "100dvh",
+      background: "#0D2B28",
       fontFamily: "'Inter', system-ui, sans-serif",
       display: "flex",
       flexDirection: "column",
@@ -93,134 +92,153 @@ export default function LiveRoomV2() {
         onSetup={() => setShowSetup(true)}
       />
 
-      {/* Announcement */}
-      <AnnouncementBanner text={MOCK_ROOM.announcement} />
-
-      {/* PK Battle bar */}
+      {/* PK Battle */}
       <AnimatePresence>
         {showPK && <PKBattle onClose={() => setShowPK(false)} />}
       </AnimatePresence>
 
-      {/* Seat Grid */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "12px 12px 0" }}>
+      {/* Seat Grid — scrollable */}
+      <div style={{ flex: 1, overflowY: "auto", padding: "4px 10px 0" }}>
         <SeatGrid
           seats={seats.slice(0, layout)}
           layout={layout}
-          onSeatTap={handleSeatTap}
+          onSeatTap={(seat) => seat.state === "empty" && setMyHandRaised(true)}
         />
+
+        {/* Inline announcement warning */}
+        <div style={{
+          margin: "8px 0 4px",
+          background: "rgba(0,0,0,0.35)",
+          borderRadius: 10,
+          padding: "8px 10px",
+          display: "flex",
+          alignItems: "flex-start",
+          gap: 6,
+        }}>
+          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", lineHeight: 1.5, flex: 1 }}>
+            {MOCK_ROOM.announcement}
+          </span>
+        </div>
+
+        {/* Inline chat messages */}
+        <div style={{ paddingBottom: 8 }}>
+          <ChatPanel2 compact />
+        </div>
       </div>
 
-      {/* Raise Hand / Lock row */}
+      {/* Request to Speak / Lock row */}
       <div style={{
-        display: "flex", gap: 10, padding: "8px 16px",
-        justifyContent: "flex-start",
+        display: "flex", gap: 8, padding: "6px 12px 4px",
       }}>
         <motion.button
           whileTap={{ scale: 0.92 }}
           onClick={() => setMyHandRaised(v => !v)}
           style={{
-            padding: "7px 18px", borderRadius: 24,
-            background: myHandRaised
-              ? "linear-gradient(135deg,#00C2B8,#00a89f)"
-              : "rgba(0,194,184,0.13)",
-            border: "1px solid rgba(0,194,184,0.4)",
-            color: myHandRaised ? "#fff" : "#00C2B8",
-            fontSize: 13, fontWeight: 700, cursor: "pointer",
-            display: "flex", alignItems: "center", gap: 6,
+            padding: "6px 16px", borderRadius: 20,
+            background: myHandRaised ? "rgba(0,194,184,0.25)" : "rgba(0,0,0,0.4)",
+            border: "1px solid rgba(0,194,184,0.5)",
+            color: "#00C2B8",
+            fontSize: 12, fontWeight: 700, cursor: "pointer",
+            display: "flex", alignItems: "center", gap: 5,
           }}>
           ✋ {myHandRaised ? "Cancel Request" : "Request to Speak"}
         </motion.button>
         <motion.button
           whileTap={{ scale: 0.92 }}
           style={{
-            padding: "7px 16px", borderRadius: 24,
-            background: "rgba(255,215,0,0.10)",
-            border: "1px solid rgba(255,215,0,0.35)",
-            color: "#FFD700",
-            fontSize: 13, fontWeight: 700, cursor: "pointer",
-            display: "flex", alignItems: "center", gap: 6,
+            padding: "6px 14px", borderRadius: 20,
+            background: "rgba(0,0,0,0.4)",
+            border: "1px solid rgba(255,255,255,0.18)",
+            color: "rgba(255,255,255,0.7)",
+            fontSize: 12, fontWeight: 700, cursor: "pointer",
+            display: "flex", alignItems: "center", gap: 5,
           }}>
           🔒 Lock
         </motion.button>
       </div>
 
-      {/* Bottom Chat Preview */}
-      <div style={{ padding: "0 12px 8px", maxHeight: 140, overflowY: "auto" }}>
-        <ChatPanel2 compact />
-      </div>
-
-      {/* Bottom Action Bar */}
+      {/* Bottom Action Bar — matches reference: All·Message·Gift pill + Gift icon + Tools icon */}
       <div style={{
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "10px 16px",
-        background: "rgba(0,0,0,0.55)",
-        backdropFilter: "blur(20px)",
-        borderTop: "1px solid rgba(0,194,184,0.12)",
+        display: "flex", alignItems: "center",
+        padding: "8px 12px 12px",
         gap: 8,
+        background: "rgba(0,0,0,0.5)",
+        backdropFilter: "blur(16px)",
+        borderTop: "1px solid rgba(255,255,255,0.06)",
       }}>
-        {/* Chat input pill */}
+        {/* Chat tabs pill */}
         <motion.div
           whileTap={{ scale: 0.97 }}
           onClick={() => setActivePanel(activePanel === "chat" ? null : "chat")}
           style={{
-            flex: 1, height: 38, borderRadius: 20,
-            background: "rgba(255,255,255,0.07)",
-            border: "1px solid rgba(255,255,255,0.13)",
+            flex: 1, height: 36, borderRadius: 18,
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.12)",
             display: "flex", alignItems: "center",
-            padding: "0 14px",
-            color: "rgba(255,255,255,0.4)",
-            fontSize: 13, cursor: "pointer",
+            padding: "0 12px",
+            cursor: "pointer",
+            gap: 6,
           }}>
-          All · Message · Gift
+          {["All", "Message", "Gift"].map((label, i) => (
+            <span key={label} style={{
+              fontSize: 11, fontWeight: 700,
+              color: i === 0 ? "#00C2B8" : "rgba(255,255,255,0.45)",
+            }}>{label}{i < 2 ? " ·" : ""}</span>
+          ))}
         </motion.div>
 
         {/* Gift */}
         <motion.button whileTap={{ scale: 0.88 }}
           onClick={() => setActivePanel(activePanel === "gift" ? null : "gift")}
           style={{
-            width: 42, height: 42, borderRadius: "50%",
+            width: 40, height: 40, borderRadius: "50%",
             background: activePanel === "gift"
               ? "linear-gradient(135deg,#FFD700,#FFA500)"
-              : "rgba(255,215,0,0.13)",
-            border: "1px solid rgba(255,215,0,0.35)",
+              : "rgba(255,215,0,0.12)",
+            border: "1px solid rgba(255,215,0,0.4)",
             display: "flex", alignItems: "center", justifyContent: "center",
             cursor: "pointer",
           }}>
-          <Gift size={18} color="#FFD700" />
+          <Gift size={17} color="#FFD700" />
         </motion.button>
 
         {/* Tools */}
         <motion.button whileTap={{ scale: 0.88 }}
           onClick={() => setActivePanel(activePanel === "tools" ? null : "tools")}
           style={{
-            width: 42, height: 42, borderRadius: "50%",
+            width: 40, height: 40, borderRadius: "50%",
             background: activePanel === "tools"
               ? "linear-gradient(135deg,#00C2B8,#006e6a)"
-              : "rgba(0,194,184,0.13)",
-            border: "1px solid rgba(0,194,184,0.35)",
+              : "rgba(0,194,184,0.12)",
+            border: "1px solid rgba(0,194,184,0.4)",
             display: "flex", alignItems: "center", justifyContent: "center",
             cursor: "pointer",
           }}>
-          <Wrench size={18} color="#00C2B8" />
+          <Wrench size={17} color="#00C2B8" />
         </motion.button>
       </div>
 
       {/* Slide-up Panels */}
       <AnimatePresence>
+        {activePanel && (
+          <div onClick={() => setActivePanel(null)}
+            style={{ position: "fixed", inset: 0, zIndex: 199, background: "rgba(0,0,0,0.4)" }} />
+        )}
         {activePanel === "chat" && (
           <motion.div key="chat-panel"
             initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 28, stiffness: 300 }}
             style={{
               position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 200,
-              height: "70vh",
+              height: "68vh",
               background: "#111",
-              borderRadius: "24px 24px 0 0",
-              border: "1px solid rgba(0,194,184,0.2)",
+              borderRadius: "22px 22px 0 0",
+              border: "1px solid rgba(0,194,184,0.18)",
               overflow: "hidden",
+              display: "flex", flexDirection: "column",
             }}>
-            <div style={{ display:"flex", justifyContent:"center", padding: "10px 0 4px" }}>
-              <div style={{ width:40, height:4, borderRadius:2, background:"rgba(255,255,255,0.2)" }} />
+            <div style={{ display:"flex", justifyContent:"center", padding: "10px 0 4px", flexShrink: 0 }}>
+              <div style={{ width:36, height:4, borderRadius:2, background:"rgba(255,255,255,0.15)" }} />
             </div>
             <ChatPanel2 onClose={() => setActivePanel(null)} />
           </motion.div>
@@ -231,14 +249,14 @@ export default function LiveRoomV2() {
             transition={{ type: "spring", damping: 28, stiffness: 300 }}
             style={{
               position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 200,
-              height: "60vh",
+              height: "58vh",
               background: "#111",
-              borderRadius: "24px 24px 0 0",
-              border: "1px solid rgba(255,215,0,0.2)",
+              borderRadius: "22px 22px 0 0",
+              border: "1px solid rgba(255,215,0,0.18)",
               overflow: "hidden",
             }}>
             <div style={{ display:"flex", justifyContent:"center", padding: "10px 0 4px" }}>
-              <div style={{ width:40, height:4, borderRadius:2, background:"rgba(255,255,255,0.2)" }} />
+              <div style={{ width:36, height:4, borderRadius:2, background:"rgba(255,255,255,0.15)" }} />
             </div>
             <GiftPanel2 onClose={() => setActivePanel(null)} />
           </motion.div>
@@ -249,35 +267,29 @@ export default function LiveRoomV2() {
             transition={{ type: "spring", damping: 28, stiffness: 300 }}
             style={{
               position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 200,
-              height: "75vh",
+              height: "72vh",
               background: "#111",
-              borderRadius: "24px 24px 0 0",
-              border: "1px solid rgba(0,194,184,0.2)",
+              borderRadius: "22px 22px 0 0",
+              border: "1px solid rgba(0,194,184,0.18)",
               overflow: "hidden",
             }}>
             <div style={{ display:"flex", justifyContent:"center", padding: "10px 0 4px" }}>
-              <div style={{ width:40, height:4, borderRadius:2, background:"rgba(255,255,255,0.2)" }} />
+              <div style={{ width:36, height:4, borderRadius:2, background:"rgba(255,255,255,0.15)" }} />
             </div>
             <ToolsPanel onClose={() => setActivePanel(null)} onPK={() => { setShowPK(true); setActivePanel(null); }} />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Speak Request Queue */}
+      {/* Speak Requests */}
       <AnimatePresence>
         {showRequests && <SpeakRequestQueue onClose={() => setShowRequests(false)} />}
       </AnimatePresence>
 
-      {/* Room Setup Sheet */}
+      {/* Room Setup */}
       <AnimatePresence>
         {showSetup && <RoomSetupSheet onClose={() => setShowSetup(false)} />}
       </AnimatePresence>
-
-      {/* Tap-outside overlay */}
-      {activePanel && (
-        <div onClick={() => setActivePanel(null)}
-          style={{ position: "fixed", inset: 0, zIndex: 199, background: "transparent" }} />
-      )}
     </div>
   );
 }
