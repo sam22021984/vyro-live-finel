@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LEVEL_TIER_CONFIG } from "@/lib/constants";
 import UserLevelDashboard from "@/components/levels/UserLevelDashboard";
 import HostLevelDashboard from "@/components/levels/HostLevelDashboard";
+import GiftingLevelDashboard from "@/components/levels/GiftingLevelDashboard";
 
 /* ── Format helpers ── */
 function formatBig(n) {
@@ -355,6 +356,8 @@ export default function LevelCoins() {
             <UserLevelDashboard />
           ) : activeTab === "host" ? (
             <HostLevelDashboard />
+          ) : activeTab === "gifting" ? (
+            <GiftingLevelDashboard />
           ) : activeTab === "benefits" ? (
             <>
               <div style={{
