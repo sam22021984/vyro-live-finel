@@ -14,6 +14,7 @@ import MeCustomization from "@/components/me/MeCustomization";
 import MeThemes from "@/components/me/MeThemes";
 import MeExtras from "@/components/me/MeExtras";
 import MeMoreMenu from "@/components/me/MeMoreMenu";
+import MeMoreServices from "@/components/me/MeMoreServices";
 
 const TABS = ["Profile", "Stats", "History", "Settings"];
 
@@ -140,6 +141,7 @@ export default function Me() {
                 <MeExtras />
                 <MeAbout />
                 <MeAchievements />
+                <MeMoreServices />
               </>
             )}
             {activeTab === "Stats" && (
