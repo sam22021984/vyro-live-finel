@@ -49,19 +49,14 @@ export default function FloatingNav() {
             transition={{ duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <div
-              className="pointer-events-auto flex items-end gap-0.5 px-3 py-2"
+              className="pointer-events-auto flex items-end gap-0 px-2 py-1.5"
               style={{
-                borderRadius: 56,
-                background: "rgba(255, 255, 255, 0.12)",
+                borderRadius: 40,
+                background: "rgba(255, 255, 255, 0.14)",
                 backdropFilter: "blur(28px)",
                 WebkitBackdropFilter: "blur(28px)",
-                border: "1px solid rgba(255, 255, 255, 0.22)",
-                boxShadow: [
-                  "0 8px 48px rgba(0,0,0,0.28)",
-                  "0 2px 8px rgba(0,0,0,0.18)",
-                  "inset 0 1px 0 rgba(255,255,255,0.35)",
-                  "inset 0 -1px 0 rgba(0,0,0,0.08)",
-                ].join(", "),
+                border: "1px solid rgba(255, 255, 255, 0.24)",
+                boxShadow: "0 4px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.35)",
               }}
             >
               {NAV_ITEMS.map((item) => {
@@ -74,8 +69,8 @@ export default function FloatingNav() {
                       key={item.id}
                       onClick={() => { haptic(); navigate(item.path); }}
                       whileTap={{ scale: 0.86 }}
-                      className="relative flex flex-col items-center gap-1.5 mx-3"
-                      style={{ marginBottom: 6, border: "none", background: "none", cursor: "pointer" }}
+                      className="relative flex flex-col items-center gap-1 mx-2"
+                      style={{ marginBottom: 3, border: "none", background: "none", cursor: "pointer" }}
                     >
                       <motion.div
                         style={{
@@ -88,7 +83,7 @@ export default function FloatingNav() {
                       />
                       <div style={{
                         position: "relative", zIndex: 1,
-                        width: 46, height: 46, borderRadius: "50%",
+                        width: 36, height: 36, borderRadius: "50%",
                         background: "linear-gradient(145deg, #9333EA 0%, #3B82F6 50%, #EC4899 100%)",
                         boxShadow: "0 0 28px rgba(147,51,234,0.65), 0 4px 24px rgba(0,0,0,0.45), inset 0 2px 2px rgba(255,255,255,0.40)",
                         display: "flex", alignItems: "center", justifyContent: "center",
@@ -99,10 +94,10 @@ export default function FloatingNav() {
                           width: 26, height: 8, borderRadius: "50%",
                           background: "rgba(255,255,255,0.35)", filter: "blur(3px)",
                         }} />
-                        <Icon size={20} color="#fff" strokeWidth={2.1} style={{ position: "relative" }} />
+                        <Icon size={16} color="#fff" strokeWidth={2.1} style={{ position: "relative" }} />
                       </div>
                       <span style={{
-                        fontSize: 10, fontWeight: 800, letterSpacing: "0.05em",
+                        fontSize: 9, fontWeight: 800, letterSpacing: "0.04em",
                         background: "linear-gradient(135deg,#9333EA,#3B82F6,#EC4899)",
                         WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                       }}>
@@ -118,11 +113,11 @@ export default function FloatingNav() {
                     onClick={() => { haptic(); navigate(item.path); }}
                     whileTap={{ scale: 0.86 }}
                     whileHover={{ scale: 1.08 }}
-                    className="relative flex flex-col items-center gap-1.5 px-1"
+                    className="relative flex flex-col items-center gap-0.5 px-2"
                     style={{ border: "none", background: "none", cursor: "pointer" }}
                   >
                     <div style={{
-                      position: "relative", width: 36, height: 36, borderRadius: "50%",
+                      position: "relative", width: 28, height: 28, borderRadius: "50%",
                       background: isActive
                         ? "radial-gradient(circle at 38% 30%, rgba(147,51,234,0.28), rgba(0,0,0,0.18))"
                         : "radial-gradient(circle at 38% 30%, rgba(255,255,255,0.20), rgba(255,255,255,0.05))",
@@ -137,15 +132,15 @@ export default function FloatingNav() {
                         width: 16, height: 5, borderRadius: "50%",
                         background: "rgba(255,255,255,0.28)", filter: "blur(2px)",
                       }} />
-                      <Icon size={16} strokeWidth={1.85} style={{
+                      <Icon size={13} strokeWidth={1.85} style={{
                         position: "relative",
                         color: isActive ? "#9333EA" : "rgba(30,30,40,0.82)",
                         filter: isActive ? "drop-shadow(0 0 6px rgba(147,51,234,0.6))" : "none",
                       }} />
                       {item.badge && (
                         <div style={{
-                          position: "absolute", top: 2, right: 2,
-                          width: 13, height: 13, borderRadius: "50%",
+                          position: "absolute", top: -1, right: -1,
+                          width: 11, height: 11, borderRadius: "50%",
                           background: "linear-gradient(135deg,#EF4444,#F97316)",
                           display: "flex", alignItems: "center", justifyContent: "center",
                           border: "1.5px solid rgba(255,255,255,0.9)",
@@ -156,7 +151,7 @@ export default function FloatingNav() {
                       )}
                     </div>
                     <span style={{
-                      fontSize: 10, fontWeight: 700, letterSpacing: "0.04em",
+                      fontSize: 9, fontWeight: 700, letterSpacing: "0.03em",
                       color: isActive ? "#9333EA" : "rgba(20,20,30,0.72)",
                     }}>
                       {item.label}
