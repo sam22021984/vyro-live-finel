@@ -49,7 +49,7 @@ export default function FloatingNav() {
         >
           {/* Pill container */}
           <div
-            className="pointer-events-auto flex items-end gap-1 px-5 py-3"
+            className="pointer-events-auto flex items-end gap-0.5 px-3 py-2"
             style={{
               borderRadius: 56,
               background: "rgba(255, 255, 255, 0.12)",
@@ -75,7 +75,7 @@ export default function FloatingNav() {
                     onClick={() => { haptic(); navigate(item.path); }}
                     whileTap={{ scale: 0.86 }}
                     className="relative flex flex-col items-center gap-1.5 mx-3"
-                    style={{ marginBottom: 10 }}
+                    style={{ marginBottom: 6 }}
                   >
                     {/* Pulsing ambient glow */}
                     <motion.div
@@ -97,8 +97,8 @@ export default function FloatingNav() {
                       style={{
                         position: "relative",
                         zIndex: 1,
-                        width: 64,
-                        height: 64,
+                        width: 46,
+                        height: 46,
                         borderRadius: "50%",
                         background: "linear-gradient(145deg, #9333EA 0%, #3B82F6 50%, #EC4899 100%)",
                         boxShadow: [
@@ -117,10 +117,10 @@ export default function FloatingNav() {
                       <div style={{
                         position: "absolute", top: 8, left: "50%",
                         transform: "translateX(-50%)",
-                        width: 36, height: 11, borderRadius: "50%",
+                        width: 26, height: 8, borderRadius: "50%",
                         background: "rgba(255,255,255,0.35)", filter: "blur(3px)",
                       }} />
-                      <Icon size={28} color="#fff" strokeWidth={2.1} style={{ position: "relative" }} />
+                      <Icon size={20} color="#fff" strokeWidth={2.1} style={{ position: "relative" }} />
                     </div>
 
                     <span style={{
@@ -147,8 +147,8 @@ export default function FloatingNav() {
                   {/* Icon disc */}
                   <div style={{
                     position: "relative",
-                    width: 48,
-                    height: 48,
+                    width: 36,
+                    height: 36,
                     borderRadius: "50%",
                     background: isActive
                       ? "radial-gradient(circle at 38% 30%, rgba(147,51,234,0.28), rgba(0,0,0,0.18))"
@@ -167,11 +167,11 @@ export default function FloatingNav() {
                     <div style={{
                       position: "absolute", top: 5, left: "50%",
                       transform: "translateX(-50%)",
-                      width: 22, height: 7, borderRadius: "50%",
+                      width: 16, height: 5, borderRadius: "50%",
                       background: "rgba(255,255,255,0.28)", filter: "blur(2px)",
                     }} />
                     <Icon
-                      size={21}
+                      size={16}
                       strokeWidth={1.85}
                       style={{
                         position: "relative",
@@ -183,8 +183,8 @@ export default function FloatingNav() {
                     {/* Unread badge */}
                     {item.badge && (
                       <div style={{
-                        position: "absolute", top: 4, right: 4,
-                        width: 16, height: 16, borderRadius: "50%",
+                        position: "absolute", top: 2, right: 2,
+                        width: 13, height: 13, borderRadius: "50%",
                         background: "linear-gradient(135deg,#EF4444,#F97316)",
                         display: "flex", alignItems: "center", justifyContent: "center",
                         border: "1.5px solid rgba(255,255,255,0.9)",
