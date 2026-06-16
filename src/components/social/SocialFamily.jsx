@@ -20,19 +20,7 @@ const MISSIONS = [
 ];
 
 export default function SocialFamily() {
-  const [myFamily, setMyFamily] = useState({
-    name: "Dragon Clan 🐉", rank: 2, points: 87300,
-    members: 12, maxMembers: 20,
-    privacy: "Public",
-    description: "We rise together 🔥",
-    members_list: [
-      { id: 1, name: "You (Leader)", avatar: "🧑", role: "Leader",  online: true  },
-      { id: 2, name: "Luna Ray",     avatar: "🌙", role: "Elder",   online: true  },
-      { id: 3, name: "Rex Storm",    avatar: "⚡", role: "Elder",   online: false },
-      { id: 4, name: "Nova Star",    avatar: "⭐", role: "Member",  online: true  },
-      { id: 5, name: "Sky Blue",     avatar: "🌊", role: "Member",  online: false },
-    ],
-  });
+  const [myFamily, setMyFamily] = useState(null);
   const [tab, setTab] = useState("home");
   const [showCreate, setShowCreate] = useState(false);
   const [showLeave, setShowLeave] = useState(false);
