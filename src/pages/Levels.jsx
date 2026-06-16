@@ -32,14 +32,149 @@ const SYSTEMS = [
 
 /* ─── Menu items ─── */
 const MENU_ITEMS = [
-  { id: "guide",     label: "Level System Guide", icon: "📖", color: "#1F6BFF", desc: "How levels, tiers & rewards work" },
-  { id: "user",      label: "User Level",          icon: "👤", color: "#A855F7", desc: "Lv 1 – 300 · Coin milestones" },
+  { id: "guide",      label: "Level System Guide", icon: "📖", color: "#1F6BFF", desc: "How levels, tiers & rewards work" },
+  { id: "user_guide", label: "User Level Guide",   icon: "👤", color: "#A855F7", desc: "What is User Level & how to grow" },
+  { id: "user",       label: "User Level",          icon: "📊", color: "#A855F7", desc: "Lv 1 – 300 · Full level table" },
   { id: "host",      label: "Host Level",          icon: "🎙️", color: "#F59E0B", desc: "Lv 1 – 300 · Diamond earnings" },
   { id: "gifting",   label: "Gifting Level",       icon: "🎁", color: "#EC4899", desc: "Lv 1 – 200 · Coins spent on gifts" },
   { id: "streaming", label: "Streaming Level",     icon: "📡", color: "#06B6D4", desc: "Lv 1 – 200 · Streaming minutes" },
 ];
 
-/* ─── Guide Screen ─── */
+/* ─── User Level Guide Screen ─── */
+function UserLevelGuide({ onBack }) {
+  const [tab, setTab] = useState("overview");
+
+  const XP_SOURCES = [
+    { icon: "🎁", name: "Sending Gifts" },
+    { icon: "💝", name: "Receiving Gifts" },
+    { icon: "🎉", name: "Joining Party Rooms" },
+    { icon: "🎙️", name: "Voice Chat Activity" },
+    { icon: "📅", name: "Daily Login Rewards" },
+    { icon: "✅", name: "Completing Daily Tasks" },
+    { icon: "🏆", name: "Participating in Events" },
+    { icon: "👤", name: "Following Other Users" },
+    { icon: "👁️", name: "Room Engagement" },
+    { icon: "📱", name: "Platform Activity" },
+  ];
+
+  const BENEFITS = [
+    { icon: "🖼️", name: "Premium Profile Frames" },
+    { icon: "🏅", name: "Animated Badges" },
+    { icon: "💬", name: "Exclusive Chat Bubbles" },
+    { icon: "🎨", name: "Username Colors" },
+    { icon: "✨", name: "Entrance Effects" },
+    { icon: "👑", name: "VIP Recognition" },
+    { icon: "🎟️", name: "Exclusive Events Access" },
+    { icon: "📡", name: "Higher Profile Visibility" },
+    { icon: "🎖️", name: "Special Achievement Rewards" },
+  ];
+
+  const USER_STATES = [
+    { label: "New User",       state: "Level 1",           color: "#9CA3AF" },
+    { label: "Active User",    state: "Progressing",       color: "#1F6BFF" },
+    { label: "High Level",     state: "Advanced Level",    color: "#A855F7" },
+    { label: "Max Level",      state: "Level 300 Reached", color: "#FFC83D" },
+  ];
+
+  return (
+    <div style={{ padding: "14px" }}>
+      {/* Hero */}
+      <div style={{ background: "linear-gradient(135deg,#0D1B3E,#A855F7)", borderRadius: 20, padding: "22px 20px", marginBottom: 14, boxShadow: "0 8px 28px rgba(168,85,247,0.3)" }}>
+        <div style={{ fontSize: 40, marginBottom: 10 }}>👤</div>
+        <div style={{ fontSize: 18, fontWeight: 900, color: "#fff" }}>User Level Guide</div>
+        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.65)", marginTop: 6, lineHeight: 1.7 }}>
+          User Level represents your overall activity and engagement across the VYRO platform. The more active you are, the faster your level increases.
+        </div>
+        <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
+          {[{ label: "Min Level", value: "1" }, { label: "Max Level", value: "300" }, { label: "Total Tiers", value: "10" }].map(s => (
+            <div key={s.label} style={{ flex: 1, background: "rgba(255,255,255,0.12)", borderRadius: 10, padding: "8px 6px", textAlign: "center" }}>
+              <div style={{ fontSize: 16, fontWeight: 900, color: "#fff" }}>{s.value}</div>
+              <div style={{ fontSize: 9, color: "rgba(255,255,255,0.6)", marginTop: 1 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: 6, marginBottom: 14, background: "#F5F7FA", borderRadius: 12, padding: 4 }}>
+        {["overview", "earn", "benefits"].map(t => (
+          <button key={t} onClick={() => setTab(t)}
+            style={{ flex: 1, padding: "8px 4px", borderRadius: 10, border: "none", cursor: "pointer", fontSize: 11, fontWeight: 800,
+              background: tab === t ? "#fff" : "transparent",
+              color: tab === t ? "#A855F7" : "#9CA3AF",
+              boxShadow: tab === t ? "0 2px 6px rgba(0,0,0,0.06)" : "none" }}>
+            {t === "overview" ? "Overview" : t === "earn" ? "How to Earn" : "Benefits"}
+          </button>
+        ))}
+      </div>
+
+      {/* Overview Tab */}
+      {tab === "overview" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {/* User States */}
+          <div style={{ background: "#fff", borderRadius: 16, padding: "16px", border: "1px solid #F0F0F8" }}>
+            <div style={{ fontSize: 13, fontWeight: 900, color: "#0D1B3E", marginBottom: 12 }}>📊 User States</div>
+            {USER_STATES.map((s, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 0", borderBottom: i < USER_STATES.length - 1 ? "1px solid #F0F0F8" : "none" }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "#374151" }}>{s.label}</div>
+                <div style={{ padding: "3px 12px", borderRadius: 10, background: s.color + "18", fontSize: 11, fontWeight: 800, color: s.color }}>{s.state}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA Buttons */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {[
+              { label: "📈 View Level Progress", action: () => onBack("user") },
+              { label: "🎁 View Rewards",         action: () => setTab("benefits") },
+              { label: "⭐ View Benefits",        action: () => setTab("benefits") },
+            ].map((btn, i) => (
+              <motion.button key={i} whileTap={{ scale: 0.97 }} onClick={btn.action}
+                style={{ width: "100%", padding: "13px", borderRadius: 14, border: i === 0 ? "none" : "1px solid #E5E7EB",
+                  background: i === 0 ? "linear-gradient(135deg,#A855F7,#C084FC)" : "#fff",
+                  fontWeight: 800, cursor: "pointer",
+                  color: i === 0 ? "#fff" : "#374151", fontSize: 13,
+                  boxShadow: i === 0 ? "0 6px 20px rgba(168,85,247,0.3)" : "none" }}>
+                {btn.label}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Earn Tab */}
+      {tab === "earn" && (
+        <div style={{ background: "#fff", borderRadius: 16, padding: "16px", border: "1px solid #F0F0F8" }}>
+          <div style={{ fontSize: 13, fontWeight: 900, color: "#0D1B3E", marginBottom: 12 }}>⚡ How to Increase User Level</div>
+          {XP_SOURCES.map((s, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderBottom: i < XP_SOURCES.length - 1 ? "1px solid #F0F0F8" : "none" }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, background: "#F5F3FF", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>{s.icon}</div>
+              <div style={{ flex: 1, fontSize: 13, fontWeight: 700, color: "#374151" }}>{s.name}</div>
+              <div style={{ padding: "3px 10px", borderRadius: 10, background: "#ECFDF5", fontSize: 10, fontWeight: 800, color: "#10B981" }}>✓ XP</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Benefits Tab */}
+      {tab === "benefits" && (
+        <div style={{ background: "#fff", borderRadius: 16, padding: "16px", border: "1px solid #F0F0F8" }}>
+          <div style={{ fontSize: 13, fontWeight: 900, color: "#0D1B3E", marginBottom: 12 }}>🎁 User Level Benefits</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+            {BENEFITS.map((b, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 12, background: "#F5F3FF", border: "1px solid #A855F722" }}>
+                <span style={{ fontSize: 20 }}>{b.icon}</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#374151", lineHeight: 1.4 }}>{b.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── General Level System Guide Screen ─── */
 function GuideScreen() {
   return (
     <div style={{ padding: "14px" }}>
@@ -280,6 +415,8 @@ export default function Levels() {
             exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
             {active === "guide"
               ? <GuideScreen />
+              : active === "user_guide"
+              ? <UserLevelGuide onBack={(key) => setActive(key)} />
               : <LevelDetailScreen systemKey={active} />}
           </motion.div>
         )}
