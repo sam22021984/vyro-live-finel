@@ -32,16 +32,8 @@ const SYSTEMS = [
 
 /* ─── Menu items ─── */
 const MENU_ITEMS = [
-  { id: "guide",           label: "Level System Guide",    icon: "📖", color: "#1F6BFF", desc: "How levels, tiers & rewards work" },
-  { id: "rules",           label: "Level System Rules",    icon: "📜", color: "#7C3AED", desc: "Rules, examples & ultimate rewards" },
-  { id: "user_guide",      label: "User Level Guide",      icon: "👤", color: "#A855F7", desc: "What is User Level & how to grow" },
-  { id: "user",            label: "User Level",            icon: "📊", color: "#A855F7", desc: "Lv 1 – 300 · Full level table" },
-  { id: "host_guide",      label: "Host Level Guide",      icon: "🎙️", color: "#F59E0B", desc: "What is Host Level & how to grow" },
-  { id: "host",            label: "Host Level",            icon: "📊", color: "#F59E0B", desc: "Lv 1 – 300 · Diamond earnings" },
-  { id: "gifting_guide",   label: "Gifting Level Guide",   icon: "🎁", color: "#EC4899", desc: "What is Gifting Level & how to grow" },
-  { id: "gifting",         label: "Gifting Level",         icon: "📊", color: "#EC4899", desc: "Lv 1 – 200 · Coins spent on gifts" },
-  { id: "streaming_guide", label: "Streaming Level Guide", icon: "📡", color: "#06B6D4", desc: "What is Streaming Level & how to grow" },
-  { id: "streaming",       label: "Streaming Level",       icon: "📊", color: "#06B6D4", desc: "Lv 1 – 200 · Streaming minutes" },
+  { id: "guide", label: "Level System Guide", icon: "📖", color: "#1F6BFF", desc: "How levels, tiers & rewards work" },
+  { id: "rules", label: "Level System Rules", icon: "📜", color: "#7C3AED", desc: "Rules, examples & ultimate rewards" },
 ];
 
 /* ─── General Level System Guide Screen ─── */
