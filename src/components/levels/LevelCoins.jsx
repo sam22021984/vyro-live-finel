@@ -48,16 +48,27 @@ const USER_PROGRESSION = [
 ];
 
 const HOST_PROGRESSION = [
-  { range: "Lv 1–30",   coins: 0,           icon: "⚙️", color: "#9E9E9E", tier: "Newcomer" },
-  { range: "Lv 31–60",  coins: 500_000,     icon: "🥉", color: "#CD7F32", tier: "Rising" },
-  { range: "Lv 61–90",  coins: 5_000_000,   icon: "🥈", color: "#C0C0C0", tier: "Performer" },
-  { range: "Lv 91–120", coins: 30_000_000,  icon: "🥇", color: "#FFD700", tier: "Popular" },
-  { range: "Lv 121–150",coins: 100_000_000, icon: "💙", color: "#4169E1", tier: "Star" },
-  { range: "Lv 151–180",coins: 250_000_000, icon: "💚", color: "#50C878", tier: "Super Star" },
-  { range: "Lv 181–210",coins: 500_000_000, icon: "❤️", color: "#E0115F", tier: "Elite" },
-  { range: "Lv 211–240",coins: 1_000_000_000,icon: "💜",color: "#9B59B6", tier: "Master" },
-  { range: "Lv 241–270",coins: 2_500_000_000,icon: "💎",color: "#B9F2FF", tier: "Legend" },
-  { range: "Lv 271–300",coins: 5_000_000_000,icon: "👑",color: "#F59E0B", tier: "GOAT" },
+  { range: "Lv 1–10",    coins: 2_000_000,      icon: "⚙️", color: "#9E9E9E", tier: "Newcomer" },
+  { range: "Lv 11–20",   coins: 5_000_000,      icon: "⚙️", color: "#9E9E9E", tier: "Newcomer" },
+  { range: "Lv 21–30",   coins: 10_000_000,     icon: "🥉", color: "#CD7F32", tier: "Rising" },
+  { range: "Lv 31–40",   coins: 20_000_000,     icon: "🥉", color: "#CD7F32", tier: "Rising" },
+  { range: "Lv 41–50",   coins: 35_000_000,     icon: "🥈", color: "#C0C0C0", tier: "Performer" },
+  { range: "Lv 51–60",   coins: 60_000_000,     icon: "🥈", color: "#C0C0C0", tier: "Performer" },
+  { range: "Lv 61–70",   coins: 100_000_000,    icon: "🥇", color: "#FFD700", tier: "Popular" },
+  { range: "Lv 71–80",   coins: 180_000_000,    icon: "🥇", color: "#FFD700", tier: "Popular" },
+  { range: "Lv 81–90",   coins: 300_000_000,    icon: "💙", color: "#4169E1", tier: "Star" },
+  { range: "Lv 91–100",  coins: 500_000_000,    icon: "💙", color: "#4169E1", tier: "Star" },
+  { range: "Lv 101–120", coins: 1_000_000_000,  icon: "💚", color: "#50C878", tier: "Super Star" },
+  { range: "Lv 121–140", coins: 2_000_000_000,  icon: "❤️", color: "#E0115F", tier: "Elite" },
+  { range: "Lv 141–160", coins: 4_000_000_000,  icon: "💜", color: "#9B59B6", tier: "Master" },
+  { range: "Lv 161–180", coins: 7_000_000_000,  icon: "💎", color: "#B9F2FF", tier: "Legend" },
+  { range: "Lv 181–200", coins: 12_000_000_000, icon: "👑", color: "#F59E0B", tier: "Champion" },
+  { range: "Lv 201–220", coins: 20_000_000_000, icon: "👑", color: "#F59E0B", tier: "Champion" },
+  { range: "Lv 221–240", coins: 30_000_000_000, icon: "🌟", color: "#7C3AED", tier: "Mythic" },
+  { range: "Lv 241–260", coins: 45_000_000_000, icon: "🌟", color: "#7C3AED", tier: "Mythic" },
+  { range: "Lv 261–280", coins: 65_000_000_000, icon: "🐉", color: "#DC2626", tier: "Legendary" },
+  { range: "Lv 281–299", coins: 90_000_000_000, icon: "🐉", color: "#DC2626", tier: "Legendary" },
+  { range: "Lv 300",     coins: 120_000_000_000,icon: "🏆", color: "#F59E0B", tier: "Universe Emperor Host", isMax: true },
 ];
 
 const GIFTING_PROGRESSION = [
