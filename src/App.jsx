@@ -56,7 +56,7 @@ const AuthenticatedApp = () => {
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Me />} />
         <Route path="/me" element={<Me />} />
         <Route path="/inbox" element={<Inbox />} />
         <Route path="/chat/:chatId" element={<ChatRoom />} />
