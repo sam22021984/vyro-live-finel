@@ -18,7 +18,7 @@ function fmt(n) {
   return n.toLocaleString();
 }
 
-/* ── Full 31-range level data ── */
+/* ── Full 22-range level data (exact spec) ── */
 const LEVELS = [
   {
     range: "LV1–LV10", title: "Rising Spark", badge: "Bronze Crystal Shield",
@@ -91,122 +91,68 @@ const LEVELS = [
     benefits: ["Supreme Crown", "Premium Decorations", "VIP Features", "Gold Prestige Status"],
   },
   {
-    range: "LV101–LV110", title: "Diamond Elite", badge: "Diamond Shield",
+    range: "LV101–LV120", title: "Diamond Elite", badge: "Diamond Crown",
     icon: "💎", color: "#06B6D4", tier: "Sapphire", coins: 350_000_000,
     effects: ["Diamond Glow", "Crystal Shine"],
     benefits: ["Diamond Profile Frame", "Diamond Username", "Exclusive Avatar Border", "Premium Entrance Animation"],
   },
   {
-    range: "LV111–LV120", title: "Diamond Hero", badge: "Diamond Sword Crest",
-    icon: "⚔️", color: "#06B6D4", tier: "Sapphire", coins: 500_000_000,
-    effects: ["Hero Aura", "Blade Shine"],
-    benefits: ["Hero Badge", "Diamond Glow Effect", "Enhanced Rewards", "Elite Recognition"],
-  },
-  {
-    range: "LV121–LV130", title: "Diamond Lord", badge: "Royal Diamond Crown",
-    icon: "👑", color: "#06B6D4", tier: "Emerald", coins: 700_000_000,
+    range: "LV121–LV140", title: "Diamond Lord", badge: "Royal Diamond Crown",
+    icon: "👑", color: "#06B6D4", tier: "Emerald", coins: 600_000_000,
     effects: ["Royal Glow", "Diamond Rain"],
     benefits: ["Diamond VIP Status", "Premium Nameplate", "Special Access Rights", "Luxury Effects"],
   },
   {
-    range: "LV131–LV140", title: "Diamond King", badge: "Diamond Throne Emblem",
-    icon: "🏆", color: "#06B6D4", tier: "Emerald", coins: 1_000_000_000,
-    effects: ["Throne Aura", "King Glow"],
-    benefits: ["King Badge", "Diamond Entrance Effect", "Monthly Rewards", "Elite Collection"],
-  },
-  {
-    range: "LV141–LV150", title: "Diamond Emperor", badge: "Imperial Diamond Crown",
-    icon: "⚜️", color: "#06B6D4", tier: "Emerald", coins: 1_400_000_000,
+    range: "LV141–LV160", title: "Diamond Emperor", badge: "Imperial Diamond Crown",
+    icon: "⚜️", color: "#4169E1", tier: "Emerald", coins: 1_000_000_000,
     effects: ["Emperor Aura", "Crystal Halo"],
     benefits: ["Emperor Status", "Advanced Profile Effects", "Exclusive Content", "Premium Gifts"],
   },
   {
-    range: "LV151–LV160", title: "Royal Noble", badge: "Sapphire Royal Crown",
-    icon: "💠", color: "#8B5CF6", tier: "Ruby", coins: 1_700_000_000,
-    effects: ["Noble Aura", "Sapphire Glow"],
-    benefits: ["Royal Frame", "Royal Decorations", "Premium Visibility", "Exclusive Privileges"],
-  },
-  {
-    range: "LV161–LV170", title: "Royal Duke", badge: "Sapphire Lion Crest",
-    icon: "🦁", color: "#8B5CF6", tier: "Ruby", coins: 2_200_000_000,
-    effects: ["Lion Roar FX", "Duke Shine"],
-    benefits: ["Duke Badge", "VIP Access", "Monthly Bonuses", "Royal Rewards"],
-  },
-  {
-    range: "LV171–LV180", title: "Royal King", badge: "Royal Dragon Crown",
-    icon: "🐲", color: "#8B5CF6", tier: "Ruby", coins: 3_000_000_000,
+    range: "LV161–LV180", title: "Royal King", badge: "Royal Dragon Crown",
+    icon: "🐲", color: "#8B5CF6", tier: "Ruby", coins: 1_700_000_000,
     effects: ["Dragon FX", "Royal Entrance"],
     benefits: ["Dragon Effects", "Royal Entrance", "Premium Collection", "Event Invitations"],
   },
   {
-    range: "LV181–LV190", title: "Royal Emperor", badge: "Imperial Dragon Crest",
-    icon: "🌟", color: "#8B5CF6", tier: "Amethyst", coins: 4_000_000_000,
-    effects: ["Emperor Halo", "Dragon Wings"],
-    benefits: ["Emperor Crown", "Royal Username", "Exclusive Gifts", "Elite Access"],
-  },
-  {
-    range: "LV191–LV200", title: "Royal Sovereign", badge: "Supreme Royal Throne",
-    icon: "⚡", color: "#8B5CF6", tier: "Amethyst", coins: 5_000_000_000,
+    range: "LV181–LV200", title: "Royal Sovereign", badge: "Supreme Royal Throne",
+    icon: "⚡", color: "#9B59B6", tier: "Amethyst", coins: 3_000_000_000,
     effects: ["Sovereign Aura", "Throne Glow"],
     benefits: ["Sovereign Status", "Exclusive Decorations", "VIP+ Access", "Special Rewards"],
   },
   {
-    range: "LV201–LV210", title: "Mythic Warrior", badge: "Mythic Crystal Shield",
-    icon: "🔮", color: "#DC2626", tier: "Diamond", coins: 6_500_000_000,
-    effects: ["Mythic Surge", "Crystal Shield FX"],
-    benefits: ["Mythic Frame", "Mythic Effects", "Event Access", "Monthly Rewards"],
-  },
-  {
-    range: "LV211–LV220", title: "Mythic Champion", badge: "Mythic Crown",
-    icon: "🏆", color: "#DC2626", tier: "Diamond", coins: 8_000_000_000,
+    range: "LV201–LV220", title: "Mythic Champion", badge: "Mythic Crown",
+    icon: "🔮", color: "#DC2626", tier: "Diamond", coins: 5_000_000_000,
     effects: ["Champion Burst", "Mythic Crown Glow"],
     benefits: ["Champion Badge", "Premium Rewards", "VIP Recognition", "Elite Access"],
   },
   {
-    range: "LV221–LV230", title: "Mythic Titan", badge: "Titan Crystal Crest",
-    icon: "⚡", color: "#DC2626", tier: "Diamond", coins: 10_000_000_000,
-    effects: ["Titan Strike", "Crystal Burst"],
-    benefits: ["Titan Status", "Rare Cosmetics", "Event Priority", "Enhanced Features"],
-  },
-  {
-    range: "LV231–LV240", title: "Mythic Overlord", badge: "Mythic Dragon Crown",
-    icon: "🐉", color: "#DC2626", tier: "Legend", coins: 13_000_000_000,
+    range: "LV221–LV240", title: "Mythic Overlord", badge: "Mythic Dragon Crown",
+    icon: "🐉", color: "#B9F2FF", tier: "Diamond", coins: 8_000_000_000,
     effects: ["Overlord Surge", "Dragon Crown FX"],
     benefits: ["Overlord Badge", "Premium Animations", "Priority Support", "Exclusive Access"],
   },
   {
-    range: "LV241–LV250", title: "Mythic Supreme", badge: "Supreme Mythic Throne",
-    icon: "🌌", color: "#DC2626", tier: "Legend", coins: 16_000_000_000,
-    effects: ["Supreme Aura", "Mythic Storm"],
-    benefits: ["Supreme Status", "Luxury Collection", "Global Recognition", "Rare Rewards"],
-  },
-  {
-    range: "LV251–LV260", title: "Legendary Dragon", badge: "Dragon King Emblem",
-    icon: "🐲", color: "#7C3AED", tier: "Legend", coins: 20_000_000_000,
+    range: "LV241–LV260", title: "Legendary Dragon", badge: "Dragon King Emblem",
+    icon: "🐲", color: "#7C3AED", tier: "Legend", coins: 13_000_000_000,
     effects: ["Dragon Breath", "King Glow"],
     benefits: ["Legendary Dragon Badge", "Premium Invitations", "Rare Gifts", "Elite Rewards"],
   },
   {
-    range: "LV261–LV270", title: "Legendary Titan", badge: "Titan Dragon Crest",
-    icon: "⚡", color: "#7C3AED", tier: "Legend", coins: 25_000_000_000,
-    effects: ["Titan Roar", "Dragon Crest FX"],
-    benefits: ["Titan Status", "Special Privileges", "Exclusive Access", "Event Priority"],
-  },
-  {
-    range: "LV271–LV280", title: "Legendary Overlord", badge: "Overlord Dragon Crown",
-    icon: "🔱", color: "#7C3AED", tier: "Legend", coins: 30_000_000_000,
+    range: "LV261–LV280", title: "Legendary Overlord", badge: "Overlord Dragon Crown",
+    icon: "🔱", color: "#7C3AED", tier: "Legend", coins: 20_000_000_000,
     effects: ["Overlord Storm", "Dragon Surge"],
     benefits: ["Overlord Collection", "VIP+ Features", "Special Recognition", "Luxury Rewards"],
   },
   {
     range: "LV281–LV290", title: "Legendary Universe King", badge: "Cosmic Crown",
-    icon: "🌠", color: "#0EA5E9", tier: "Legend", coins: 38_000_000_000,
+    icon: "🌠", color: "#0EA5E9", tier: "Legend", coins: 28_000_000_000,
     effects: ["Cosmic Pulse", "Universe Glow"],
     benefits: ["Universe Frame", "Cosmic Effects", "Global Access", "Annual Rewards"],
   },
   {
     range: "LV291–LV299", title: "Legendary Universe Emperor", badge: "Universal Emperor Crest",
-    icon: "🌌", color: "#0EA5E9", tier: "Legend", coins: 45_000_000_000,
+    icon: "🌌", color: "#0EA5E9", tier: "Legend", coins: 40_000_000_000,
     effects: ["Emperor Nebula", "Universe Crown"],
     benefits: ["Emperor Recognition", "Exclusive Cosmetics", "Global Prestige", "Ultimate Rewards"],
   },
@@ -469,7 +415,7 @@ export default function UserLevelSystem() {
         </motion.button>
         <div>
           <div style={{ fontSize: 15, fontWeight: 900, color: "#0D1B3E" }}>👤 User Level System</div>
-          <div style={{ fontSize: 10, color: "#9CA3AF" }}>LV1–LV300 · 31 Ranges · 50B Coins Total</div>
+          <div style={{ fontSize: 10, color: "#9CA3AF" }}>LV1–LV300 · 22 Ranges · 50B Coins Total</div>
         </div>
       </div>
 
@@ -479,7 +425,7 @@ export default function UserLevelSystem() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8, marginBottom: 16 }}>
           {[
             { label: "Levels", value: "300", icon: "📊" },
-            { label: "Ranges", value: "31", icon: "🏅" },
+            { label: "Ranges", value: "22", icon: "🏅" },
             { label: "Max Coins", value: "50B", icon: "🪙" },
             { label: "Total XP", value: "∞", icon: "⭐" },
           ].map(s => (
