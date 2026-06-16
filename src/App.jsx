@@ -17,6 +17,7 @@ import ResetPassword from '@/pages/ResetPassword';
 
 // App Pages
 import Home from '@/pages/Home';
+import Me from '@/pages/Me';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -50,6 +51,7 @@ const AuthenticatedApp = () => {
       {/* Protected Routes */}
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
         <Route path="/" element={<Home />} />
+        <Route path="/me" element={<Me />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
