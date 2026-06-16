@@ -13,26 +13,37 @@ function fmt(n) {
   return n.toLocaleString();
 }
 
-/* ─── Host Level Data ─── */
+/* ─── Host Level Data (21 ranges, coins-based per spec) ─── */
 const HOST_LEVELS = [
-  { range: "LV1–LV30",   title: "Newcomer",     badge: "Bronze Mic",          icon: "⚙️", color: "#9E9E9E", tier: "Newcomer",  diamonds: 0,            benefits: ["Basic Host Badge","Public Room Access","Standard Chat","Basic Analytics"] },
-  { range: "LV31–LV60",  title: "Rising Host",  badge: "Bronze Stage",         icon: "🥉", color: "#CD7F32", tier: "Rising",    diamonds: 500_000,      benefits: ["Bronze Host Badge","Audience Insights","Room Customization","Priority Support"] },
-  { range: "LV61–LV90",  title: "Performer",    badge: "Silver Microphone",    icon: "🥈", color: "#C0C0C0", tier: "Performer", diamonds: 5_000_000,    benefits: ["Silver Badge","Featured Discovery","Premium Room Effects","Advanced Analytics"] },
-  { range: "LV91–LV120", title: "Popular Host", badge: "Gold Microphone",      icon: "🥇", color: "#FFD700", tier: "Popular",   diamonds: 30_000_000,   benefits: ["Gold Host Badge","Homepage Discovery","VIP Room Features","Monthly Bonus"] },
-  { range: "LV121–LV150",title: "Star Host",    badge: "Sapphire Stage",       icon: "💙", color: "#4169E1", tier: "Star",      diamonds: 100_000_000,  benefits: ["Star Crown","Featured Placement","Premium Effects","Enhanced Revenue"] },
-  { range: "LV151–LV180",title: "Super Star",   badge: "Emerald Stage Crown",  icon: "💚", color: "#50C878", tier: "Super Star",diamonds: 250_000_000,  benefits: ["Super Star Badge","Priority Discovery","Royal Room Theme","VIP Support"] },
-  { range: "LV181–LV210",title: "Elite Host",   badge: "Ruby Elite Crown",     icon: "❤️", color: "#E0115F", tier: "Elite",     diamonds: 500_000_000,  benefits: ["Elite Crown","Global Visibility","Luxury Room FX","Premium Revenue Boost"] },
-  { range: "LV211–LV240",title: "Master Host",  badge: "Amethyst Master Crown",icon: "💜", color: "#9B59B6", tier: "Master",    diamonds: 1_000_000_000,benefits: ["Master Badge","Platform Highlight","Mythic Room Effects","Elite Support"] },
-  { range: "LV241–LV270",title: "Legend Host",  badge: "Diamond Legend Crown", icon: "💎", color: "#B9F2FF", tier: "Legend",    diamonds: 2_500_000_000,benefits: ["Legend Crown","Global Featured","Dragon Room FX","Legendary Revenue"] },
-  { range: "LV271–LV300",title: "GOAT Host",    badge: "Universe GOAT Crown",  icon: "👑", color: "#F59E0B", tier: "GOAT",      diamonds: 5_000_000_000,benefits: ["GOAT Crown","Universe Featured","Ultimate Room FX","GOAT Revenue","Lifetime Recognition","Exclusive GOAT Badge"] },
+  { range: "LV1–LV10",    title: "Newcomer",          badge: "Bronze Mic",           icon: "⚙️", color: "#9E9E9E", tier: "Iron",      coins: 2_000_000,      benefits: ["Basic Host Badge","Public Room Access","Standard Chat","Basic Analytics"] },
+  { range: "LV11–LV20",   title: "Beginner Host",     badge: "Bronze Stage",         icon: "🥉", color: "#CD7F32", tier: "Bronze I",  coins: 5_000_000,      benefits: ["Bronze Host Badge","Audience Insights","Room Customization","Priority Support"] },
+  { range: "LV21–LV30",   title: "Rising Host",       badge: "Silver Mic",           icon: "🥈", color: "#C0C0C0", tier: "Bronze II", coins: 10_000_000,     benefits: ["Silver Badge","Featured Discovery","Premium Room Effects","Advanced Analytics"] },
+  { range: "LV31–LV40",   title: "Performer",         badge: "Gold Mic",             icon: "🥇", color: "#FFD700", tier: "Silver",    coins: 20_000_000,     benefits: ["Gold Host Badge","Homepage Discovery","VIP Room Features","Monthly Bonus"] },
+  { range: "LV41–LV50",   title: "Popular Host",      badge: "Sapphire Stage",       icon: "💙", color: "#4169E1", tier: "Gold",      coins: 35_000_000,     benefits: ["Star Crown","Featured Placement","Premium Effects","Enhanced Revenue"] },
+  { range: "LV51–LV60",   title: "Star Host",         badge: "Emerald Stage Crown",  icon: "💚", color: "#50C878", tier: "Sapphire",  coins: 60_000_000,     benefits: ["Super Star Badge","Priority Discovery","Royal Room Theme","VIP Support"] },
+  { range: "LV61–LV70",   title: "Super Star",        badge: "Ruby Elite Crown",     icon: "❤️", color: "#E0115F", tier: "Emerald",   coins: 100_000_000,    benefits: ["Elite Crown","Global Visibility","Luxury Room FX","Premium Revenue Boost"] },
+  { range: "LV71–LV80",   title: "Elite Host",        badge: "Amethyst Crown",       icon: "💜", color: "#9B59B6", tier: "Ruby",      coins: 180_000_000,    benefits: ["Master Badge","Platform Highlight","Mythic Room Effects","Elite Support"] },
+  { range: "LV81–LV90",   title: "Master Host",       badge: "Diamond Crown",        icon: "💎", color: "#B9F2FF", tier: "Amethyst",  coins: 300_000_000,    benefits: ["Legend Crown","Global Featured","Dragon Room FX","Legendary Revenue"] },
+  { range: "LV91–LV100",  title: "Legend Host",       badge: "Universe Crown",       icon: "👑", color: "#F59E0B", tier: "Diamond",   coins: 500_000_000,    benefits: ["GOAT Crown","Universe Featured","Ultimate Room FX","Lifetime Recognition"] },
+  { range: "LV101–LV120", title: "Champion Host",     badge: "Champion Crown",       icon: "🏆", color: "#F59E0B", tier: "Legend I",  coins: 1_000_000_000,  benefits: ["Champion Crown","Discovery Boost","Event Access","VIP+ Support"] },
+  { range: "LV121–LV140", title: "Mythic Host",       badge: "Mythic Stage Crown",   icon: "🌟", color: "#7C3AED", tier: "Legend II", coins: 2_000_000_000,  benefits: ["Mythic Badge","Mythic Aura","Global Highlight","Elite Event Access"] },
+  { range: "LV141–LV160", title: "Legendary Host",    badge: "Dragon Crown",         icon: "🐉", color: "#DC2626", tier: "Mythic",    coins: 4_000_000_000,  benefits: ["Legendary Dragon Crown","Dragon Stream FX","Global Prestige","Legendary Rewards"] },
+  { range: "LV161–LV180", title: "Universe Host",     badge: "Universe Crown",       icon: "🌌", color: "#0EA5E9", tier: "Legendary", coins: 7_000_000_000,  benefits: ["Universe Crown","Cosmic FX","Universal Recognition","Universe Privileges"] },
+  { range: "LV181–LV200", title: "Cosmic Host",       badge: "Cosmic Crown",         icon: "🌠", color: "#A855F7", tier: "Universe I", coins: 12_000_000_000, benefits: ["Cosmic Crown","Holographic Room FX","Galaxy Prestige","Elite Annual Rewards"] },
+  { range: "LV201–LV220", title: "Galactic Host",     badge: "Galaxy Crown",         icon: "🔮", color: "#8B5CF6", tier: "Universe II", coins: 20_000_000_000, benefits: ["Galaxy Crown","Premium Broadcast Theme","Galactic Badge","Priority Support"] },
+  { range: "LV221–LV240", title: "Stellar Host",      badge: "Stellar Crown",        icon: "⭐", color: "#F59E0B", tier: "Supreme I", coins: 30_000_000_000, benefits: ["Stellar Crown","Cosmic Aura","Stellar Badge","Elite Visibility"] },
+  { range: "LV241–LV260", title: "Nova Host",         badge: "Nova Crown",           icon: "💥", color: "#EC4899", tier: "Supreme II", coins: 45_000_000_000, benefits: ["Nova Crown","Nova Entrance FX","Elite Recognition","Supreme Support"] },
+  { range: "LV261–LV280", title: "Supernova Host",    badge: "Supernova Crown",      icon: "🌪️", color: "#06B6D4", tier: "Apex I",    coins: 65_000_000_000, benefits: ["Supernova Crown","Supernova Aura","Apex Visibility","Global Leaderboard"] },
+  { range: "LV281–LV299", title: "Apex Host",         badge: "Apex Crown",           icon: "⚡", color: "#1F6BFF", tier: "Apex II",   coins: 90_000_000_000, benefits: ["Apex Crown","Apex Broadcast Theme","Apex Rewards","Lifetime Recognition"] },
+  { range: "LV300",        title: "Universe Emperor Host", badge: "Ultimate Emperor Crown", icon: "🏆", color: "#F59E0B", tier: "ULTIMATE", isMax: true, coins: 120_000_000_000, benefits: ["Ultimate Host Crown","Cosmic Nameplate","Global Hall of Fame","Exclusive LV300 FX","VIP+ Priority Support","Annual Elite Rewards","Founder-Class Host Badge","Universal Entrance Animation","Lifetime Host Prestige","Exclusive Broadcast Theme"] },
 ];
 
-// Simulated current host at LV85
-const CURRENT_IDX = 2; // LV61-LV90
+// Simulated current host at LV65 (index 6)
+const CURRENT_IDX = 6; // LV61-LV70
 const CURRENT = HOST_LEVELS[CURRENT_IDX];
 const NEXT = HOST_LEVELS[CURRENT_IDX + 1];
-const CURRENT_DIAMONDS = 18_000_000;
-const PROGRESS_PCT = Math.min(99, Math.round((CURRENT_DIAMONDS / CURRENT.diamonds) * 100));
+const CURRENT_COINS = 72_000_000;
+const PROGRESS_PCT = Math.min(99, Math.round((CURRENT_COINS / CURRENT.coins) * 100));
 
 const TABS = [
   { id: "overview",     label: "Overview",     icon: "📊" },
@@ -105,7 +116,7 @@ function OverviewTab() {
               <span style={{ fontSize: 13 }}>✅</span>
               <span style={{ fontSize: 11 }}>🇶🇦</span>
             </div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.55)", marginBottom: 6 }}>ID: #VH2024001 · Agency: VYRO Stars</div>
+            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.55)", marginBottom: 6 }}>ID: #VH2024001 · Stream Rank: #2,341</div>
             <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
               {["Edit Profile","Share","View Profile"].map(a => (
                 <button key={a} style={{ padding: "4px 9px", borderRadius: 9, fontSize: 9, fontWeight: 800, background: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", cursor: "pointer" }}>{a}</button>
@@ -113,8 +124,8 @@ function OverviewTab() {
             </div>
           </div>
           <div style={{ textAlign: "right", flexShrink: 0 }}>
-            <div style={{ fontSize: 22, fontWeight: 900, color: "#FFC83D" }}>LV85</div>
-            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.5)" }}>Performer</div>
+            <div style={{ fontSize: 22, fontWeight: 900, color: "#FFC83D" }}>LV65</div>
+            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.5)" }}>Super Star</div>
           </div>
         </div>
 
@@ -124,7 +135,7 @@ function OverviewTab() {
             <Badge3D icon={CURRENT.icon} color={CURRENT.color} size={52} />
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", marginBottom: 1 }}>CURRENT HOST LEVEL</div>
-              <div style={{ fontSize: 20, fontWeight: 900, color: "#FFC83D" }}>LV 85</div>
+              <div style={{ fontSize: 20, fontWeight: 900, color: "#FFC83D" }}>LV 65</div>
               <div style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{CURRENT.title}</div>
               <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)" }}>{CURRENT.tier} · {CURRENT.badge}</div>
             </div>
@@ -135,8 +146,8 @@ function OverviewTab() {
           </div>
           <div style={{ marginBottom: 8 }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-              <span style={{ fontSize: 9, color: "rgba(255,255,255,0.45)" }}>💎 Diamonds Progress</span>
-              <span style={{ fontSize: 9, fontWeight: 800, color: "#FFC83D" }}>{fmt(CURRENT_DIAMONDS)} / {fmt(CURRENT.diamonds)}</span>
+              <span style={{ fontSize: 9, color: "rgba(255,255,255,0.45)" }}>🪙 Coins Progress</span>
+              <span style={{ fontSize: 9, fontWeight: 800, color: "#FFC83D" }}>{fmt(CURRENT_COINS)} / {fmt(CURRENT.coins)}</span>
             </div>
             <div style={{ height: 8, borderRadius: 4, background: "rgba(255,255,255,0.1)", overflow: "hidden" }}>
               <motion.div initial={{ width: 0 }} animate={{ width: `${PROGRESS_PCT}%` }} transition={{ duration: 1, delay: 0.3 }}
@@ -149,7 +160,7 @@ function OverviewTab() {
               <span style={{ fontSize: 9, color: "rgba(255,255,255,0.4)" }}>NEXT: </span>
               <span style={{ fontSize: 10, fontWeight: 800, color: "#fff" }}>{NEXT.range} · {NEXT.title}</span>
             </div>
-            <span style={{ fontSize: 10, fontWeight: 800, color: NEXT.color, flexShrink: 0 }}>{fmt(NEXT.diamonds - CURRENT_DIAMONDS)} 💎 needed</span>
+            <span style={{ fontSize: 10, fontWeight: 800, color: NEXT.color, flexShrink: 0 }}>{fmt(NEXT.coins - CURRENT_COINS)} 🪙 needed</span>
           </div>
         </div>
       </div>
@@ -159,9 +170,9 @@ function OverviewTab() {
         <SectionLabel label="⚡ HOST QUICK STATS" />
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
           {[
-            { icon: "📊", label: "Host Level",   value: "85",    color: "#F59E0B" },
-            { icon: "🎙️", label: "Tier",          value: "Perf.", color: "#9CA3AF" },
-            { icon: "💎", label: "Diamonds",      value: "18M",   color: "#06B6D4" },
+            { icon: "📊", label: "Host Level",   value: "65",    color: "#F59E0B" },
+            { icon: "🎙️", label: "Tier",          value: "Emer.", color: "#50C878" },
+            { icon: "🪙", label: "Coins",         value: "72M",   color: "#F59E0B" },
             { icon: "👥", label: "Followers",     value: "12.4K", color: "#1F6BFF" },
             { icon: "🏆", label: "Achievements",  value: "6/12",  color: "#10B981" },
             { icon: "📅", label: "Streams",       value: "148",   color: "#A855F7" },
@@ -253,10 +264,10 @@ function OverviewTab() {
 /* ══════════════ PERFORMANCE TAB ══════════════ */
 function PerformanceTab() {
   const EARNINGS = [
-    { icon: "💎", label: "Total Diamonds",   value: "18.0M",  sub: "All time",      color: "#06B6D4" },
-    { icon: "📅", label: "Monthly Diamonds", value: "2.4M",   sub: "This month",    color: "#1F6BFF" },
-    { icon: "📆", label: "Weekly Diamonds",  value: "620K",   sub: "This week",     color: "#A855F7" },
-    { icon: "☀️", label: "Daily Diamonds",   value: "92K",    sub: "Today",         color: "#F59E0B" },
+    { icon: "🪙", label: "Total Coins",    value: "72.0M",  sub: "All time",   color: "#F59E0B" },
+    { icon: "📅", label: "Monthly Coins", value: "12.4M",  sub: "This month", color: "#1F6BFF" },
+    { icon: "📆", label: "Weekly Coins",  value: "2.8M",   sub: "This week",  color: "#A855F7" },
+    { icon: "☀️", label: "Daily Coins",   value: "420K",   sub: "Today",      color: "#10B981" },
   ];
   const STREAM = [
     { icon: "⏱️", label: "Total Live Hours",   value: "1,248h", color: "#10B981" },
@@ -268,7 +279,7 @@ function PerformanceTab() {
   ];
   const MONTHLY_TARGETS = [
     { label: "Streaming Hours", current: 186, target: 200, unit: "hrs",  color: "#1F6BFF" },
-    { label: "Diamonds Earned", current: 2400000, target: 3000000, unit: "💎", color: "#06B6D4" },
+    { label: "Coins Earned",    current: 12400000, target: 20000000, unit: "🪙", color: "#F59E0B" },
     { label: "New Viewers",     current: 840, target: 1000, unit: "viewers", color: "#10B981" },
     { label: "New Followers",   current: 320, target: 500, unit: "followers", color: "#A855F7" },
   ];
@@ -276,7 +287,7 @@ function PerformanceTab() {
   return (
     <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 14 }}>
       <div>
-        <SectionLabel label="💎 HOST EARNINGS OVERVIEW" />
+        <SectionLabel label="🪙 HOST EARNINGS OVERVIEW (COINS)" />
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
           {EARNINGS.map(s => <StatCard key={s.label} {...s} />)}
         </div>
@@ -414,12 +425,12 @@ function RewardsTab() {
     <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 14 }}>
       {/* Next Rewards */}
       <div style={{ background: "linear-gradient(135deg,#0D1B3E,#F59E0B88)", borderRadius: 16, padding: 14, boxShadow: "0 6px 20px rgba(245,158,11,0.2)" }}>
-        <SectionLabel label="🔓 NEXT REWARDS — LV91 (Popular Host)" />
+        <SectionLabel label={`🔓 NEXT REWARDS — ${NEXT.range} (${NEXT.title})`} />
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
           <Badge3D icon={NEXT.icon} color={NEXT.color} size={44} />
           <div>
             <div style={{ fontSize: 13, fontWeight: 900, color: "#fff" }}>{NEXT.title} — {NEXT.range}</div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)" }}>{fmt(NEXT.diamonds - CURRENT_DIAMONDS)} 💎 diamonds needed</div>
+            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)" }}>{fmt(NEXT.coins - CURRENT_COINS)} 🪙 coins needed</div>
           </div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
@@ -551,7 +562,7 @@ function StatisticsTab() {
   const STATS = [
     { icon: "📺", label: "Total Streams",          value: "148",   color: "#1F6BFF" },
     { icon: "⏱️", label: "Total Streaming Hours",  value: "1,248h",color: "#10B981" },
-    { icon: "💎", label: "Total Diamonds",         value: "18.0M", color: "#06B6D4" },
+    { icon: "🪙", label: "Total Coins",              value: "72.0M", color: "#F59E0B" },
     { icon: "👥", label: "Total Followers",        value: "12.4K", color: "#A855F7" },
     { icon: "❤️", label: "Total Likes",            value: "89.2K", color: "#EC4899" },
     { icon: "🎁", label: "Gifts Received",         value: "4,821", color: "#F59E0B" },
@@ -661,11 +672,11 @@ export default function HostLevelDashboard() {
           <div style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, border: "1px solid rgba(255,255,255,0.22)" }}>🎙️</div>
           <div>
             <div style={{ fontSize: 15, fontWeight: 900, color: "#fff" }}>Host Level Dashboard</div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.55)" }}>LV85 · Performer · {fmt(CURRENT_DIAMONDS)} 💎 earned</div>
+            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.55)" }}>LV65 · Super Star · {fmt(CURRENT_COINS)} 🪙 coins</div>
           </div>
           <div style={{ marginLeft: "auto", textAlign: "right" }}>
-            <div style={{ fontSize: 22, fontWeight: 900, color: "#FFC83D" }}>LV85</div>
-            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.45)" }}>Performer</div>
+            <div style={{ fontSize: 22, fontWeight: 900, color: "#FFC83D" }}>LV65</div>
+            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.45)" }}>Super Star</div>
           </div>
         </div>
         {/* Tabs */}
