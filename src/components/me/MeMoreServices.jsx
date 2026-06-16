@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const SERVICES = [
   { id: "finance",              title: "Finance",               icon: "💰", path: "/wallet" },
-  { id: "tasks_rewards",        title: "Tasks & Rewards",       icon: "🎁", path: "/rewards" },
+  { id: "tasks_rewards",        title: "Tasks & Rewards",       icon: "🎁", path: "/tasks-rewards" },
   { id: "live_audio",           title: "Live & Audio",          icon: "🎙️", path: "/go-live" },
   { id: "social",               title: "Social",                icon: "👥", path: "/community" },
   { id: "messages_community",   title: "Messages",              icon: "💬", path: "/inbox" },

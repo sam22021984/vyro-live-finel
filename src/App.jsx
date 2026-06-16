@@ -24,6 +24,7 @@ import AudioCallScreen from '@/pages/AudioCallScreen';
 import LiveRoomV2 from '@/pages/LiveRoomV2';
 import GoLive from '@/pages/GoLive';
 import Community from '@/pages/Community';
+import TasksRewards from '@/pages/TasksRewards';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -64,6 +65,7 @@ const AuthenticatedApp = () => {
         <Route path="/live-room" element={<LiveRoomV2 />} />
         <Route path="/go-live" element={<GoLive />} />
         <Route path="/community" element={<Community />} />
+        <Route path="/tasks-rewards" element={<TasksRewards />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
