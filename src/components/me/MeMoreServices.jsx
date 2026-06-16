@@ -13,7 +13,7 @@ const SERVICES = [
   { id: "tasks_rewards",        title: "Tasks & Rewards",       icon: "🎁", path: "/tasks-rewards" },
   { id: "live_audio",           title: "Live & Audio",          icon: "🎙️", path: "/go-live" },
   { id: "social",               title: "Social",                icon: "👥", path: "/social" },
-  { id: "messages_community",   title: "Messages",              icon: "💬", path: "/inbox" },
+  { id: "messages_community",   title: "Messages",              icon: "💬", path: "/messages-center" },
   { id: "profile_stats",        title: "Profile & Stats",       icon: "📊", path: "/profile-stats" },
   { id: "levels_system",        title: "Level Systems",         icon: "⭐", path: "/levels" },
   { id: "account_settings",     title: "Settings",              icon: "⚙️", path: "/settings" },
