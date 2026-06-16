@@ -9,7 +9,7 @@ import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
 
 const SERVICES = [
-  { id: "finance",              title: "Finance",               icon: "💰", path: "/wallet" },
+  { id: "finance",              title: "Finance",               icon: "💰", path: "/finance" },
   { id: "tasks_rewards",        title: "Tasks & Rewards",       icon: "🎁", path: "/tasks-rewards" },
   { id: "live_audio",           title: "Live & Audio",          icon: "🎙️", path: "/go-live" },
   { id: "social",               title: "Social",                icon: "👥", path: "/social" },

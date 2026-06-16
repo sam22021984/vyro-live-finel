@@ -28,6 +28,7 @@ import TasksRewards from '@/pages/TasksRewards';
 import Support from '@/pages/Support';
 import Social from '@/pages/Social';
 import ProfileStats from '@/pages/ProfileStats';
+import Finance from '@/pages/Finance';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -72,6 +73,7 @@ const AuthenticatedApp = () => {
         <Route path="/support" element={<Support />} />
         <Route path="/social" element={<Social />} />
         <Route path="/profile-stats" element={<ProfileStats />} />
+        <Route path="/finance" element={<Finance />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
