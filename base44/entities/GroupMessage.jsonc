@@ -1,0 +1,57 @@
+{
+  "name": "GroupMessage",
+  "type": "object",
+  "properties": {
+    "group_id": {
+      "type": "string"
+    },
+    "user_id": {
+      "type": "string"
+    },
+    "user_name": {
+      "type": "string"
+    },
+    "user_avatar": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "image"
+      ],
+      "default": "text"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "reactions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reply_to_id": {
+      "type": "string"
+    },
+    "reply_preview": {
+      "type": "string"
+    },
+    "is_pinned": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_deleted": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "group_id",
+    "user_id",
+    "message"
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "name": "Post",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "user_name": {
+      "type": "string"
+    },
+    "user_avatar": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "image",
+        "poll",
+        "quote"
+      ],
+      "default": "text"
+    },
+    "content": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "likes": {
+      "type": "number",
+      "default": 0
+    },
+    "comments_count": {
+      "type": "number",
+      "default": 0
+    },
+    "shares": {
+      "type": "number",
+      "default": 0
+    },
+    "liked_by": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_pinned": {
+      "type": "boolean",
+      "default": false
+    },
+    "poll_options": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "poll_votes": {
+      "type": "object"
+    },
+    "quote_ref_id": {
+      "type": "string"
+    },
+    "quote_preview": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_id",
+    "content"
+  ]
+}

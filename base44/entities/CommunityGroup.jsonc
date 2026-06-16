@@ -1,0 +1,57 @@
+{
+  "name": "CommunityGroup",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string"
+    },
+    "cover_url": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "public",
+        "admin",
+        "support"
+      ],
+      "default": "public"
+    },
+    "member_count": {
+      "type": "number",
+      "default": 0
+    },
+    "member_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "admin_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "last_message": {
+      "type": "string"
+    },
+    "last_activity": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

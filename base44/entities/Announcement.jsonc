@@ -1,0 +1,36 @@
+{
+  "name": "Announcement",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "is_pinned": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_broadcast": {
+      "type": "boolean",
+      "default": true
+    },
+    "read_by": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "admin_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "content"
+  ]
+}
