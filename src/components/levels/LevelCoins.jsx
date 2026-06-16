@@ -6,7 +6,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LEVEL_TIER_CONFIG } from "@/lib/constants";
-import UserLevelProgression from "@/components/levels/UserLevelProgression";
+import UserLevelDashboard from "@/components/levels/UserLevelDashboard";
 
 /* ── Format helpers ── */
 function formatBig(n) {
@@ -351,7 +351,7 @@ export default function LevelCoins() {
           style={{ padding: "14px" }}>
 
           {activeTab === "user" ? (
-            <UserLevelProgression />
+            <UserLevelDashboard />
           ) : activeTab === "benefits" ? (
             <>
               <div style={{
