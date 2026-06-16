@@ -18,6 +18,9 @@ import ResetPassword from '@/pages/ResetPassword';
 // App Pages
 import Home from '@/pages/Home';
 import Me from '@/pages/Me';
+import Inbox from '@/pages/Inbox';
+import ChatRoom from '@/pages/ChatRoom';
+import AudioCallScreen from '@/pages/AudioCallScreen';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -52,6 +55,9 @@ const AuthenticatedApp = () => {
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
         <Route path="/" element={<Home />} />
         <Route path="/me" element={<Me />} />
+        <Route path="/inbox" element={<Inbox />} />
+        <Route path="/chat/:chatId" element={<ChatRoom />} />
+        <Route path="/call" element={<AudioCallScreen />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

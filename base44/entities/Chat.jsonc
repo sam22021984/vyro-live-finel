@@ -1,0 +1,76 @@
+{
+  "name": "Chat",
+  "type": "object",
+  "properties": {
+    "participant_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "last_message": {
+      "type": "string"
+    },
+    "last_message_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_message_type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "gift",
+        "call",
+        "sticker",
+        "emoji"
+      ],
+      "default": "text"
+    },
+    "unread_count": {
+      "type": "number",
+      "default": 0
+    },
+    "is_pinned": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_muted": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_archived": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_typing": {
+      "type": "boolean",
+      "default": false
+    },
+    "other_user_id": {
+      "type": "string"
+    },
+    "other_user_name": {
+      "type": "string"
+    },
+    "other_user_avatar": {
+      "type": "string"
+    },
+    "other_user_online": {
+      "type": "boolean",
+      "default": false
+    },
+    "other_user_vip": {
+      "type": "string"
+    },
+    "other_user_country": {
+      "type": "string"
+    },
+    "other_user_gender": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "participant_ids",
+    "other_user_id"
+  ]
+}

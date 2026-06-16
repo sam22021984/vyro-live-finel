@@ -1,0 +1,86 @@
+{
+  "name": "Message",
+  "type": "object",
+  "properties": {
+    "chat_id": {
+      "type": "string"
+    },
+    "sender_id": {
+      "type": "string"
+    },
+    "receiver_id": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "gift",
+        "sticker",
+        "emoji",
+        "call",
+        "system",
+        "vip",
+        "event"
+      ],
+      "default": "text"
+    },
+    "gift_id": {
+      "type": "string"
+    },
+    "gift_name": {
+      "type": "string"
+    },
+    "gift_icon": {
+      "type": "string"
+    },
+    "gift_coins": {
+      "type": "number"
+    },
+    "sticker_url": {
+      "type": "string"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_delivered": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_deleted": {
+      "type": "boolean",
+      "default": false
+    },
+    "translation": {
+      "type": "string"
+    },
+    "original_language": {
+      "type": "string"
+    },
+    "reactions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reply_to_id": {
+      "type": "string"
+    },
+    "reply_preview": {
+      "type": "string"
+    },
+    "is_pinned": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "chat_id",
+    "sender_id",
+    "content"
+  ]
+}

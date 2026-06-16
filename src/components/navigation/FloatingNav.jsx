@@ -12,7 +12,7 @@ const NAV_ITEMS = [
   { id: "party",    label: "Party",    icon: Mic2,          path: "/party"    },
   { id: "moments",  label: "Moments",  icon: Sparkles,      path: "/moments"  },
   { id: "golive",   label: "Go Live",  icon: Radio,         path: "/go-live",  center: true },
-  { id: "messages", label: "Messages", icon: MessageCircle, path: "/messages", badge: 3 },
+  { id: "messages", label: "Messages", icon: MessageCircle, path: "/inbox", badge: 3 },
   { id: "me",       label: "Me",       icon: UserCircle2,   path: "/me"       },
 ];
 
