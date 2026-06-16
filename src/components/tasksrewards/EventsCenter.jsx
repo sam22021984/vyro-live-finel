@@ -1,200 +1,120 @@
-/**
- * EventsCenter — Active / Upcoming / Completed events
- */
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Clock, Users, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { toast } from "sonner";
 
-const EVENT_TABS = ["Active", "Upcoming", "Completed"];
+const EVENT_SECTIONS = ["Active", "Upcoming", "Completed"];
 
 const EVENTS = {
   Active: [
-    {
-      id: 1, type: "Recharge Event", title: "Recharge & Win Big!",
-      banner: "🪙", color: "#FFC83D", bgColor: "#FFFBEB",
-      desc: "Recharge any amount and win exclusive gifts",
-      reward: "Up to 10,000 Coins", participants: 1284, timeLeft: "2d 14h",
-      rules: ["Minimum recharge: 100 coins", "Top 3 rechargiers win VIP", "All participants get bonus"],
-    },
-    {
-      id: 2, type: "Gift Event", title: "Gift King Competition",
-      banner: "🎁", color: "#F472B6", bgColor: "#FDF2F8",
-      desc: "Send the most gifts to win top gifter crown",
-      reward: "VIP Frame + 5,000 Coins", participants: 892, timeLeft: "1d 6h",
-      rules: ["Send gifts in any live room", "Daily rankings reset at midnight", "Top 10 win rewards"],
-    },
-    {
-      id: 3, type: "PK Event", title: "Weekly PK Battle",
-      banner: "⚔️", color: "#EF4444", bgColor: "#FEF2F2",
-      desc: "Host vs Host — who earns the most gifts?",
-      reward: "2,000 Diamonds + Medal", participants: 346, timeLeft: "3d 8h",
-      rules: ["Hosts only", "Minimum 2h stream required", "PK must be 1v1"],
-    },
+    { id: 1, title: "Recharge Festival",  type: "Recharge Event", icon: "🪙", banner: "#1F6BFF", participants: 1240, endsIn: "2d 4h", reward: "5000 Coins + Badge", joined: false, desc: "Recharge 500 coins during the event period to win exclusive rewards." },
+    { id: 2, title: "Gift Storm",          type: "Gift Event",     icon: "🎁", banner: "#EC4899", participants: 860,  endsIn: "1d 12h",reward: "10 Diamonds",       joined: true,  desc: "Send the most gifts to climb the leaderboard and win premium prizes." },
+    { id: 3, title: "PK Tournament",       type: "PK Event",       icon: "⚔️", banner: "#9333EA", participants: 430,  endsIn: "3d",     reward: "VIP 30 Days",      joined: false, desc: "Win 5 PK battles to qualify for the grand finale and massive rewards." },
+    { id: 4, title: "Lucky Draw June",     type: "Lucky Draw",     icon: "🎰", banner: "#FFC83D", participants: 3200, endsIn: "4d",     reward: "Mystery Box",      joined: true,  desc: "Join the lucky draw for a chance to win rare gifts and special IDs." },
   ],
   Upcoming: [
-    {
-      id: 4, type: "Festival Event", title: "Eid Special Celebration",
-      banner: "🌙", color: "#A78BFA", bgColor: "#F5F3FF",
-      desc: "Special event with doubled rewards",
-      reward: "Exclusive Badge + VIP", participants: 0, startsIn: "3 days",
-    },
-    {
-      id: 5, type: "Lucky Draw", title: "Monthly Lucky Draw",
-      banner: "🎰", color: "#34D399", bgColor: "#ECFDF5",
-      desc: "Random draw from all active users",
-      reward: "iPhone + 50,000 Coins", participants: 0, startsIn: "7 days",
-    },
+    { id: 5, title: "Agency Championships", type: "Agency Event",  icon: "🏢", banner: "#10B981", participants: 0, startsIn: "2d",   reward: "Agency Trophy",    joined: false, desc: "Top agencies compete for the championship title and exclusive rewards." },
+    { id: 6, title: "Eid Festival Event",   type: "Festival Event",icon: "🌙", banner: "#F59E0B", participants: 0, startsIn: "5d",   reward: "Eid Bundle",       joined: false, desc: "Celebrate with special Eid rewards and limited-edition decorations." },
   ],
   Completed: [
-    {
-      id: 6, type: "Agency Event", title: "Agency Championship",
-      banner: "🏆", color: "#9CA3AF", bgColor: "#F3F4F6",
-      desc: "Top agencies competed for diamonds",
-      reward: "Completed", participants: 42, ended: "3 days ago",
-    },
+    { id: 7, title: "Top Host May",  type: "Host Event",    icon: "🎙️", banner: "#6B7280", participants: 280, endedOn: "Jun 1",  reward: "Host Crown",       joined: true  },
+    { id: 8, title: "Gift Week",     type: "Gift Event",    icon: "🎀", banner: "#6B7280", participants: 920, endedOn: "Jun 7",  reward: "500 Diamonds",     joined: false },
   ],
 };
 
-function EventCard({ event, tab }) {
-  const [showRules, setShowRules] = useState(false);
-
-  return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-      style={{
-        background: event.bgColor || "#fff", borderRadius: 18, overflow: "hidden",
-        border: `1px solid ${event.color}33`,
-        boxShadow: "0 4px 16px rgba(0,0,0,0.05)",
-        marginBottom: 12,
-      }}>
-      {/* Banner */}
-      <div style={{
-        background: `linear-gradient(135deg, ${event.color}22, ${event.color}44)`,
-        padding: "16px", display: "flex", alignItems: "center", gap: 12,
-      }}>
-        <div style={{
-          width: 50, height: 50, borderRadius: 14, flexShrink: 0,
-          background: `${event.color}22`, display: "flex", alignItems: "center",
-          justifyContent: "center", fontSize: 26, border: `2px solid ${event.color}33`,
-        }}>{event.banner}</div>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: event.color, marginBottom: 2, textTransform: "uppercase" }}>
-            {event.type}
-          </div>
-          <div style={{ fontSize: 14, fontWeight: 900, color: "#0D1B3E" }}>{event.title}</div>
-          <div style={{ fontSize: 11, color: "#6B7280", marginTop: 2 }}>{event.desc}</div>
-        </div>
-      </div>
-
-      {/* Meta */}
-      <div style={{ padding: "12px 16px" }}>
-        <div style={{ display: "flex", gap: 16, marginBottom: 12 }}>
-          {event.timeLeft && (
-            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <Clock size={12} color={event.color} />
-              <span style={{ fontSize: 11, fontWeight: 700, color: event.color }}>{event.timeLeft} left</span>
-            </div>
-          )}
-          {event.startsIn && (
-            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <Clock size={12} color={event.color} />
-              <span style={{ fontSize: 11, fontWeight: 700, color: event.color }}>Starts in {event.startsIn}</span>
-            </div>
-          )}
-          {event.ended && (
-            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <Clock size={12} color="#9CA3AF" />
-              <span style={{ fontSize: 11, color: "#9CA3AF" }}>Ended {event.ended}</span>
-            </div>
-          )}
-          <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <Users size={12} color="#9CA3AF" />
-            <span style={{ fontSize: 11, color: "#9CA3AF" }}>{event.participants.toLocaleString()} joined</span>
-          </div>
-        </div>
-
-        <div style={{
-          background: "#fff", borderRadius: 10, padding: "8px 12px",
-          marginBottom: 12, border: "1px solid #F0F0F5",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-        }}>
-          <span style={{ fontSize: 11, color: "#6B7280" }}>Reward</span>
-          <span style={{ fontSize: 12, fontWeight: 800, color: "#FFC83D" }}>🏆 {event.reward}</span>
-        </div>
-
-        {tab === "Active" && (
-          <div style={{ display: "flex", gap: 8 }}>
-            <motion.button whileTap={{ scale: 0.94 }}
-              style={{
-                flex: 1, padding: "10px", borderRadius: 12, fontSize: 12, fontWeight: 800,
-                background: `linear-gradient(135deg,${event.color},${event.color}cc)`,
-                color: "#fff", border: "none", cursor: "pointer",
-                boxShadow: `0 4px 12px ${event.color}44`,
-              }}>Join Event</motion.button>
-            {event.rules && (
-              <motion.button whileTap={{ scale: 0.94 }}
-                onClick={() => setShowRules(v => !v)}
-                style={{
-                  padding: "10px 14px", borderRadius: 12, fontSize: 12, fontWeight: 800,
-                  background: "#fff", color: "#6B7280",
-                  border: "1px solid #E5E7EB", cursor: "pointer",
-                }}>Rules</motion.button>
-            )}
-          </div>
-        )}
-        {tab === "Upcoming" && (
-          <motion.button whileTap={{ scale: 0.94 }}
-            style={{
-              width: "100%", padding: "10px", borderRadius: 12, fontSize: 12, fontWeight: 800,
-              background: "#F5F7FA", color: "#6B7280",
-              border: "1px solid #E5E7EB", cursor: "pointer",
-            }}>Set Reminder 🔔</motion.button>
-        )}
-
-        <AnimatePresence>
-          {showRules && event.rules && (
-            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }} style={{ overflow: "hidden", marginTop: 10 }}>
-              {event.rules.map((r, i) => (
-                <div key={i} style={{ display: "flex", gap: 6, marginBottom: 4 }}>
-                  <span style={{ fontSize: 11, color: event.color, fontWeight: 800, flexShrink: 0 }}>•</span>
-                  <span style={{ fontSize: 11, color: "#6B7280" }}>{r}</span>
-                </div>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.div>
-  );
-}
-
 export default function EventsCenter() {
-  const [activeTab, setActiveTab] = useState("Active");
+  const [section, setSection] = useState("Active");
+  const [joinedEvents, setJoinedEvents] = useState({ 2: true, 4: true, 7: true });
+
+  const handleJoin = (id, title) => {
+    setJoinedEvents(j => ({ ...j, [id]: true }));
+    toast.success(`🎉 Joined "${title}"!`);
+  };
 
   return (
-    <div style={{ padding: "16px 14px 0" }}>
-      {/* Tabs */}
+    <div style={{ padding: "14px 14px 0" }}>
+      {/* Section tabs */}
       <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
-        {EVENT_TABS.map(t => (
-          <motion.button key={t} whileTap={{ scale: 0.94 }}
-            onClick={() => setActiveTab(t)}
+        {EVENT_SECTIONS.map(s => (
+          <button key={s} onClick={() => setSection(s)}
             style={{
-              padding: "7px 20px", borderRadius: 20, fontSize: 12, fontWeight: 800,
-              border: "none", cursor: "pointer",
-              background: activeTab === t ? "#1F6BFF" : "#fff",
-              color: activeTab === t ? "#fff" : "#9CA3AF",
-              boxShadow: activeTab === t ? "0 4px 12px rgba(31,107,255,0.3)" : "0 1px 4px rgba(0,0,0,0.06)",
-            }}>{t} {activeTab === t && `(${EVENTS[t].length})`}</motion.button>
+              padding: "7px 18px", borderRadius: 20, fontSize: 11, fontWeight: 700, cursor: "pointer",
+              background: section === s ? "#1F6BFF" : "#fff",
+              color: section === s ? "#fff" : "#9CA3AF",
+              border: section === s ? "none" : "1px solid #E5E7EB",
+            }}>{s}</button>
         ))}
       </div>
 
-      <AnimatePresence mode="wait">
-        <motion.div key={activeTab} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          {(EVENTS[activeTab] || []).map(event => (
-            <EventCard key={event.id} event={event} tab={activeTab} />
-          ))}
+      {EVENTS[section].map((ev, i) => (
+        <motion.div key={ev.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.05 }}
+          style={{
+            background: "#fff", borderRadius: 18, marginBottom: 12, overflow: "hidden",
+            border: "1px solid #F0F0F8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
+          }}>
+          {/* Banner */}
+          <div style={{
+            background: `linear-gradient(135deg, ${ev.banner}CC, ${ev.banner}88)`,
+            padding: "14px 16px", display: "flex", alignItems: "center", gap: 10,
+          }}>
+            <span style={{ fontSize: 28 }}>{ev.icon}</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 900, color: "#fff" }}>{ev.title}</div>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.75)" }}>{ev.type}</div>
+            </div>
+            <div style={{
+              background: "rgba(255,255,255,0.2)", borderRadius: 10, padding: "4px 10px",
+              fontSize: 10, color: "#fff", fontWeight: 700,
+            }}>
+              {ev.endsIn ? `⏰ ${ev.endsIn}` : ev.startsIn ? `🔜 ${ev.startsIn}` : `✅ Ended ${ev.endedOn}`}
+            </div>
+          </div>
+          <div style={{ padding: "12px 16px" }}>
+            {ev.desc && <div style={{ fontSize: 11, color: "#6B7280", marginBottom: 10, lineHeight: 1.6 }}>{ev.desc}</div>}
+            <div style={{ display: "flex", gap: 16, marginBottom: 12 }}>
+              <div style={{ fontSize: 11, color: "#9CA3AF" }}>👥 {ev.participants.toLocaleString()} joined</div>
+              <div style={{ fontSize: 11, color: "#FFC83D", fontWeight: 700 }}>🏆 {ev.reward}</div>
+            </div>
+            {section !== "Completed" && (
+              <div style={{ display: "flex", gap: 8 }}>
+                <motion.button whileTap={{ scale: 0.93 }}
+                  style={{
+                    padding: "8px 14px", borderRadius: 20, fontSize: 11, fontWeight: 700,
+                    background: "#F5F7FA", border: "1px solid #E5E7EB", color: "#6B7280", cursor: "pointer",
+                  }}>📋 Rules</motion.button>
+                <motion.button whileTap={{ scale: 0.93 }}
+                  style={{
+                    padding: "8px 14px", borderRadius: 20, fontSize: 11, fontWeight: 700,
+                    background: "#F5F7FA", border: "1px solid #E5E7EB", color: "#6B7280", cursor: "pointer",
+                  }}>🏆 Ranking</motion.button>
+                {joinedEvents[ev.id]
+                  ? <div style={{ marginLeft: "auto", fontSize: 11, color: "#10B981", fontWeight: 800, display: "flex", alignItems: "center" }}>✓ Joined</div>
+                  : (
+                    <motion.button whileTap={{ scale: 0.93 }} onClick={() => handleJoin(ev.id, ev.title)}
+                      style={{
+                        marginLeft: "auto", padding: "8px 18px", borderRadius: 20, fontSize: 11, fontWeight: 800,
+                        background: "linear-gradient(135deg,#1F6BFF,#60A5FA)",
+                        color: "#fff", border: "none", cursor: "pointer",
+                        boxShadow: "0 4px 12px rgba(31,107,255,0.3)",
+                      }}>Join Event</motion.button>
+                  )
+                }
+              </div>
+            )}
+            {section === "Completed" && joinedEvents[ev.id] && (
+              <motion.button whileTap={{ scale: 0.93 }}
+                style={{
+                  padding: "8px 18px", borderRadius: 20, fontSize: 11, fontWeight: 800,
+                  background: "linear-gradient(135deg,#10B981,#059669)",
+                  color: "#fff", border: "none", cursor: "pointer",
+                }}
+                onClick={() => toast.success("Reward claimed!")}>
+                🎁 Claim Reward
+              </motion.button>
+            )}
+          </div>
         </motion.div>
-      </AnimatePresence>
+      ))}
     </div>
   );
 }
