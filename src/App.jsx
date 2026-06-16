@@ -25,6 +25,7 @@ import LiveRoomV2 from '@/pages/LiveRoomV2';
 import GoLive from '@/pages/GoLive';
 import Community from '@/pages/Community';
 import TasksRewards from '@/pages/TasksRewards';
+import Support from '@/pages/Support';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -66,6 +67,7 @@ const AuthenticatedApp = () => {
         <Route path="/go-live" element={<GoLive />} />
         <Route path="/community" element={<Community />} />
         <Route path="/tasks-rewards" element={<TasksRewards />} />
+        <Route path="/support" element={<Support />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
