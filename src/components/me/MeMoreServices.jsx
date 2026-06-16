@@ -15,6 +15,7 @@ const SERVICES = [
   { id: "social",               title: "Social",                icon: "👥", path: "/social" },
   { id: "messages_community",   title: "Messages",              icon: "💬", path: "/inbox" },
   { id: "profile_stats",        title: "Profile & Stats",       icon: "📊", path: "/profile-stats" },
+  { id: "levels_system",        title: "Level Systems",         icon: "⭐", path: "/levels" },
   { id: "account_settings",     title: "Settings",              icon: "⚙️", path: "/me" },
   { id: "support",              title: "Support",               icon: "🛟", path: "/support" },
 ];
