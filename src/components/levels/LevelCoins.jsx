@@ -9,6 +9,7 @@ import { LEVEL_TIER_CONFIG } from "@/lib/constants";
 import UserLevelDashboard from "@/components/levels/UserLevelDashboard";
 import HostLevelDashboard from "@/components/levels/HostLevelDashboard";
 import GiftingLevelDashboard from "@/components/levels/GiftingLevelDashboard";
+import StreamingLevelDashboard from "@/components/levels/StreamingLevelDashboard";
 
 /* ── Format helpers ── */
 function formatBig(n) {
@@ -358,6 +359,8 @@ export default function LevelCoins() {
             <HostLevelDashboard />
           ) : activeTab === "gifting" ? (
             <GiftingLevelDashboard />
+          ) : activeTab === "streaming" ? (
+            <StreamingLevelDashboard />
           ) : activeTab === "benefits" ? (
             <>
               <div style={{
