@@ -26,6 +26,7 @@ import GoLive from '@/pages/GoLive';
 import Community from '@/pages/Community';
 import TasksRewards from '@/pages/TasksRewards';
 import Support from '@/pages/Support';
+import Social from '@/pages/Social';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -68,6 +69,7 @@ const AuthenticatedApp = () => {
         <Route path="/community" element={<Community />} />
         <Route path="/tasks-rewards" element={<TasksRewards />} />
         <Route path="/support" element={<Support />} />
+        <Route path="/social" element={<Social />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
