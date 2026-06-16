@@ -12,6 +12,7 @@ import {
   UserLevelGuide, HostLevelGuide, GiftingLevelGuide,
   StreamingLevelGuide, LevelSystemRules,
 } from "@/components/levels/LevelGuides";
+import LevelCoins from "@/components/levels/LevelCoins";
 
 /* ─── Helpers ─── */
 function formatBig(n) {
@@ -38,6 +39,7 @@ const MENU_ITEMS = [
   { id: "host_guide",      label: "Host Level Guide",      icon: "🎙️", color: "#F59E0B", desc: "What is Host Level & how to grow" },
   { id: "gifting_guide",   label: "Gifting Level Guide",   icon: "🎁", color: "#EC4899", desc: "What is Gifting Level & how to grow" },
   { id: "streaming_guide", label: "Streaming Level Guide", icon: "📡", color: "#06B6D4", desc: "What is Streaming Level & how to grow" },
+  { id: "level_coins",     label: "Level Coins",           icon: "🪙", color: "#F59E0B", desc: "View required coins for all levels" },
 ];
 
 /* ─── General Level System Guide Screen ─── */
@@ -278,6 +280,7 @@ export default function Levels() {
              active === "host_guide"      ? <HostLevelGuide onBack={nav} /> :
              active === "gifting_guide"   ? <GiftingLevelGuide onBack={nav} /> :
              active === "streaming_guide" ? <StreamingLevelGuide onBack={nav} /> :
+             active === "level_coins"    ? <LevelCoins /> :
                                            <LevelDetailScreen systemKey={active} />}
           </motion.div>
         )}
