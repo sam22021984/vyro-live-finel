@@ -307,6 +307,22 @@ function LevelCard({ lv, isOpen, onToggle, index }) {
           <div style={{ fontSize: 10, color: lv.isMax ? "rgba(255,255,255,0.5)" : "#9CA3AF", marginTop: 1 }}>
             {lv.badge}
           </div>
+          {/* Always-visible benefits preview */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 6 }}>
+            {lv.benefits.slice(0, isOpen ? lv.benefits.length : 2).map((b, i) => (
+              <span key={i} style={{
+                fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 8,
+                background: lv.isMax ? "rgba(245,158,11,0.2)" : `${lv.color}12`,
+                color: lv.isMax ? "#F59E0B" : lv.color,
+                border: `1px solid ${lv.color}22`,
+              }}>⭐ {b}</span>
+            ))}
+            {!isOpen && lv.benefits.length > 2 && (
+              <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 8, background: "#F0F0F8", color: "#9CA3AF" }}>
+                +{lv.benefits.length - 2} more
+              </span>
+            )}
+          </div>
         </div>
         <div style={{ textAlign: "right", flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
           <div style={{ fontSize: 14, fontWeight: 900, color: lv.isMax ? "#F59E0B" : lv.color, fontFamily: "monospace" }}>
