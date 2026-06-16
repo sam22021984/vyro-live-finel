@@ -27,6 +27,7 @@ import Community from '@/pages/Community';
 import TasksRewards from '@/pages/TasksRewards';
 import Support from '@/pages/Support';
 import Social from '@/pages/Social';
+import ProfileStats from '@/pages/ProfileStats';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -70,6 +71,7 @@ const AuthenticatedApp = () => {
         <Route path="/tasks-rewards" element={<TasksRewards />} />
         <Route path="/support" element={<Support />} />
         <Route path="/social" element={<Social />} />
+        <Route path="/profile-stats" element={<ProfileStats />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

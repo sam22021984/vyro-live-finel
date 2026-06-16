@@ -14,7 +14,7 @@ const SERVICES = [
   { id: "live_audio",           title: "Live & Audio",          icon: "🎙️", path: "/go-live" },
   { id: "social",               title: "Social",                icon: "👥", path: "/social" },
   { id: "messages_community",   title: "Messages",              icon: "💬", path: "/inbox" },
-  { id: "profile_stats",        title: "Profile & Stats",       icon: "📊", path: "/me" },
+  { id: "profile_stats",        title: "Profile & Stats",       icon: "📊", path: "/profile-stats" },
   { id: "levels_system",        title: "Levels System",         icon: "⭐", path: "/levels" },
   { id: "account_settings",     title: "Settings",              icon: "⚙️", path: "/me" },
   { id: "support",              title: "Support",               icon: "🛟", path: "/support" },
