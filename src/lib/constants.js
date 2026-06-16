@@ -44,7 +44,7 @@ const LEVEL_TIER_THEMES = [
   { name: "Legend",     color: "#FFD700", glow: "#FF8C00", gradient: ["#7C3AED","#F59E0B"], icon: "👑" },
 ];
 
-const MAX_COINS = 9_000_000_000;
+const MAX_COINS = 50_000_000_000;
 
 function generateLevels(count, maxCoins) {
   const levels = [];
