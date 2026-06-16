@@ -32,8 +32,12 @@ const SYSTEMS = [
 
 /* ─── Menu items ─── */
 const MENU_ITEMS = [
-  { id: "guide", label: "Level System Guide", icon: "📖", color: "#1F6BFF", desc: "How levels, tiers & rewards work" },
-  { id: "rules", label: "Level System Rules", icon: "📜", color: "#7C3AED", desc: "Rules, examples & ultimate rewards" },
+  { id: "guide",           label: "Level System Guide",    icon: "📖", color: "#1F6BFF", desc: "How levels, tiers & rewards work" },
+  { id: "rules",           label: "Level System Rules",    icon: "📜", color: "#7C3AED", desc: "Rules, examples & ultimate rewards" },
+  { id: "user_guide",      label: "User Level Guide",      icon: "👤", color: "#A855F7", desc: "What is User Level & how to grow" },
+  { id: "host_guide",      label: "Host Level Guide",      icon: "🎙️", color: "#F59E0B", desc: "What is Host Level & how to grow" },
+  { id: "gifting_guide",   label: "Gifting Level Guide",   icon: "🎁", color: "#EC4899", desc: "What is Gifting Level & how to grow" },
+  { id: "streaming_guide", label: "Streaming Level Guide", icon: "📡", color: "#06B6D4", desc: "What is Streaming Level & how to grow" },
 ];
 
 /* ─── General Level System Guide Screen ─── */
