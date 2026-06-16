@@ -6,7 +6,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LEVEL_TIER_CONFIG } from "@/lib/constants";
-
+import UserLevelDashboard from "@/components/levels/UserLevelDashboard";
+import HostLevelDashboard from "@/components/levels/HostLevelDashboard";
+import GiftingLevelDashboard from "@/components/levels/GiftingLevelDashboard";
+import StreamingLevelDashboard from "@/components/levels/StreamingLevelDashboard";
 
 /* ── Format helpers ── */
 function formatBig(n) {
@@ -350,7 +353,15 @@ export default function LevelCoins() {
           exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.18 }}
           style={{ padding: "14px" }}>
 
-          {activeTab === "benefits" ? (
+          {activeTab === "user" ? (
+            <UserLevelDashboard />
+          ) : activeTab === "host" ? (
+            <HostLevelDashboard />
+          ) : activeTab === "gifting" ? (
+            <GiftingLevelDashboard />
+          ) : activeTab === "streaming" ? (
+            <StreamingLevelDashboard />
+          ) : activeTab === "benefits" ? (
             <>
               <div style={{
                 background: "#fff", borderRadius: 16, padding: "14px 16px", marginBottom: 14,
