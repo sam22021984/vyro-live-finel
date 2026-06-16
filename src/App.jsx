@@ -30,6 +30,7 @@ import Social from '@/pages/Social';
 import ProfileStats from '@/pages/ProfileStats';
 import Finance from '@/pages/Finance';
 import Levels from '@/pages/Levels';
+import UserLevelSystem from '@/pages/UserLevelSystem';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -76,6 +77,7 @@ const AuthenticatedApp = () => {
         <Route path="/profile-stats" element={<ProfileStats />} />
         <Route path="/finance" element={<Finance />} />
         <Route path="/levels" element={<Levels />} />
+        <Route path="/user-level-system" element={<UserLevelSystem />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

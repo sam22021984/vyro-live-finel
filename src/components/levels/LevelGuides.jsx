@@ -4,6 +4,7 @@
  */
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 /* ─── Shared sub-components ─── */
 function GuideHero({ emoji, title, description, maxLevel, gradient, shadow }) {
@@ -111,6 +112,7 @@ function GuideBenefitGrid({ title, benefits, bgColor, borderColor }) {
 /* ─── User Level Guide ─── */
 export function UserLevelGuide({ onBack }) {
   const [tab, setTab] = useState("overview");
+  const navigate = useNavigate();
   const XP_SOURCES = [
     { icon: "🎁", name: "Sending Gifts" }, { icon: "💝", name: "Receiving Gifts" },
     { icon: "🎉", name: "Joining Party Rooms" }, { icon: "🎙️", name: "Voice Chat Activity" },
@@ -142,6 +144,10 @@ export function UserLevelGuide({ onBack }) {
           <GuideStates label="User States" states={STATES} />
           <GuideCTAs progressLabel="📈 View Level Progress" onProgress={() => onBack("user")} onBenefits={() => setTab("benefits")}
             gradient="linear-gradient(135deg,#A855F7,#C084FC)" shadow="0 6px 20px rgba(168,85,247,0.3)" />
+          <motion.button whileTap={{ scale: 0.97 }} onClick={() => navigate("/user-level-system")}
+            style={{ width: "100%", padding: "13px", borderRadius: 14, border: "none", cursor: "pointer", fontWeight: 800, fontSize: 13, background: "linear-gradient(135deg,#0D1B3E,#A855F7)", color: "#fff", boxShadow: "0 6px 20px rgba(168,85,247,0.3)", marginTop: 8 }}>
+            🗺️ View Full LV1–LV300 System
+          </motion.button>
         </div>
       )}
       {tab === "earn" && <GuideXPList title="How to Increase User Level" sources={XP_SOURCES} bgColor="#F5F3FF" />}
