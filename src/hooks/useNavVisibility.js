@@ -1,12 +1,13 @@
 /**
- * useNavVisibility — show on touch/scroll, hide after 4s inactivity
+ * useNavVisibility — show on touch/scroll, hide after 60s inactivity
+ * Returns { visible, show } so consumers can manually trigger show
  */
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const AUTO_HIDE_MS = 4000;
+const AUTO_HIDE_MS = 60000;
 
 export default function useNavVisibility() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const timerRef = useRef(null);
 
   const show = useCallback(() => {
@@ -16,6 +17,8 @@ export default function useNavVisibility() {
   }, []);
 
   useEffect(() => {
+    // Start timer on mount
+    timerRef.current = setTimeout(() => setVisible(false), AUTO_HIDE_MS);
     const opts = { passive: true, capture: true };
     window.addEventListener("touchstart", show, opts);
     window.addEventListener("mousedown",  show, { capture: true });
@@ -30,5 +33,5 @@ export default function useNavVisibility() {
     };
   }, [show]);
 
-  return visible;
+  return { visible, show };
 }
