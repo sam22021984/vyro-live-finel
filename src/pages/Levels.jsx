@@ -35,7 +35,8 @@ const MENU_ITEMS = [
   { id: "guide",      label: "Level System Guide", icon: "📖", color: "#1F6BFF", desc: "How levels, tiers & rewards work" },
   { id: "user_guide", label: "User Level Guide",   icon: "👤", color: "#A855F7", desc: "What is User Level & how to grow" },
   { id: "user",       label: "User Level",          icon: "📊", color: "#A855F7", desc: "Lv 1 – 300 · Full level table" },
-  { id: "host",      label: "Host Level",          icon: "🎙️", color: "#F59E0B", desc: "Lv 1 – 300 · Diamond earnings" },
+  { id: "host_guide", label: "Host Level Guide",    icon: "🎙️", color: "#F59E0B", desc: "What is Host Level & how to grow" },
+  { id: "host",      label: "Host Level",          icon: "📊", color: "#F59E0B", desc: "Lv 1 – 300 · Diamond earnings" },
   { id: "gifting",   label: "Gifting Level",       icon: "🎁", color: "#EC4899", desc: "Lv 1 – 200 · Coins spent on gifts" },
   { id: "streaming", label: "Streaming Level",     icon: "📡", color: "#06B6D4", desc: "Lv 1 – 200 · Streaming minutes" },
 ];
@@ -163,6 +164,136 @@ function UserLevelGuide({ onBack }) {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
             {BENEFITS.map((b, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 12, background: "#F5F3FF", border: "1px solid #A855F722" }}>
+                <span style={{ fontSize: 20 }}>{b.icon}</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#374151", lineHeight: 1.4 }}>{b.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── Host Level Guide Screen ─── */
+function HostLevelGuide({ onBack }) {
+  const [tab, setTab] = useState("overview");
+
+  const XP_SOURCES = [
+    { icon: "🎁", name: "Gifts Received During Streams" },
+    { icon: "📺", name: "Hosting Live Streams" },
+    { icon: "🎉", name: "Party Room Hosting" },
+    { icon: "👥", name: "Viewer Engagement" },
+    { icon: "⏱️", name: "Audience Retention" },
+    { icon: "⚔️", name: "PK Battles Participation" },
+    { icon: "🏆", name: "Event Rankings" },
+    { icon: "✅", name: "Daily Host Missions" },
+    { icon: "📈", name: "Stream Performance" },
+  ];
+
+  const BENEFITS = [
+    { icon: "⭐", name: "Featured Host Placement" },
+    { icon: "🏠", name: "Homepage Promotion" },
+    { icon: "✅", name: "Verified Host Badge" },
+    { icon: "✨", name: "Premium Broadcast Effects" },
+    { icon: "🖼️", name: "Exclusive Host Frames" },
+    { icon: "📡", name: "Higher Discovery Ranking" },
+    { icon: "🎟️", name: "Priority Event Access" },
+    { icon: "📊", name: "Advanced Analytics" },
+    { icon: "🛟", name: "Priority Support" },
+  ];
+
+  const HOST_STATES = [
+    { label: "New Host",    state: "Level 1",           color: "#9CA3AF" },
+    { label: "Active Host", state: "Progressing",       color: "#F59E0B" },
+    { label: "Top Host",    state: "Advanced Level",    color: "#A855F7" },
+    { label: "Max Host",    state: "Level 300 Reached", color: "#FFC83D" },
+  ];
+
+  return (
+    <div style={{ padding: "14px" }}>
+      {/* Hero */}
+      <div style={{ background: "linear-gradient(135deg,#0D1B3E,#F59E0B)", borderRadius: 20, padding: "22px 20px", marginBottom: 14, boxShadow: "0 8px 28px rgba(245,158,11,0.3)" }}>
+        <div style={{ fontSize: 40, marginBottom: 10 }}>🎙️</div>
+        <div style={{ fontSize: 18, fontWeight: 900, color: "#fff" }}>Host Level Guide</div>
+        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.65)", marginTop: 6, lineHeight: 1.7 }}>
+          Host Level measures your performance and success as a host on VYRO Live Connect. The more you stream and engage, the higher your Host Level.
+        </div>
+        <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
+          {[{ label: "Min Level", value: "1" }, { label: "Max Level", value: "300" }, { label: "Total Tiers", value: "10" }].map(s => (
+            <div key={s.label} style={{ flex: 1, background: "rgba(255,255,255,0.12)", borderRadius: 10, padding: "8px 6px", textAlign: "center" }}>
+              <div style={{ fontSize: 16, fontWeight: 900, color: "#fff" }}>{s.value}</div>
+              <div style={{ fontSize: 9, color: "rgba(255,255,255,0.6)", marginTop: 1 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: 6, marginBottom: 14, background: "#F5F7FA", borderRadius: 12, padding: 4 }}>
+        {["overview", "earn", "benefits"].map(t => (
+          <button key={t} onClick={() => setTab(t)}
+            style={{ flex: 1, padding: "8px 4px", borderRadius: 10, border: "none", cursor: "pointer", fontSize: 11, fontWeight: 800,
+              background: tab === t ? "#fff" : "transparent",
+              color: tab === t ? "#F59E0B" : "#9CA3AF",
+              boxShadow: tab === t ? "0 2px 6px rgba(0,0,0,0.06)" : "none" }}>
+            {t === "overview" ? "Overview" : t === "earn" ? "How to Earn" : "Benefits"}
+          </button>
+        ))}
+      </div>
+
+      {/* Overview Tab */}
+      {tab === "overview" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ background: "#fff", borderRadius: 16, padding: "16px", border: "1px solid #F0F0F8" }}>
+            <div style={{ fontSize: 13, fontWeight: 900, color: "#0D1B3E", marginBottom: 12 }}>📊 Host States</div>
+            {HOST_STATES.map((s, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 0", borderBottom: i < HOST_STATES.length - 1 ? "1px solid #F0F0F8" : "none" }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "#374151" }}>{s.label}</div>
+                <div style={{ padding: "3px 12px", borderRadius: 10, background: s.color + "18", fontSize: 11, fontWeight: 800, color: s.color }}>{s.state}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {[
+              { label: "📈 View Host Progress", action: () => onBack("host") },
+              { label: "🎁 View Rewards",        action: () => setTab("benefits") },
+              { label: "⭐ View Benefits",       action: () => setTab("benefits") },
+            ].map((btn, i) => (
+              <motion.button key={i} whileTap={{ scale: 0.97 }} onClick={btn.action}
+                style={{ width: "100%", padding: "13px", borderRadius: 14, border: i === 0 ? "none" : "1px solid #E5E7EB",
+                  background: i === 0 ? "linear-gradient(135deg,#F59E0B,#FBBF24)" : "#fff",
+                  fontWeight: 800, cursor: "pointer",
+                  color: i === 0 ? "#fff" : "#374151", fontSize: 13,
+                  boxShadow: i === 0 ? "0 6px 20px rgba(245,158,11,0.3)" : "none" }}>
+                {btn.label}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Earn Tab */}
+      {tab === "earn" && (
+        <div style={{ background: "#fff", borderRadius: 16, padding: "16px", border: "1px solid #F0F0F8" }}>
+          <div style={{ fontSize: 13, fontWeight: 900, color: "#0D1B3E", marginBottom: 12 }}>⚡ How to Increase Host Level</div>
+          {XP_SOURCES.map((s, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderBottom: i < XP_SOURCES.length - 1 ? "1px solid #F0F0F8" : "none" }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, background: "#FFFBEB", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>{s.icon}</div>
+              <div style={{ flex: 1, fontSize: 13, fontWeight: 700, color: "#374151" }}>{s.name}</div>
+              <div style={{ padding: "3px 10px", borderRadius: 10, background: "#ECFDF5", fontSize: 10, fontWeight: 800, color: "#10B981" }}>✓ XP</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Benefits Tab */}
+      {tab === "benefits" && (
+        <div style={{ background: "#fff", borderRadius: 16, padding: "16px", border: "1px solid #F0F0F8" }}>
+          <div style={{ fontSize: 13, fontWeight: 900, color: "#0D1B3E", marginBottom: 12 }}>🎁 Host Level Benefits</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+            {BENEFITS.map((b, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 12, background: "#FFFBEB", border: "1px solid #F59E0B22" }}>
                 <span style={{ fontSize: 20 }}>{b.icon}</span>
                 <span style={{ fontSize: 11, fontWeight: 700, color: "#374151", lineHeight: 1.4 }}>{b.name}</span>
               </div>
@@ -417,6 +548,8 @@ export default function Levels() {
               ? <GuideScreen />
               : active === "user_guide"
               ? <UserLevelGuide onBack={(key) => setActive(key)} />
+              : active === "host_guide"
+              ? <HostLevelGuide onBack={(key) => setActive(key)} />
               : <LevelDetailScreen systemKey={active} />}
           </motion.div>
         )}
