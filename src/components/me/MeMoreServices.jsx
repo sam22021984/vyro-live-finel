@@ -20,6 +20,7 @@ const SERVICES = [
   { id: "support",              title: "Support",               icon: "🛟", path: "/support" },
   { id: "app_center",           title: "Apply Center",          icon: "💼", path: "/app-center" },
   { id: "control_center",       title: "Control Center",        icon: "🎛️", path: "/control-center" },
+  { id: "creator_center",       title: "Creator Center",        icon: "🚀", path: "/creator-center" },
 ];
 
 export default function MeMoreServices() {

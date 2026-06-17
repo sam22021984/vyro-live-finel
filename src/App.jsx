@@ -38,6 +38,7 @@ import ControlCenter from '@/pages/ControlCenter';
 import AgentDashboard from '@/pages/AgentDashboard';
 import HostDashboardPage from '@/pages/HostDashboardPage';
 import AgencyDashboardPage from '@/pages/AgencyDashboardPage';
+import CreatorCenter from '@/pages/CreatorCenter';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -92,6 +93,7 @@ const AuthenticatedApp = () => {
         <Route path="/agent-dashboard" element={<AgentDashboard />} />
         <Route path="/host-dashboard" element={<HostDashboardPage />} />
         <Route path="/agency-dashboard-page" element={<AgencyDashboardPage />} />
+        <Route path="/creator-center" element={<CreatorCenter />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
