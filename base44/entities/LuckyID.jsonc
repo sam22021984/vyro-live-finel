@@ -1,0 +1,42 @@
+{
+  "name": "LuckyID",
+  "type": "object",
+  "properties": {
+    "application_id": {
+      "type": "string"
+    },
+    "country_code": {
+      "type": "string"
+    },
+    "price_coins": {
+      "type": "number",
+      "default": 0
+    },
+    "is_available": {
+      "type": "boolean",
+      "default": true
+    },
+    "is_reserved": {
+      "type": "boolean",
+      "default": false
+    },
+    "reserved_by": {
+      "type": "string"
+    },
+    "purchased_by": {
+      "type": "string"
+    },
+    "purchased_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "application_id",
+    "country_code",
+    "price_coins"
+  ]
+}

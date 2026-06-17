@@ -24,6 +24,7 @@ const SERVICES = [
   { id: "vip_membership",       title: "VIP Membership",        icon: "💎", path: "/vip-membership" },
   { id: "mall",                 title: "Mall",                  icon: "🏪", path: "/mall" },
   { id: "trust_reputation",     title: "Trust & Reputation",    icon: "🛡️", path: "/trust-reputation" },
+  { id: "lucky_id_store",       title: "Lucky ID Store",        icon: "⭐", path: "/lucky-id-store" },
 ];
 
 export default function MeMoreServices() {

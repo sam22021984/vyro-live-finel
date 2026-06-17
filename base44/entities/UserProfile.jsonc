@@ -14,13 +14,19 @@
     "phone": {
       "type": "string"
     },
-    "unique_id": {
+    "country_code": {
       "type": "string"
+    },
+    "application_id": {
+      "type": "string"
+    },
+    "previous_application_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "bio": {
-      "type": "string"
-    },
-    "country": {
       "type": "string"
     },
     "gender": {
@@ -62,11 +68,19 @@
     "setup_complete": {
       "type": "boolean",
       "default": false
+    },
+    "role": {
+      "type": "string",
+      "default": "User"
+    },
+    "is_lucky_id": {
+      "type": "boolean",
+      "default": false
     }
   },
   "required": [
     "user_id",
     "display_name",
-    "unique_id"
+    "application_id"
   ]
 }

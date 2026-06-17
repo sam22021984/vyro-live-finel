@@ -1,0 +1,35 @@
+{
+  "name": "IDHistory",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "previous_id": {
+      "type": "string"
+    },
+    "new_id": {
+      "type": "string"
+    },
+    "change_reason": {
+      "type": "string",
+      "enum": [
+        "lucky_id_purchase",
+        "admin_action"
+      ],
+      "default": "lucky_id_purchase"
+    },
+    "purchase_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "admin_note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_id",
+    "previous_id",
+    "new_id"
+  ]
+}

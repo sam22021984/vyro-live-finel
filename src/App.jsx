@@ -55,6 +55,7 @@ import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import VIPMembership from '@/pages/VIPMembership';
 import Mall from '@/pages/Mall';
 import TrustReputation from '@/pages/TrustReputation';
+import LuckyIDStore from '@/pages/LuckyIDStore';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -126,6 +127,7 @@ const AuthenticatedApp = () => {
         <Route path="/vip-membership" element={<VIPMembership />} />
         <Route path="/mall" element={<Mall />} />
         <Route path="/trust-reputation" element={<TrustReputation />} />
+        <Route path="/lucky-id-store" element={<LuckyIDStore />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

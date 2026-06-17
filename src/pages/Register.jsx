@@ -4,17 +4,16 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UserPlus, Mail, Lock, Loader2, Phone, User, Camera } from "lucide-react";
+import { UserPlus, Mail, Lock, Loader2, Phone, User, Camera, ChevronDown } from "lucide-react";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import AuthLayout from "@/components/AuthLayout";
 import GoogleIcon from "@/components/GoogleIcon";
 import { toast } from "@/components/ui/use-toast";
+import { COUNTRY_MAP, detectCountryFromPhone, generateApplicationId } from "@/lib/appIdGenerator";
 
-function generateUniqueId(displayName) {
-  const base = displayName.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 8) || "user";
-  const rand = Math.floor(10000 + Math.random() * 90000);
-  return `${base}${rand}`;
-}
+const COUNTRY_OPTIONS = Object.entries(COUNTRY_MAP).map(([code, calling]) => ({
+  code, calling, label: `${code} (+${calling})`
+}));
 
 export default function Register() {
   const [step, setStep] = useState("register"); // register | otp | profile
@@ -23,8 +22,10 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [otpCode, setOtpCode] = useState("");
   const [phone, setPhone] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("QAT");
   const [displayName, setDisplayName] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [generatedId, setGeneratedId] = useState("");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -72,7 +73,7 @@ export default function Register() {
     }
   };
 
-  // Step 3: Upload avatar
+  // Upload avatar
   const handleAvatarUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -87,7 +88,7 @@ export default function Register() {
     }
   };
 
-  // Step 4: Save profile
+  // Save profile with generated Application ID
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     setError("");
@@ -96,16 +97,32 @@ export default function Register() {
     setLoading(true);
     try {
       const me = await base44.auth.me();
-      const uniqueId = generateUniqueId(displayName);
+
+      // Auto-detect country from phone or use selected
+      const fullPhone = `+${COUNTRY_MAP[selectedCountry]}${phone.replace(/\D/g, "")}`;
+      const countryCode = detectCountryFromPhone(fullPhone) || selectedCountry;
+
+      // Fetch all existing application IDs to ensure uniqueness
+      const allProfiles = await base44.entities.UserProfile.list();
+      const existingIds = allProfiles.map(p => p.application_id).filter(Boolean);
+      const appId = generateApplicationId(countryCode, existingIds);
+
+      setGeneratedId(appId);
+
       await base44.entities.UserProfile.create({
         user_id: me.id,
         display_name: displayName.trim(),
         avatar_url: avatarUrl,
-        phone: phone.trim(),
-        unique_id: uniqueId,
+        phone: fullPhone,
+        country_code: countryCode,
+        application_id: appId,
+        previous_application_ids: [],
         is_online: true,
         setup_complete: true,
+        role: "User",
+        is_lucky_id: false,
       });
+
       window.location.href = "/";
     } catch (err) {
       setError(err.message || "Failed to save profile");
@@ -145,7 +162,7 @@ export default function Register() {
   // ── Profile Setup Screen ──
   if (step === "profile") {
     return (
-      <AuthLayout icon={UserPlus} title="Set up your profile" subtitle="Almost there! Complete your profile">
+      <AuthLayout icon={UserPlus} title="Set up your profile" subtitle="Complete your profile to continue">
         {error && <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">{error}</div>}
 
         {/* Avatar Upload */}
@@ -168,6 +185,7 @@ export default function Register() {
         </div>
 
         <form onSubmit={handleSaveProfile} className="space-y-4">
+          {/* Display Name */}
           <div className="space-y-2">
             <Label htmlFor="displayName">Display Name *</Label>
             <div className="relative">
@@ -176,14 +194,37 @@ export default function Register() {
                 onChange={e => setDisplayName(e.target.value)} className="pl-10 h-12" required />
             </div>
           </div>
+
+          {/* Country Selector */}
           <div className="space-y-2">
-            <Label htmlFor="phone">Mobile Number *</Label>
+            <Label htmlFor="country">Country *</Label>
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input id="phone" type="tel" placeholder="+1 234 567 8900" value={phone}
-                onChange={e => setPhone(e.target.value)} className="pl-10 h-12" required />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+              <select id="country" value={selectedCountry} onChange={e => setSelectedCountry(e.target.value)}
+                className="w-full h-12 pl-3 pr-10 rounded-md border border-input bg-background text-sm appearance-none outline-none focus:ring-2 focus:ring-ring">
+                {COUNTRY_OPTIONS.map(c => (
+                  <option key={c.code} value={c.code}>{c.label}</option>
+                ))}
+              </select>
             </div>
           </div>
+
+          {/* Phone Number */}
+          <div className="space-y-2">
+            <Label htmlFor="phone">Mobile Number *</Label>
+            <div className="flex gap-2">
+              <div className="flex items-center px-3 h-12 rounded-md border border-input bg-muted text-sm font-medium min-w-[70px]">
+                +{COUNTRY_MAP[selectedCountry]}
+              </div>
+              <div className="relative flex-1">
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input id="phone" type="tel" placeholder="300 1234567" value={phone}
+                  onChange={e => setPhone(e.target.value)} className="pl-10 h-12" required />
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground">Your Application ID will be auto-generated based on your country</p>
+          </div>
+
           <Button type="submit" className="w-full h-12 font-medium" disabled={loading || uploading}>
             {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Creating profile...</> : "Complete Setup →"}
           </Button>
