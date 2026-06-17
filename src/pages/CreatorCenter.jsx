@@ -120,6 +120,7 @@ export default function CreatorCenter() {
 
   const handleClick = (item) => {
     if (item.id === "app-owner") navigate("/owner-dashboard");
+    if (item.id === "country-manager") navigate("/country-manager-dashboard");
   };
 
   return (

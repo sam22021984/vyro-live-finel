@@ -40,6 +40,7 @@ import HostDashboardPage from '@/pages/HostDashboardPage';
 import AgencyDashboardPage from '@/pages/AgencyDashboardPage';
 import CreatorCenter from '@/pages/CreatorCenter';
 import OwnerDashboard from '@/pages/OwnerDashboard';
+import CountryManagerDashboard from '@/pages/CountryManagerDashboard';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -96,6 +97,7 @@ const AuthenticatedApp = () => {
         <Route path="/agency-dashboard-page" element={<AgencyDashboardPage />} />
         <Route path="/creator-center" element={<CreatorCenter />} />
         <Route path="/owner-dashboard" element={<OwnerDashboard />} />
+        <Route path="/country-manager-dashboard" element={<CountryManagerDashboard />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
