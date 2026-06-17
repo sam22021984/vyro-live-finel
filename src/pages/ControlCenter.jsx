@@ -28,7 +28,8 @@ export default function ControlCenter() {
       <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 12 }}>
         {[
           { path: "/agent-dashboard",  icon: "🤝", label: "Agent Dashboard",  desc: "Recruitment, hosts, targets, earnings & compliance", bg: "linear-gradient(135deg,#FFF7ED,#FEF3C7)" },
-          { path: "/host-dashboard",   icon: "🎙️", label: "Host Dashboard",   desc: "Streaming, audience, earnings, ranking & content",  bg: "linear-gradient(135deg,#F5F3FF,#EDE9FE)" },
+          { path: "/host-dashboard",      icon: "🎙️", label: "Host Dashboard",    desc: "Streaming, audience, earnings, ranking & content",   bg: "linear-gradient(135deg,#F5F3FF,#EDE9FE)" },
+          { path: "/agency-dashboard-page", icon: "🏢", label: "Agency Dashboard", desc: "Hosts, recruitment, revenue, analytics & compliance", bg: "linear-gradient(135deg,#ECFDF5,#D1FAE5)" },
         ].map(item => (
           <motion.div key={item.path} whileTap={{ scale: 0.97 }} onClick={() => navigate(item.path)}
             style={{ background: "#fff", borderRadius: 18, padding: "18px 16px", border: "1px solid #F0F0F8", boxShadow: "0 4px 16px rgba(0,0,0,0.07)", display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }}>
