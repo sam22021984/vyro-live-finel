@@ -20,7 +20,7 @@ export default function MeHeader() {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ width: "100%", boxSizing: "border-box", overflow: "hidden" }}>
       {/* Avatar */}
       <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
         <div style={{ position: "relative" }}>
@@ -93,7 +93,7 @@ export default function MeHeader() {
         </div>
 
         {/* Badges Row */}
-        <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 5, marginTop: 10 }}>
+        <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 5, marginTop: 10, maxWidth: "100%", overflow: "hidden" }}>
           {BADGES.map(b => (
             <span key={b.label} style={{
               display: "inline-flex", alignItems: "center", gap: 3,

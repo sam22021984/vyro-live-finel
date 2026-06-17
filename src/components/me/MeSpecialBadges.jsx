@@ -26,7 +26,7 @@ export default function MeSpecialBadges() {
           {activeCount}/{BADGES.length} Earned
         </span>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 8, width: "100%" }}>
         {BADGES.map((b, i) => (
           <motion.div key={b.label}
             initial={{ opacity: 0, scale: 0.75 }} animate={{ opacity: 1, scale: 1 }}

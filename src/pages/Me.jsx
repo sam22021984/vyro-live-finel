@@ -26,15 +26,23 @@ export default function Me() {
 
   return (
     <div style={{
-      minHeight: "100vh",
+      minHeight: "100dvh",
+      width: "100%",
+      maxWidth: "100vw",
       background: "linear-gradient(160deg, #fdfcff 0%, #f5f0ff 40%, #fff8f0 100%)",
       fontFamily: "'Inter', system-ui, sans-serif",
-      paddingBottom: 100,
+      paddingBottom: "max(100px, calc(90px + env(safe-area-inset-bottom, 0px)))",
       overflowX: "hidden",
+      boxSizing: "border-box",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
     }}>
       {/* Cover Photo */}
       <div style={{
         height: 160,
+        width: "100%",
+        maxWidth: "100vw",
         background: "linear-gradient(135deg, #667eea 0%, #764ba2 40%, #f093fb 100%)",
         position: "relative",
         overflow: "hidden",
@@ -72,7 +80,7 @@ export default function Me() {
         </div>
       </div>
 
-      <div style={{ padding: "0 16px", marginTop: -70 }}>
+      <div style={{ padding: "0 16px", marginTop: -70, width: "100%", maxWidth: 600, boxSizing: "border-box", overflowX: "hidden" }}>
         <MeHeader />
 
         {/* Social Stats Bar */}
@@ -82,6 +90,7 @@ export default function Me() {
           borderRadius: 20, overflow: "hidden",
           border: "1px solid rgba(124,58,237,0.10)",
           boxShadow: "0 4px 16px rgba(0,0,0,0.05)",
+          width: "100%",
         }}>
           {[
             { label: "Following", count: "1.2K" },
@@ -113,6 +122,9 @@ export default function Me() {
           border: "1px solid rgba(124,58,237,0.1)",
           boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
           overflowX: "auto",
+          WebkitOverflowScrolling: "touch",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
         }}>
           {TABS.map(tab => (
             <motion.button key={tab} onClick={() => setActiveTab(tab)}

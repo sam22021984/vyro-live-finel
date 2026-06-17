@@ -80,6 +80,7 @@ export default function MeVIPSection() {
       borderRadius: 24, padding: 16, marginTop: 16,
       border: "1px solid rgba(124,58,237,0.1)",
       boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
+      width: "100%", boxSizing: "border-box", overflow: "hidden",
     }}>
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
@@ -124,7 +125,7 @@ export default function MeVIPSection() {
       </div>
 
       {/* Tier grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 8, width: "100%" }}>
         {VIPS.map((v, i) => (
           <TierCard key={v.label} v={v} i={i} isActive={v.tier === ACTIVE_TIER} onClick={() => navigate("/vip-membership")} />
         ))}

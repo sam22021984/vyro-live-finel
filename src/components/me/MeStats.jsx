@@ -19,9 +19,10 @@ export default function MeStats() {
       borderRadius: 24, padding: 16, marginTop: 12,
       border: "1px solid rgba(124,58,237,0.08)",
       boxShadow: "0 8px 32px rgba(0,0,0,0.06)",
+      width: "100%", boxSizing: "border-box",
     }}>
       <div style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e", marginBottom: 12 }}>📊 Statistics</div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 8 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 8, width: "100%" }}>
         {STATS.map((s, i) => (
           <motion.div key={s.label}
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}

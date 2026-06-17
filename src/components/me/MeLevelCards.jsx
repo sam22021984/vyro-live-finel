@@ -36,7 +36,7 @@ const pct = (xp, next) => Math.round((xp / next) * 100);
 
 export default function MeLevelCards() {
   return (
-    <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+    <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, width: "100%", boxSizing: "border-box" }}>
       {LEVELS.map((l, i) => (
         <motion.div key={l.label}
           initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}

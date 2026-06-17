@@ -17,7 +17,7 @@ export default function MeSocial() {
       boxShadow: "0 8px 32px rgba(0,0,0,0.06)",
     }}>
       <div style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e", marginBottom: 12 }}>🌐 Social</div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 8 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 8, width: "100%" }}>
         {SOCIAL.map((s, i) => (
           <motion.div key={s.label}
             initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }}

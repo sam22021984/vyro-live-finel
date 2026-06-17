@@ -22,7 +22,7 @@ export default function MeTopFans() {
           Top 5
         </span>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8, width: "100%" }}>
         {FANS.map((f, i) => (
           <motion.div key={f.rank}
             initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
