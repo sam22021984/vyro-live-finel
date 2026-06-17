@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 const BALANCES = [
-  { label: "Recharge Coins",         value: "1T 🪙",  icon: "🪙", color: "#FFC83D" },
+  { label: "Coins Balance",          value: "0",     icon: "🪙", color: "#FFC83D" },
   { label: "Diamonds Balance",       value: "0 💎",   icon: "💎", color: "#60A5FA" },
   { label: "CP Balance",             value: "0 CP",   icon: "🔷", color: "#8B5CF6" },
   { label: "Cash Balance",           value: "$0.00",  icon: "💵", color: "#10B981" },
@@ -30,34 +30,6 @@ export default function FinanceWallet() {
 
   return (
     <div style={{ padding: "14px" }}>
-
-      {/* Recharge Wallet Banner */}
-      <div style={{
-        background: "linear-gradient(135deg,#0D1B3E,#1F6BFF,#7C3AED)",
-        borderRadius: 18, padding: "16px", marginBottom: 14,
-        boxShadow: "0 8px 24px rgba(31,107,255,0.3)",
-        position: "relative", overflow: "hidden",
-      }}>
-        <div style={{ position: "absolute", top: -20, right: -20, width: 80, height: 80, borderRadius: "50%", background: "rgba(255,200,61,0.12)", pointerEvents: "none" }} />
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-          <span style={{ fontSize: 24 }}>🪙</span>
-          <div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", fontWeight: 800, letterSpacing: "0.06em" }}>MAIN RECHARGE COIN WALLET</div>
-            <div style={{ fontSize: 8, color: "rgba(255,255,255,0.4)" }}>VYRO · Application Owner · Active</div>
-          </div>
-          <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 4, background: "rgba(34,197,94,0.15)", borderRadius: 8, padding: "3px 8px", border: "1px solid rgba(34,197,94,0.3)" }}>
-            <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#22C55E" }} />
-            <span style={{ fontSize: 9, fontWeight: 900, color: "#22C55E" }}>Active</span>
-          </div>
-        </div>
-        <div style={{ fontSize: 26, fontWeight: 900, color: "#FFC83D", lineHeight: 1 }}>1 Trillion</div>
-        <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>1,000,000,000,000 Coins Available</div>
-        <div style={{ display: "flex", gap: 5, marginTop: 10, flexWrap: "wrap" }}>
-          {["🎁 Gifting", "🔄 Transfers", "🏆 Rewards", "📢 Promotions"].map(t => (
-            <span key={t} style={{ fontSize: 8, fontWeight: 800, color: "#FFC83D", background: "rgba(255,200,61,0.1)", borderRadius: 7, padding: "2px 7px", border: "1px solid rgba(255,200,61,0.2)" }}>{t}</span>
-          ))}
-        </div>
-      </div>
 
       {/* Balance Grid */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
