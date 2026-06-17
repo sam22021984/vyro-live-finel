@@ -34,7 +34,7 @@ export default function Social() {
   const current = SECTIONS.find(s => s.id === active);
 
   return (
-    <div style={{ minHeight: "100dvh", background: "#F5F7FA", fontFamily: "'Inter', system-ui, sans-serif", paddingBottom: 80 }}>
+    <div style={{ minHeight: "100dvh", width: "100%", maxWidth: "100vw", overflowX: "hidden", boxSizing: "border-box", background: "#F5F7FA", fontFamily: "'Inter', system-ui, sans-serif", paddingBottom: "max(90px,calc(90px + env(safe-area-inset-bottom,0px)))" }}>
 
       {/* Header */}
       <div style={{

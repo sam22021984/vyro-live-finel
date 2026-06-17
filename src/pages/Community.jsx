@@ -29,6 +29,10 @@ export default function Community() {
   return (
     <div style={{
       minHeight: "100dvh",
+      width: "100%",
+      maxWidth: "100vw",
+      overflowX: "hidden",
+      boxSizing: "border-box",
       background: "#0D0D1A",
       fontFamily: "'Inter', system-ui, sans-serif",
       display: "flex", flexDirection: "column",

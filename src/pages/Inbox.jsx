@@ -46,7 +46,7 @@ export default function Inbox() {
   };
 
   return (
-    <div style={{ minHeight:"100vh", background:"linear-gradient(160deg,#fdfcff 0%,#f5f0ff 40%,#fff8f0 100%)", paddingBottom:100 }}>
+    <div style={{ minHeight:"100dvh", width:"100%", maxWidth:"100vw", overflowX:"hidden", boxSizing:"border-box", background:"linear-gradient(160deg,#fdfcff 0%,#f5f0ff 40%,#fff8f0 100%)", paddingBottom:"max(100px,calc(90px + env(safe-area-inset-bottom,0px)))" }}>
       {/* Header */}
       <div style={{ padding:"52px 16px 0", background:"rgba(255,255,255,0.9)", backdropFilter:"blur(20px)", borderBottom:"1px solid rgba(124,58,237,0.08)" }}>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
@@ -76,7 +76,7 @@ export default function Inbox() {
         </div>
 
         {/* Filter Tabs */}
-        <div style={{ display:"flex", gap:6, paddingBottom:12, overflowX:"auto" }}>
+        <div style={{ display:"flex", gap:6, paddingBottom:12, overflowX:"auto", WebkitOverflowScrolling:"touch", scrollbarWidth:"none", msOverflowStyle:"none" }}>
           {["all","pinned","unread","online"].map(f => (
             <motion.button key={f} whileTap={{ scale:0.94 }} onClick={() => setFilter(f)}
               style={{ padding:"5px 14px", borderRadius:20, border:"none", cursor:"pointer", fontSize:11, fontWeight:800, whiteSpace:"nowrap",

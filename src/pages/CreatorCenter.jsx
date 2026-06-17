@@ -137,9 +137,13 @@ export default function CreatorCenter() {
   return (
     <div style={{
       minHeight: "100dvh",
+      width: "100%",
+      maxWidth: "100vw",
+      overflowX: "hidden",
+      boxSizing: "border-box",
       background: "#FFFFFF",
       fontFamily: "'Inter', system-ui, sans-serif",
-      paddingBottom: 90,
+      paddingBottom: "max(90px, calc(90px + env(safe-area-inset-bottom, 0px)))",
     }}>
       {/* ── Sticky Header ── */}
       <div style={{
@@ -216,7 +220,8 @@ export default function CreatorCenter() {
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
-          gap: 12,
+          gap: 10,
+          width: "100%",
         }}>
           {DASHBOARDS.map((item, i) => (
             <motion.div

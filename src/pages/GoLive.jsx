@@ -244,6 +244,10 @@ export default function GoLive() {
   return (
     <div style={{
       minHeight: "100dvh",
+      width: "100%",
+      maxWidth: "100vw",
+      overflowX: "hidden",
+      boxSizing: "border-box",
       background: "#0D0D1A",
       fontFamily: "'Inter', system-ui, sans-serif",
       display: "flex", flexDirection: "column",
@@ -428,7 +432,7 @@ export default function GoLive() {
 
         {/* ── Category ── */}
         <Section title="Category" accent="#F59E0B">
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, width: "100%" }}>
             {CATEGORIES.map(cat => (
               <motion.button key={cat.value} whileTap={{ scale: 0.92 }}
                 onClick={() => set("category", cat.value)}
