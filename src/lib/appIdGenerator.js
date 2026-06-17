@@ -1,7 +1,7 @@
 /**
  * Global Application ID System
- * Format: [COUNTRY_SHORT_CODE]-[COUNTRY_CALLING_CODE][18-DIGIT_SERIAL]
- * Example: QAT-974000000000000001
+ * Format: [COUNTRY_SHORT_CODE]-[COUNTRY_CALLING_CODE][SERIAL] = 12 digits total
+ * Example: QAT-974000000001
  */
 
 export const COUNTRY_MAP = {
@@ -14,31 +14,28 @@ export const COUNTRY_MAP = {
 // Detect country from phone prefix
 export function detectCountryFromPhone(phone) {
   const digits = phone.replace(/\D/g, "");
-  // Try longest prefix first
   const sorted = Object.entries(COUNTRY_MAP).sort((a, b) => b[1].length - a[1].length);
   for (const [code, calling] of sorted) {
     if (digits.startsWith(calling)) return code;
   }
-  return "QAT"; // default
+  return "QAT";
 }
 
-// Pad serial to 18 digits total (calling code + zero-padded serial)
+// Pad serial so total numeric part = 12 digits (calling code + zero-padded serial)
 function buildSerial(callingCode, serialNum) {
-  const serialStr = String(serialNum).padStart(18 - callingCode.length, "0");
+  const serialStr = String(serialNum).padStart(12 - callingCode.length, "0");
   return callingCode + serialStr;
 }
 
 // Generate a new unique Application ID
-// existingIds: array of all current application_ids in DB
 export function generateApplicationId(countryCode, existingIds = []) {
   const calling = COUNTRY_MAP[countryCode] || "974";
   const prefix = `${countryCode}-`;
 
-  // Find max serial used for this country
   let maxSerial = 0;
   for (const id of existingIds) {
     if (id.startsWith(prefix)) {
-      const numPart = id.slice(prefix.length + calling.length); // strip country code digits
+      const numPart = id.slice(prefix.length + calling.length);
       const serial = parseInt(numPart, 10);
       if (!isNaN(serial) && serial > maxSerial) maxSerial = serial;
     }
@@ -48,7 +45,7 @@ export function generateApplicationId(countryCode, existingIds = []) {
   return `${countryCode}-${buildSerial(calling, nextSerial)}`;
 }
 
-// Validate ID format
+// Validate ID format (12 numeric digits after dash)
 export function isValidApplicationId(id) {
-  return /^[A-Z]{2,3}-\d{18}$/.test(id);
+  return /^[A-Z]{2,3}-\d{12}$/.test(id);
 }
