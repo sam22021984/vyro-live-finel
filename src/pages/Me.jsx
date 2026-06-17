@@ -15,6 +15,8 @@ import MeThemes from "@/components/me/MeThemes";
 import MeExtras from "@/components/me/MeExtras";
 import MeMoreMenu from "@/components/me/MeMoreMenu";
 import MeMoreServices from "@/components/me/MeMoreServices";
+import MeTopFans from "@/components/me/MeTopFans";
+import MeSpecialBadges from "@/components/me/MeSpecialBadges";
 
 const TABS = ["Profile", "Stats", "History", "Settings"];
 
@@ -139,10 +141,12 @@ export default function Me() {
                 <MeVIPSection />
                 <MeLevelCards />
                 <MeStats />
+                <MeTopFans />
+                <MeSpecialBadges />
                 <MeSocial />
                 <MeExtras />
-                <MeAbout />
                 <MeAchievements />
+                <MeAbout />
                 <MeMoreServices />
               </>
             )}
