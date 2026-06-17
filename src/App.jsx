@@ -49,6 +49,7 @@ import MarketingManagerDashboard from '@/pages/MarketingManagerDashboard';
 import VIPManagerDashboard from '@/pages/VIPManagerDashboard';
 import RewardManagerDashboard from '@/pages/RewardManagerDashboard';
 import PKManagerDashboard from '@/pages/PKManagerDashboard';
+import EventManagerDashboard from '@/pages/EventManagerDashboard';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -114,6 +115,7 @@ const AuthenticatedApp = () => {
         <Route path="/vip-manager-dashboard" element={<VIPManagerDashboard />} />
         <Route path="/reward-manager-dashboard" element={<RewardManagerDashboard />} />
         <Route path="/pk-manager-dashboard" element={<PKManagerDashboard />} />
+        <Route path="/event-manager-dashboard" element={<EventManagerDashboard />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

@@ -129,6 +129,7 @@ export default function CreatorCenter() {
     if (item.id === "vip-manager") navigate("/vip-manager-dashboard");
     if (item.id === "reward-manager") navigate("/reward-manager-dashboard");
     if (item.id === "pk-manager") navigate("/pk-manager-dashboard");
+    if (item.id === "event-manager") navigate("/event-manager-dashboard");
   };
 
   return (
