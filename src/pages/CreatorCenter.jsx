@@ -128,6 +128,7 @@ export default function CreatorCenter() {
     if (item.id === "marketing-manager") navigate("/marketing-manager-dashboard");
     if (item.id === "vip-manager") navigate("/vip-manager-dashboard");
     if (item.id === "reward-manager") navigate("/reward-manager-dashboard");
+    if (item.id === "pk-manager") navigate("/pk-manager-dashboard");
   };
 
   return (
