@@ -1,0 +1,72 @@
+{
+  "name": "UserProfile",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "avatar_url": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "unique_id": {
+      "type": "string"
+    },
+    "bio": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "male",
+        "female",
+        "other"
+      ]
+    },
+    "is_online": {
+      "type": "boolean",
+      "default": false
+    },
+    "followers_count": {
+      "type": "number",
+      "default": 0
+    },
+    "following_count": {
+      "type": "number",
+      "default": 0
+    },
+    "friends_count": {
+      "type": "number",
+      "default": 0
+    },
+    "visitors_count": {
+      "type": "number",
+      "default": 0
+    },
+    "coins_balance": {
+      "type": "number",
+      "default": 0
+    },
+    "diamonds_balance": {
+      "type": "number",
+      "default": 0
+    },
+    "setup_complete": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "user_id",
+    "display_name",
+    "unique_id"
+  ]
+}
