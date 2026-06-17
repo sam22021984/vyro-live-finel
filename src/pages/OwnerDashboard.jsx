@@ -750,6 +750,135 @@ function BusinessIntelligenceCenter({ onBack }) {
   );
 }
 
+function CoinsWalletCenter({ onBack }) {
+  const PRIMARY_BALANCE = 1_000_000_000_000;
+  const OFFLINE_BALANCE = 1_000_000_000_000;
+  const TOTAL = PRIMARY_BALANCE + OFFLINE_BALANCE;
+
+  const fmtFull = (n) => n.toLocaleString();
+  const fmtShort = (n) => {
+    if (n >= 1_000_000_000_000) return `${(n / 1_000_000_000_000).toFixed(0)} Trillion`;
+    if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(0)} Billion`;
+    return fmtFull(n);
+  };
+
+  const wallets = [
+    {
+      name: "VYRO Primary Coin Wallet",
+      type: "Primary · Live Wallet",
+      balance: PRIMARY_BALANCE,
+      icon: "🪙",
+      gradient: "linear-gradient(135deg,#1F6BFF,#0D1B3E)",
+      accent: "#FFC83D",
+      glow: "rgba(31,107,255,0.4)",
+      status: "Active",
+      statusColor: "#22C55E",
+      tag: "LIVE WALLET",
+    },
+    {
+      name: "Offline Coin Reserve",
+      type: "Reserve · Offline System Ops",
+      balance: OFFLINE_BALANCE,
+      icon: "🏦",
+      gradient: "linear-gradient(135deg,#7C3AED,#4C1D95)",
+      accent: "#C084FC",
+      glow: "rgba(124,58,237,0.4)",
+      status: "Reserve",
+      statusColor: "#C084FC",
+      tag: "OFFLINE RESERVE",
+    },
+  ];
+
+  const txHistory = [
+    { type: "System Top-Up",    amount: "+500B",  time: "Today",    color: "#10B981" },
+    { type: "Platform Reserve", amount: "+1T",    time: "Genesis",  color: "#FFC83D" },
+    { type: "Owner Allocation", amount: "+500B",  time: "Genesis",  color: "#60A5FA" },
+  ];
+
+  return (
+    <PageShell title="🪙 Coins Wallet" subtitle="Owner Wallet System · Enterprise" onBack={onBack}>
+      {/* Total Balance Hero */}
+      <div style={{
+        background: "linear-gradient(135deg,#0D1B3E,#1F6BFF,#7C3AED)",
+        borderRadius: 20, padding: "20px 18px", marginBottom: 14,
+        boxShadow: "0 10px 36px rgba(31,107,255,0.4)",
+        position: "relative", overflow: "hidden",
+      }}>
+        <div style={{ position: "absolute", top: -30, right: -30, width: 130, height: 130, borderRadius: "50%", background: "rgba(255,200,61,0.12)", pointerEvents: "none" }} />
+        <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", fontWeight: 800, letterSpacing: "0.08em", marginBottom: 5 }}>COMBINED TOTAL BALANCE</div>
+        <div style={{ fontSize: 32, fontWeight: 900, color: "#FFC83D", lineHeight: 1 }}>2 Trillion</div>
+        <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", marginTop: 3 }}>{fmtFull(TOTAL)} Coins</div>
+        <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
+          <div style={{ flex: 1, background: "rgba(255,255,255,0.1)", borderRadius: 12, padding: "8px 10px", textAlign: "center" }}>
+            <div style={{ fontSize: 12, fontWeight: 900, color: "#FFC83D" }}>1 Trillion</div>
+            <div style={{ fontSize: 8, color: "rgba(255,255,255,0.45)" }}>Primary</div>
+          </div>
+          <div style={{ flex: 1, background: "rgba(255,255,255,0.1)", borderRadius: 12, padding: "8px 10px", textAlign: "center" }}>
+            <div style={{ fontSize: 12, fontWeight: 900, color: "#C084FC" }}>1 Trillion</div>
+            <div style={{ fontSize: 8, color: "rgba(255,255,255,0.45)" }}>Reserve</div>
+          </div>
+          <div style={{ flex: 1, background: "rgba(255,255,255,0.1)", borderRadius: 12, padding: "8px 10px", textAlign: "center" }}>
+            <div style={{ fontSize: 12, fontWeight: 900, color: "#22C55E" }}>Active</div>
+            <div style={{ fontSize: 8, color: "rgba(255,255,255,0.45)" }}>Status</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Wallet Cards */}
+      {wallets.map((w, i) => (
+        <motion.div key={w.name} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
+          style={{ borderRadius: 18, overflow: "hidden", marginBottom: 12, boxShadow: `0 8px 28px ${w.glow}` }}>
+          {/* Card top */}
+          <div style={{ background: w.gradient, padding: "16px 16px 18px", position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: -20, right: -20, width: 90, height: 90, borderRadius: "50%", background: "rgba(255,255,255,0.07)", pointerEvents: "none" }} />
+            {/* Tag */}
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 4, background: "rgba(255,255,255,0.12)", borderRadius: 8, padding: "2px 8px", marginBottom: 10 }}>
+              <div style={{ width: 5, height: 5, borderRadius: "50%", background: w.statusColor }} />
+              <span style={{ fontSize: 8, fontWeight: 900, color: "rgba(255,255,255,0.8)", letterSpacing: "0.07em" }}>{w.tag}</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+              <span style={{ fontSize: 26 }}>{w.icon}</span>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 900, color: "#fff" }}>{w.name}</div>
+                <div style={{ fontSize: 9, color: "rgba(255,255,255,0.5)", marginTop: 1 }}>{w.type}</div>
+              </div>
+            </div>
+            <div>
+              <div style={{ fontSize: 9, color: "rgba(255,255,255,0.5)", letterSpacing: "0.06em", marginBottom: 2 }}>BALANCE</div>
+              <div style={{ fontSize: 26, fontWeight: 900, color: w.accent, lineHeight: 1 }}>{fmtShort(w.balance)}</div>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>{fmtFull(w.balance)} Coins</div>
+            </div>
+          </div>
+          {/* Card footer */}
+          <div style={{ background: "#fff", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <div style={{ width: 8, height: 8, borderRadius: "50%", background: w.statusColor }} />
+              <span style={{ fontSize: 11, fontWeight: 800, color: "#374151" }}>{w.status}</span>
+            </div>
+            <span style={{ fontSize: 9, fontWeight: 800, color: "#9CA3AF", background: "#F3F4F6", borderRadius: 8, padding: "2px 8px" }}>Owner Only</span>
+          </div>
+        </motion.div>
+      ))}
+
+      {/* Transaction History */}
+      <div style={{ ...S.glass(), padding: "14px", marginBottom: 12 }}>
+        <div style={S.sectionTitle}>📜 WALLET HISTORY</div>
+        {txHistory.map((tx, i) => (
+          <div key={tx.type} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 0", borderBottom: i < txHistory.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 800, color: "#fff" }}>{tx.type}</div>
+              <div style={{ fontSize: 9, color: "#60A5FA" }}>{tx.time}</div>
+            </div>
+            <span style={{ fontSize: 13, fontWeight: 900, color: tx.color }}>{tx.amount}</span>
+          </div>
+        ))}
+      </div>
+
+      <ActionRow title="⚡ WALLET ACTIONS" actions={["Top-Up Coins", "Transfer Coins", "Audit Wallet", "Export Report"]} />
+    </PageShell>
+  );
+}
+
 function GlobalSettingsCenter({ onBack }) {
   const settings = [
     { name: "Coin Settings",       icon: "🪙", desc: "Packages, pricing, bonuses", color: "#FFC83D" },
@@ -845,6 +974,7 @@ function OwnerExclusivePowers({ onBack }) {
 
 /* ─────────────── MODULE REGISTRY ─────────────── */
 const MODULE_SCREENS = {
+  wallet:       CoinsWalletCenter,
   home:         DashboardHome,
   search:       GlobalSearchCenter,
   country:      CountryControlCenter,
@@ -886,6 +1016,7 @@ const MODULES = [
   { id: "bi",           icon: "📈", label: "BI Center",            subtitle: "Executive Analytics",       gradient: "linear-gradient(145deg,#10B981,#059669)", glow: "rgba(16,185,129,0.35)" },
   { id: "settings",     icon: "🔧", label: "Global Settings",      subtitle: "Platform Config",           gradient: "linear-gradient(145deg,#0EA5E9,#7C3AED)", glow: "rgba(14,165,233,0.3)" },
   { id: "powers",       icon: "🚀", label: "Owner Powers",         subtitle: "Supreme Authority",         gradient: "linear-gradient(145deg,#FFC83D,#EF4444)", glow: "rgba(255,200,61,0.5)", featured: true },
+  { id: "wallet",       icon: "🪙", label: "Coins Wallet",         subtitle: "Owner Wallet · 2T Coins",    gradient: "linear-gradient(145deg,#FFC83D,#1F6BFF)", glow: "rgba(255,200,61,0.5)", featured: true },
 ];
 
 /* ─────────────── MAIN DASHBOARD ─────────────── */
