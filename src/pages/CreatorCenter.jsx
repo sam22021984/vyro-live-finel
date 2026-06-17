@@ -118,6 +118,10 @@ const DASHBOARDS = [
 export default function CreatorCenter() {
   const navigate = useNavigate();
 
+  const handleClick = (item) => {
+    if (item.id === "app-owner") navigate("/owner-dashboard");
+  };
+
   return (
     <div style={{
       minHeight: "100dvh",
@@ -209,7 +213,7 @@ export default function CreatorCenter() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.04, duration: 0.25 }}
               whileTap={{ scale: 0.93 }}
-              onClick={() => {}}
+              onClick={() => handleClick(item)}
               style={{ cursor: "pointer" }}
             >
               {/* Card */}
