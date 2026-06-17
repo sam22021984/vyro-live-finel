@@ -122,6 +122,7 @@ export default function CreatorCenter() {
     if (item.id === "app-owner") navigate("/owner-dashboard");
     if (item.id === "country-manager") navigate("/country-manager-dashboard");
     if (item.id === "biz-developer") navigate("/business-developer-dashboard");
+    if (item.id === "biz-manager") navigate("/business-manager-dashboard");
   };
 
   return (
