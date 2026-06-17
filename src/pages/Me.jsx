@@ -17,7 +17,6 @@ import MeMoreMenu from "@/components/me/MeMoreMenu";
 import MeMoreServices from "@/components/me/MeMoreServices";
 import MeTopFans from "@/components/me/MeTopFans";
 import MeSpecialBadges from "@/components/me/MeSpecialBadges";
-import MeOwnerWallet from "@/components/me/MeOwnerWallet";
 
 const TABS = ["Profile", "Stats", "History", "Settings"];
 
@@ -83,7 +82,6 @@ export default function Me() {
 
       <div style={{ padding: "0 16px", marginTop: -70, width: "100%", maxWidth: 600, boxSizing: "border-box", overflowX: "hidden" }}>
         <MeHeader />
-        <MeOwnerWallet />
 
         {/* Social Stats Bar */}
         <div style={{
