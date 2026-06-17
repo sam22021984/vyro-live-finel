@@ -75,12 +75,27 @@ export default function Finance() {
             {/* Hero Balance Card */}
             <div style={{
               background: "linear-gradient(135deg,#0D1B3E,#1F6BFF)",
-              borderRadius: 20, padding: "20px", marginBottom: 16,
+              borderRadius: 20, padding: "20px", marginBottom: 12,
               boxShadow: "0 8px 28px rgba(31,107,255,0.28)",
+              position: "relative", overflow: "hidden",
             }}>
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", marginBottom: 4 }}>TOTAL BALANCE</div>
-              <div style={{ fontSize: 32, fontWeight: 900, color: "#fff", marginBottom: 4 }}>0 <span style={{ fontSize: 16, fontWeight: 600 }}>Coins</span></div>
-              <div style={{ display: "flex", gap: 16, marginTop: 14 }}>
+              <div style={{ position: "absolute", top: -30, right: -30, width: 110, height: 110, borderRadius: "50%", background: "rgba(255,200,61,0.1)", pointerEvents: "none" }} />
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", marginBottom: 2, fontWeight: 800, letterSpacing: "0.06em" }}>VYRO · APPLICATION OWNER</div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", marginBottom: 6 }}>Main Recharge Wallet</div>
+              <div style={{ fontSize: 30, fontWeight: 900, color: "#FFC83D", lineHeight: 1 }}>1 Trillion <span style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>Coins</span></div>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 3 }}>1,000,000,000,000 Coins · Recharge Coin Wallet</div>
+              {/* Status badges */}
+              <div style={{ display: "flex", gap: 6, marginTop: 10, flexWrap: "wrap" }}>
+                {[
+                  { label: "● Active", color: "#22C55E" },
+                  { label: "🎁 Gifting ON", color: "#FFC83D" },
+                  { label: "🔄 Transfers ON", color: "#60A5FA" },
+                  { label: "♾️ Unlimited", color: "#C084FC" },
+                ].map(b => (
+                  <span key={b.label} style={{ fontSize: 9, fontWeight: 800, color: b.color, background: "rgba(255,255,255,0.08)", borderRadius: 8, padding: "2px 7px" }}>{b.label}</span>
+                ))}
+              </div>
+              <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
                 {[
                   { label: "Diamonds", value: "0 💎" },
                   { label: "CP",       value: "0 CP" },
@@ -89,6 +104,26 @@ export default function Finance() {
                   <div key={b.label} style={{ flex: 1, background: "rgba(255,255,255,0.1)", borderRadius: 12, padding: "8px 10px" }}>
                     <div style={{ fontSize: 13, fontWeight: 900, color: "#fff" }}>{b.value}</div>
                     <div style={{ fontSize: 9, color: "rgba(255,255,255,0.55)", marginTop: 2 }}>{b.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Recharge Wallet Capabilities */}
+            <div style={{ background: "#fff", borderRadius: 16, padding: "14px", marginBottom: 14, border: "1px solid #F0F0F8", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+              <div style={{ fontSize: 12, fontWeight: 900, color: "#0D1B3E", marginBottom: 10 }}>⚡ Recharge Wallet Capabilities</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 7 }}>
+                {[
+                  { icon: "🎁", label: "Live Gifts" },
+                  { icon: "🧑‍🎤", label: "Creator Support" },
+                  { icon: "🎙️", label: "Host Rewards" },
+                  { icon: "🎉", label: "Event Rewards" },
+                  { icon: "👑", label: "VIP Rewards" },
+                  { icon: "📢", label: "Promotions" },
+                ].map(f => (
+                  <div key={f.label} style={{ background: "linear-gradient(135deg,#EFF6FF,#F5F3FF)", borderRadius: 12, padding: "10px 6px", textAlign: "center", border: "1px solid rgba(31,107,255,0.1)" }}>
+                    <div style={{ fontSize: 18, marginBottom: 3 }}>{f.icon}</div>
+                    <div style={{ fontSize: 9, fontWeight: 800, color: "#374151", lineHeight: 1.2 }}>{f.label}</div>
                   </div>
                 ))}
               </div>
