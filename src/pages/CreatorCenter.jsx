@@ -126,6 +126,7 @@ export default function CreatorCenter() {
     if (item.id === "support-manager") navigate("/support-manager-dashboard");
     if (item.id === "finance-manager") navigate("/finance-manager-dashboard");
     if (item.id === "marketing-manager") navigate("/marketing-manager-dashboard");
+    if (item.id === "vip-manager") navigate("/vip-manager-dashboard");
   };
 
   return (
