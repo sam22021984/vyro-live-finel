@@ -130,6 +130,7 @@ export default function CreatorCenter() {
     if (item.id === "reward-manager") navigate("/reward-manager-dashboard");
     if (item.id === "pk-manager") navigate("/pk-manager-dashboard");
     if (item.id === "event-manager") navigate("/event-manager-dashboard");
+    if (item.id === "super-admin") navigate("/super-admin-dashboard");
   };
 
   return (
