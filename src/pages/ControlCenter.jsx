@@ -25,16 +25,21 @@ export default function ControlCenter() {
         </div>
       </div>
 
-      <div style={{ padding: 16 }}>
-        <motion.div whileTap={{ scale: 0.97 }} onClick={() => navigate("/agent-dashboard")}
-          style={{ background: "#fff", borderRadius: 18, padding: "18px 16px", border: "1px solid #F0F0F8", boxShadow: "0 4px 16px rgba(0,0,0,0.07)", display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }}>
-          <div style={{ width: 52, height: 52, borderRadius: 15, background: "linear-gradient(135deg,#FFF7ED,#FEF3C7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, flexShrink: 0 }}>🤝</div>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 15, fontWeight: 900, color: "#0D1B3E", marginBottom: 3 }}>Agent Dashboard</div>
-            <div style={{ fontSize: 11, color: "#9CA3AF" }}>Recruitment, hosts, targets, earnings & compliance</div>
-          </div>
-          <span style={{ fontSize: 20, color: "#D1D5DB" }}>›</span>
-        </motion.div>
+      <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 12 }}>
+        {[
+          { path: "/agent-dashboard",  icon: "🤝", label: "Agent Dashboard",  desc: "Recruitment, hosts, targets, earnings & compliance", bg: "linear-gradient(135deg,#FFF7ED,#FEF3C7)" },
+          { path: "/host-dashboard",   icon: "🎙️", label: "Host Dashboard",   desc: "Streaming, audience, earnings, ranking & content",  bg: "linear-gradient(135deg,#F5F3FF,#EDE9FE)" },
+        ].map(item => (
+          <motion.div key={item.path} whileTap={{ scale: 0.97 }} onClick={() => navigate(item.path)}
+            style={{ background: "#fff", borderRadius: 18, padding: "18px 16px", border: "1px solid #F0F0F8", boxShadow: "0 4px 16px rgba(0,0,0,0.07)", display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }}>
+            <div style={{ width: 52, height: 52, borderRadius: 15, background: item.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, flexShrink: 0 }}>{item.icon}</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 15, fontWeight: 900, color: "#0D1B3E", marginBottom: 3 }}>{item.label}</div>
+              <div style={{ fontSize: 11, color: "#9CA3AF" }}>{item.desc}</div>
+            </div>
+            <span style={{ fontSize: 20, color: "#D1D5DB" }}>›</span>
+          </motion.div>
+        ))}
       </div>
     </div>
   );
