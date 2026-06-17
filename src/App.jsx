@@ -44,6 +44,7 @@ import CountryManagerDashboard from '@/pages/CountryManagerDashboard';
 import BusinessDeveloperDashboard from '@/pages/BusinessDeveloperDashboard';
 import BusinessManagerDashboard from '@/pages/BusinessManagerDashboard';
 import SupportManagerDashboard from '@/pages/SupportManagerDashboard';
+import FinanceManagerDashboard from '@/pages/FinanceManagerDashboard';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -104,6 +105,7 @@ const AuthenticatedApp = () => {
         <Route path="/business-developer-dashboard" element={<BusinessDeveloperDashboard />} />
         <Route path="/business-manager-dashboard" element={<BusinessManagerDashboard />} />
         <Route path="/support-manager-dashboard" element={<SupportManagerDashboard />} />
+        <Route path="/finance-manager-dashboard" element={<FinanceManagerDashboard />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

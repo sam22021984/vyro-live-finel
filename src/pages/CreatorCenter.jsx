@@ -124,6 +124,7 @@ export default function CreatorCenter() {
     if (item.id === "biz-developer") navigate("/business-developer-dashboard");
     if (item.id === "biz-manager") navigate("/business-manager-dashboard");
     if (item.id === "support-manager") navigate("/support-manager-dashboard");
+    if (item.id === "finance-manager") navigate("/finance-manager-dashboard");
   };
 
   return (
