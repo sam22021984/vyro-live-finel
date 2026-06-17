@@ -52,6 +52,9 @@ import PKManagerDashboard from '@/pages/PKManagerDashboard';
 import EventManagerDashboard from '@/pages/EventManagerDashboard';
 import SuperAdminDashboard from '@/pages/SuperAdminDashboard';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
+import VIPMembership from '@/pages/VIPMembership';
+import Mall from '@/pages/Mall';
+import TrustReputation from '@/pages/TrustReputation';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -120,6 +123,9 @@ const AuthenticatedApp = () => {
         <Route path="/event-manager-dashboard" element={<EventManagerDashboard />} />
         <Route path="/super-admin-dashboard" element={<SuperAdminDashboard />} />
         <Route path="/admin-dashboard-page" element={<AdminDashboardPage />} />
+        <Route path="/vip-membership" element={<VIPMembership />} />
+        <Route path="/mall" element={<Mall />} />
+        <Route path="/trust-reputation" element={<TrustReputation />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

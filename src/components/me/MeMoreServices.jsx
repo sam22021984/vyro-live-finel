@@ -21,6 +21,9 @@ const SERVICES = [
   { id: "app_center",           title: "Apply Center",          icon: "💼", path: "/app-center" },
   { id: "control_center",       title: "Control Center",        icon: "🎛️", path: "/control-center" },
   { id: "creator_center",       title: "Creator Center",        icon: "🚀", path: "/creator-center" },
+  { id: "vip_membership",       title: "VIP Membership",        icon: "💎", path: "/vip-membership" },
+  { id: "mall",                 title: "Mall",                  icon: "🏪", path: "/mall" },
+  { id: "trust_reputation",     title: "Trust & Reputation",    icon: "🛡️", path: "/trust-reputation" },
 ];
 
 export default function MeMoreServices() {
