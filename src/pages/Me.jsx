@@ -15,8 +15,10 @@ import MeThemes from "@/components/me/MeThemes";
 import MeExtras from "@/components/me/MeExtras";
 import MeMoreMenu from "@/components/me/MeMoreMenu";
 import MeMoreServices from "@/components/me/MeMoreServices";
+import MeVIPTab from "@/components/me/MeVIPTab";
+import MeRelationshipTab from "@/components/me/MeRelationshipTab";
 
-const TABS = ["Profile", "Stats", "History", "Settings"];
+const TABS = ["Profile", "Stats", "History", "👑 VIP", "🤝 Relation", "Settings"];
 
 export default function Me() {
   const [activeTab, setActiveTab] = useState("Profile");
@@ -110,13 +112,15 @@ export default function Me() {
           borderRadius: 16, padding: 4, marginTop: 16, gap: 2,
           border: "1px solid rgba(124,58,237,0.1)",
           boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
+          overflowX: "auto",
         }}>
           {TABS.map(tab => (
             <motion.button key={tab} onClick={() => setActiveTab(tab)}
               whileTap={{ scale: 0.96 }}
               style={{
-                flex: 1, padding: "9px 4px", borderRadius: 12, fontSize: 11,
+                flexShrink: 0, padding: "9px 10px", borderRadius: 12, fontSize: 11,
                 fontWeight: 800, cursor: "pointer", border: "none", transition: "all 0.2s",
+                whiteSpace: "nowrap",
                 background: activeTab === tab
                   ? "linear-gradient(135deg,#7C3AED,#C084FC)"
                   : "transparent",
@@ -158,6 +162,8 @@ export default function Me() {
               </>
             )}
             {activeTab === "History" && <MeHistory />}
+            {activeTab === "👑 VIP" && <MeVIPTab />}
+            {activeTab === "🤝 Relation" && <MeRelationshipTab />}
           </motion.div>
         </AnimatePresence>
       </div>
