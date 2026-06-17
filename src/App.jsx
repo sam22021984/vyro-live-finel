@@ -33,6 +33,7 @@ import Levels from '@/pages/Levels';
 import UserLevelSystem from '@/pages/UserLevelSystem';
 import Settings from '@/pages/Settings';
 import MessagesCenter from '@/pages/MessagesCenter';
+import AppCenter from '@/pages/AppCenter';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -82,6 +83,7 @@ const AuthenticatedApp = () => {
         <Route path="/user-level-system" element={<UserLevelSystem />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/messages-center" element={<MessagesCenter />} />
+        <Route path="/app-center" element={<AppCenter />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

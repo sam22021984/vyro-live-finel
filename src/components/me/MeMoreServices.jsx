@@ -18,6 +18,7 @@ const SERVICES = [
   { id: "levels_system",        title: "Level Systems",         icon: "⭐", path: "/levels" },
   { id: "account_settings",     title: "Settings",              icon: "⚙️", path: "/settings" },
   { id: "support",              title: "Support",               icon: "🛟", path: "/support" },
+  { id: "app_center",           title: "App Center",            icon: "🧩", path: "/app-center" },
 ];
 
 export default function MeMoreServices() {
