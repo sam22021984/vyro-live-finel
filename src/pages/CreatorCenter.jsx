@@ -131,6 +131,7 @@ export default function CreatorCenter() {
     if (item.id === "pk-manager") navigate("/pk-manager-dashboard");
     if (item.id === "event-manager") navigate("/event-manager-dashboard");
     if (item.id === "super-admin") navigate("/super-admin-dashboard");
+    if (item.id === "admin") navigate("/admin-dashboard-page");
   };
 
   return (
