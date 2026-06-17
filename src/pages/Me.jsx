@@ -15,10 +15,8 @@ import MeThemes from "@/components/me/MeThemes";
 import MeExtras from "@/components/me/MeExtras";
 import MeMoreMenu from "@/components/me/MeMoreMenu";
 import MeMoreServices from "@/components/me/MeMoreServices";
-import MeVIPTab from "@/components/me/MeVIPTab";
-import MeRelationshipTab from "@/components/me/MeRelationshipTab";
 
-const TABS = ["Profile", "Stats", "History", "👑 VIP", "🤝 Relation", "Settings"];
+const TABS = ["Profile", "Stats", "History", "Settings"];
 
 export default function Me() {
   const [activeTab, setActiveTab] = useState("Profile");
@@ -162,8 +160,7 @@ export default function Me() {
               </>
             )}
             {activeTab === "History" && <MeHistory />}
-            {activeTab === "👑 VIP" && <MeVIPTab />}
-            {activeTab === "🤝 Relation" && <MeRelationshipTab />}
+
           </motion.div>
         </AnimatePresence>
       </div>
