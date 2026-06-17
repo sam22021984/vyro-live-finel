@@ -9,6 +9,15 @@ import { ChevronLeft } from "lucide-react";
 
 const SECTIONS = [
   {
+    title: "Agent Dashboard",
+    icon: "🤝",
+    color: "#F59E0B",
+    link: "/agent-dashboard",
+    items: [
+      { icon: "🤝", label: "Agent Dashboard", desc: "Recruitment, hosts, targets, earnings & compliance", link: "/agent-dashboard" },
+    ],
+  },
+  {
     title: "Account Control",
     icon: "👤",
     color: "#1F6BFF",
@@ -76,9 +85,9 @@ const SECTIONS = [
   },
 ];
 
-function ControlRow({ item, color }) {
+function ControlRow({ item, color, onNavigate }) {
   return (
-    <motion.div whileTap={{ scale: 0.98 }}
+    <motion.div whileTap={{ scale: 0.98 }} onClick={() => item.link && onNavigate(item.link)}
       style={{ display: "flex", alignItems: "center", gap: 13, padding: "12px 16px", cursor: "pointer", borderBottom: "1px solid #F5F7FA" }}>
       <div style={{ width: 40, height: 40, borderRadius: 11, background: item.danger ? "#FEF2F2" : `${color}10`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 19, flexShrink: 0 }}>
         {item.icon}
@@ -139,8 +148,8 @@ export default function ControlCenter() {
             </div>
             {/* Rows */}
             {sec.items.map((item, j) => (
-              <div key={j} style={{ borderBottom: j < sec.items.length - 1 ? "none" : "none" }}>
-                <ControlRow item={item} color={sec.color} />
+              <div key={j}>
+                <ControlRow item={item} color={sec.color} onNavigate={navigate} />
               </div>
             ))}
           </motion.div>
