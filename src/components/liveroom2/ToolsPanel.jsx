@@ -26,9 +26,10 @@ const ENTERTAINMENT = [
   { icon: "💞", label: "Match", key: "match" },
 ];
 
-export default function ToolsPanel({ onClose, onPK }) {
+export default function ToolsPanel({ onClose, onPK, onSeatManager }) {
   const handleTool = (key) => {
     if (key === "pk") { onPK?.(); return; }
+    if (key === "seat_manager") { onSeatManager?.(); return; }
     onClose?.();
   };
 

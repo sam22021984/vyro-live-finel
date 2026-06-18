@@ -16,6 +16,7 @@ import SpeakRequestQueue from "@/components/liveroom2/SpeakRequestQueue";
 import AnnouncementBanner from "@/components/liveroom2/AnnouncementBanner";
 import { MessageCircle, Gift, Wrench, Smile, Trophy } from "lucide-react";
 import SeatProfileCard from "@/components/liveroom2/SeatProfileCard";
+import SeatManager from "@/components/liveroom2/SeatManager";
 import GiftFlyAnimation from "@/components/liveroom2/GiftFlyAnimation";
 import EmojiFlyAnimation from "@/components/liveroom2/EmojiFlyAnimation";
 import EmojiLauncher from "@/components/liveroom2/EmojiLauncher";
@@ -67,7 +68,10 @@ export default function LiveRoomV2() {
     hostId: liveRoom?.host_id || "u1",
   };
 
-  const [seats] = useState(() => buildSeats(25));
+  const [seats, setSeats] = useState(() => buildSeats(25));
+  const [showSeatManager, setShowSeatManager] = useState(false);
+  const [seatLayout, setSeatLayout] = useState("8_seats");
+  const [seatCount, setSeatCount] = useState(8);
   const [activePanel, setActivePanel] = useState(null); // chat | gift | tools | emoji | leaderboard
   const [showPK, setShowPK] = useState(false);
   const [showRequests, setShowRequests] = useState(false);
@@ -156,8 +160,8 @@ export default function LiveRoomV2() {
 
         {/* Seat Grid */}
         <SeatGrid
-          seats={seats.slice(0, 15)}
-          layout={15}
+          seats={seats.slice(0, seatCount)}
+          layout={seatCount}
           seatGlows={seatGlows}
           onSeatTap={(seat) => {
             if (seat.state !== "empty" && seat.state !== "locked" && seat.user) {
@@ -313,7 +317,11 @@ export default function LiveRoomV2() {
             <div style={{ display:"flex", justifyContent:"center", padding: "10px 0 4px" }}>
               <div style={{ width:36, height:4, borderRadius:2, background:"rgba(255,255,255,0.15)" }} />
             </div>
-            <ToolsPanel onClose={() => setActivePanel(null)} onPK={() => { setShowPK(true); setActivePanel(null); }} />
+            <ToolsPanel
+            onClose={() => setActivePanel(null)}
+            onPK={() => { setShowPK(true); setActivePanel(null); }}
+            onSeatManager={() => { setShowSeatManager(true); setActivePanel(null); }}
+          />
           </motion.div>
         )}
       </AnimatePresence>
@@ -373,6 +381,23 @@ export default function LiveRoomV2() {
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={() => setActivePanel(null)}
             style={{ position: "fixed", inset: 0, zIndex: 199, background: "rgba(0,0,0,0.45)" }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Seat Manager */}
+      <AnimatePresence>
+        {showSeatManager && (
+          <SeatManager
+            currentSeats={seats}
+            currentLayout={seatLayout}
+            onClose={() => setShowSeatManager(false)}
+            onLayoutChange={(layout, count) => {
+              setSeatLayout(layout);
+              setSeatCount(count);
+              setSeats(buildSeats(count));
+            }}
+            onSeatAction={(action, seat) => console.log("Seat action:", action, seat)}
           />
         )}
       </AnimatePresence>
