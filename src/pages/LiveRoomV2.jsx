@@ -14,7 +14,12 @@ import ToolsPanel from "@/components/liveroom2/ToolsPanel";
 import PKBattle from "@/components/liveroom2/PKBattle";
 import SpeakRequestQueue from "@/components/liveroom2/SpeakRequestQueue";
 import AnnouncementBanner from "@/components/liveroom2/AnnouncementBanner";
-import { MessageCircle, Gift, Hand, Share2, Wrench } from "lucide-react";
+import { MessageCircle, Gift, Wrench, Smile, Trophy } from "lucide-react";
+import SeatProfileCard from "@/components/liveroom2/SeatProfileCard";
+import GiftFlyAnimation from "@/components/liveroom2/GiftFlyAnimation";
+import EmojiFlyAnimation from "@/components/liveroom2/EmojiFlyAnimation";
+import EmojiLauncher from "@/components/liveroom2/EmojiLauncher";
+import GiftLeaderboard from "@/components/liveroom2/GiftLeaderboard";
 
 function buildSeats(count) {
   return Array.from({ length: count }, (_, i) => ({
@@ -63,12 +68,17 @@ export default function LiveRoomV2() {
   };
 
   const [seats] = useState(() => buildSeats(25));
-  const [activePanel, setActivePanel] = useState(null); // chat | gift | tools
+  const [activePanel, setActivePanel] = useState(null); // chat | gift | tools | emoji | leaderboard
   const [showPK, setShowPK] = useState(false);
   const [showRequests, setShowRequests] = useState(false);
   const [myHandRaised, setMyHandRaised] = useState(false);
   const [roomTimer, setRoomTimer] = useState(0);
   const [announcement, setAnnouncement] = useState(roomData.announcement);
+  const [selectedSeat, setSelectedSeat] = useState(null);
+  const [giftFlyEvent, setGiftFlyEvent] = useState(null);
+  const [emojiFlyEvent, setEmojiFlyEvent] = useState(null);
+  const [seatGlows, setSeatGlows] = useState({}); // { seatId: "gift"|"emoji"|"hammer" }
+  const isAdmin = true; // mock: current user is admin
 
   useEffect(() => {
     const t = setInterval(() => setRoomTimer(s => s + 1), 1000);
@@ -84,17 +94,35 @@ export default function LiveRoomV2() {
       : `${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
   };
 
+  const triggerGiftFly = (fromSeatId, toSeatId) => {
+    setGiftFlyEvent({
+      fromX: "20vw", fromY: "35vh", toX: "60vw", toY: "25vh",
+      senderName: "You", receiverName: "SAM",
+      giftName: "Rose", giftId: "rose", quantity: 1, coinValue: 50, isPremium: true,
+    });
+    setSeatGlows(prev => ({ ...prev, [toSeatId]: "gift" }));
+    setTimeout(() => setSeatGlows(prev => { const n={...prev}; delete n[toSeatId]; return n; }), 3500);
+  };
+
+  const triggerEmojiSend = ({ emoji, targetSeatId, targetName }) => {
+    setEmojiFlyEvent({
+      fromX: "40vw", fromY: "70vh", toX: "55vw", toY: "28vh",
+      emoji, senderName: "You", targetName,
+    });
+    const glowType = emoji.id === "hammer" ? "hammer" : "emoji";
+    setSeatGlows(prev => ({ ...prev, [targetSeatId]: glowType }));
+    setTimeout(() => setSeatGlows(prev => { const n={...prev}; delete n[targetSeatId]; return n; }), 3500);
+  };
+
   const BOTTOM_BUTTONS = [
-    { key: "chat",  icon: <MessageCircle size={18} />, label: "Chat",       color: "#00C2B8" },
-    { key: "gift",  icon: <Gift size={18} />,          label: "Gift",       color: "#FFD700" },
-    { key: "hand",  icon: <Hand size={18} />,           label: "Hand",       color: myHandRaised ? "#FF5252" : "#C084FC" },
-    { key: "share", icon: <Share2 size={18} />,         label: "Share",      color: "#60A5FA" },
-    { key: "tools", icon: <Wrench size={18} />,         label: "Tools",      color: "#00C2B8" },
+    { key: "chat",        icon: <MessageCircle size={18} />, label: "Chat",       color: "#00C2B8" },
+    { key: "gift",        icon: <Gift size={18} />,          label: "Gift",       color: "#FFD700" },
+    { key: "emoji",       icon: <Smile size={18} />,         label: "Emoji",      color: "#C084FC" },
+    { key: "leaderboard", icon: <Trophy size={18} />,        label: "Ranks",      color: "#FFD700" },
+    { key: "tools",       icon: <Wrench size={18} />,        label: "Tools",      color: "#00C2B8" },
   ];
 
   const handleBottomBtn = (key) => {
-    if (key === "hand") { setMyHandRaised(v => !v); return; }
-    if (key === "share") { return; }
     setActivePanel(prev => prev === key ? null : key);
   };
 
@@ -130,7 +158,12 @@ export default function LiveRoomV2() {
         <SeatGrid
           seats={seats.slice(0, 15)}
           layout={15}
-          onSeatTap={() => {}}
+          seatGlows={seatGlows}
+          onSeatTap={(seat) => {
+            if (seat.state !== "empty" && seat.state !== "locked" && seat.user) {
+              setSelectedSeat(seat);
+            }
+          }}
         />
 
         {/* Announcement */}
@@ -289,6 +322,66 @@ export default function LiveRoomV2() {
       <AnimatePresence>
         {showRequests && <SpeakRequestQueue onClose={() => setShowRequests(false)} />}
       </AnimatePresence>
+
+      {/* Seat Profile Card */}
+      <AnimatePresence>
+        {selectedSeat && (
+          <SeatProfileCard
+            seat={selectedSeat}
+            onClose={() => setSelectedSeat(null)}
+            onAdminAction={isAdmin ? (action, seat) => console.log("Admin:", action, seat) : null}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Emoji Launcher Panel */}
+      <AnimatePresence>
+        {activePanel === "emoji" && (
+          <motion.div key="emoji-panel"
+            initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
+            transition={{ type: "spring", damping: 28, stiffness: 300 }}
+            style={{
+              position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 200,
+              borderRadius: "22px 22px 0 0", overflow: "hidden",
+            }}>
+            <EmojiLauncher
+              onClose={() => setActivePanel(null)}
+              onSend={(e) => { triggerEmojiSend(e); setActivePanel(null); }}
+              isVIP={true}
+            />
+          </motion.div>
+        )}
+
+        {/* Gift Leaderboard Panel */}
+        {activePanel === "leaderboard" && (
+          <motion.div key="lb-panel"
+            initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
+            transition={{ type: "spring", damping: 28, stiffness: 300 }}
+            style={{
+              position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 200,
+              height: "65vh", borderRadius: "22px 22px 0 0", overflow: "hidden",
+            }}>
+            <GiftLeaderboard onClose={() => setActivePanel(null)} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Overlay backdrop for emoji/leaderboard */}
+      <AnimatePresence>
+        {(activePanel === "emoji" || activePanel === "leaderboard") && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={() => setActivePanel(null)}
+            style={{ position: "fixed", inset: 0, zIndex: 199, background: "rgba(0,0,0,0.45)" }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Gift Fly Animation */}
+      <GiftFlyAnimation event={giftFlyEvent} onDone={() => setGiftFlyEvent(null)} />
+
+      {/* Emoji Fly Animation */}
+      <EmojiFlyAnimation event={emojiFlyEvent} onDone={() => setEmojiFlyEvent(null)} />
     </div>
   );
 }

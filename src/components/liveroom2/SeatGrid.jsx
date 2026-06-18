@@ -6,6 +6,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { MicOff, Lock } from "lucide-react";
 import AudioWave from "@/components/liveroom2/AudioWave";
+import SeatGlowEffect from "@/components/liveroom2/SeatGlowEffect";
 
 const VIP_COLORS = {
   vip1: "#CD7F32",
@@ -15,7 +16,7 @@ const VIP_COLORS = {
   vip5: "#C084FC",
 };
 
-function SeatItem({ seat, onTap, index }) {
+function SeatItem({ seat, onTap, index, glowType }) {
   const isEmpty = seat.state === "empty";
   const isActive = seat.state === "active";
   const isMuted = seat.state === "muted";
@@ -141,6 +142,13 @@ function SeatItem({ seat, onTap, index }) {
             fontSize: 9, lineHeight: 1,
           }}>{seat.user.country}</div>
         )}
+
+        {/* Glow effect on gift/emoji receive */}
+        <SeatGlowEffect
+          type={glowType || "gift"}
+          active={!!glowType}
+          color={glowType === "hammer" ? "#FF5252" : glowType === "emoji" ? "#C084FC" : "#FFD700"}
+        />
       </div>
 
       {/* Audio wave below avatar for active speaker */}
@@ -174,8 +182,7 @@ function SeatItem({ seat, onTap, index }) {
   );
 }
 
-export default function SeatGrid({ seats, layout, onSeatTap }) {
-  // Always 5 columns to match reference design
+export default function SeatGrid({ seats, layout, onSeatTap, seatGlows = {} }) {
   const cols = layout <= 4 ? 4 : 5;
 
   return (
@@ -186,7 +193,7 @@ export default function SeatGrid({ seats, layout, onSeatTap }) {
       paddingTop: 6,
     }}>
       {seats.map((seat, i) => (
-        <SeatItem key={seat.id} seat={seat} onTap={onSeatTap} index={i} />
+        <SeatItem key={seat.id} seat={seat} onTap={onSeatTap} index={i} glowType={seatGlows[seat.id]} />
       ))}
     </div>
   );
