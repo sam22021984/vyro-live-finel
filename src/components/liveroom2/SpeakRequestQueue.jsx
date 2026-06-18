@@ -1,115 +1,75 @@
 /**
- * SpeakRequestQueue — host view of pending speak requests
- * Flutter: ListView with SwipeToDismiss + actions
+ * SpeakRequestQueue — host view of waiting users
+ * Actions: Accept, Reject, Priority Accept, Block Request
  */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Check, XCircle } from "lucide-react";
+import { X } from "lucide-react";
 
 const MOCK_REQUESTS = [
-  { id: 1, name: "Alex K.", avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=alex", vip: "vip2", position: 1 },
-  { id: 2, name: "Mia S.", avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=mia", vip: null, position: 2 },
-  { id: 3, name: "Tom W.", avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=tom", vip: "vip1", position: 3 },
+  { id: "r1", name: "Zara", avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=zara", vip: "vip2", waitTime: "0:45", level: 32 },
+  { id: "r2", name: "Kai",  avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=kai",  vip: null,   waitTime: "1:12", level: 18 },
+  { id: "r3", name: "Mia",  avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=mia",  vip: "vip1", waitTime: "2:05", level: 45 },
 ];
 
 export default function SpeakRequestQueue({ onClose }) {
   const [requests, setRequests] = useState(MOCK_REQUESTS);
 
-  const accept = (id) => setRequests(r => r.filter(x => x.id !== id));
-  const reject = (id) => setRequests(r => r.filter(x => x.id !== id));
+  const remove = (id) => setRequests(prev => prev.filter(r => r.id !== id));
 
   return (
-    <>
-      <div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 400, background: "rgba(0,0,0,0.5)" }} />
-      <motion.div
-        initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      style={{ position: "fixed", inset: 0, zIndex: 400, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}
+      onClick={onClose}>
+      <motion.div initial={{ y: 80 }} animate={{ y: 0 }} exit={{ y: 80 }}
         transition={{ type: "spring", damping: 28 }}
-        style={{
-          position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 401,
-          background: "#1a1a1a",
-          borderRadius: "24px 24px 0 0",
-          border: "1px solid rgba(0,194,184,0.2)",
-          padding: "16px 16px 32px",
-          maxHeight: "60vh",
-          overflow: "hidden",
-          display: "flex", flexDirection: "column",
-        }}>
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
-          <div style={{ width: 40, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.2)" }} />
-        </div>
+        onClick={e => e.stopPropagation()}
+        style={{ background: "#162420", borderRadius: "22px 22px 0 0", padding: "20px 20px 40px", width: "100%", maxWidth: 480, border: "1px solid rgba(0,194,184,0.15)", maxHeight: "70vh", overflowY: "auto" }}>
+
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-          <span style={{ fontSize: 15, fontWeight: 800, color: "#fff" }}>
-            ✋ Speak Requests ({requests.length})
-          </span>
-          <motion.button whileTap={{ scale: 0.88 }} onClick={onClose}
-            style={{
-              width: 28, height: 28, borderRadius: "50%",
-              background: "rgba(255,255,255,0.08)", border: "none", cursor: "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-            <X size={13} color="rgba(255,255,255,0.6)" />
-          </motion.button>
+          <span style={{ fontSize: 14, fontWeight: 900, color: "#fff" }}>✋ Speak Requests ({requests.length})</span>
+          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer" }}>
+            <X size={18} color="rgba(255,255,255,0.5)" />
+          </button>
         </div>
-        <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 10 }}>
-          <AnimatePresence>
-            {requests.length === 0 && (
-              <div style={{ textAlign: "center", padding: "30px 0", color: "rgba(255,255,255,0.3)", fontSize: 13 }}>
-                No pending requests
+
+        {requests.length === 0 ? (
+          <div style={{ textAlign: "center", color: "rgba(255,255,255,0.3)", padding: "30px 0", fontSize: 13 }}>No pending requests</div>
+        ) : (
+          requests.map((req, i) => (
+            <motion.div key={req.id}
+              initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.06 }}
+              exit={{ opacity: 0, x: 30 }}
+              style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+              <div style={{ position: "relative" }}>
+                <div style={{ width: 40, height: 40, borderRadius: "50%", overflow: "hidden", border: req.vip ? "2px solid #FFD700" : "2px solid rgba(0,194,184,0.4)" }}>
+                  <img src={req.avatar} alt={req.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                </div>
+                {req.vip && (
+                  <div style={{ position: "absolute", top: -4, right: -4, fontSize: 10 }}>👑</div>
+                )}
               </div>
-            )}
-            {requests.map(req => (
-              <motion.div key={req.id}
-                exit={{ opacity: 0, x: 100 }}
-                style={{
-                  display: "flex", alignItems: "center", gap: 12,
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 14, padding: "10px 14px",
-                }}>
-                <div style={{
-                  width: 14, height: 14, borderRadius: "50%",
-                  background: "#00C2B8",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 8, fontWeight: 900, color: "#000", flexShrink: 0,
-                }}>{req.position}</div>
-                <img src={req.avatar} alt={req.name}
-                  style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover" }} />
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>{req.name}</div>
-                  {req.vip && (
-                    <span style={{
-                      fontSize: 9, fontWeight: 700, color: "#FFD700",
-                      background: "rgba(255,215,0,0.12)", padding: "1px 6px", borderRadius: 5,
-                    }}>{req.vip.toUpperCase()}</span>
-                  )}
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>{req.name}</div>
+                <div style={{ display: "flex", gap: 6, marginTop: 2 }}>
+                  <span style={{ fontSize: 9, color: "#00C2B8", background: "rgba(0,194,184,0.12)", padding: "1px 6px", borderRadius: 4, fontWeight: 700 }}>Lv.{req.level}</span>
+                  <span style={{ fontSize: 9, color: "rgba(255,255,255,0.35)" }}>⏱ {req.waitTime}</span>
                 </div>
-                <div style={{ display: "flex", gap: 8 }}>
-                  <motion.button whileTap={{ scale: 0.88 }} onClick={() => accept(req.id)}
-                    style={{
-                      width: 34, height: 34, borderRadius: "50%",
-                      background: "rgba(0,194,184,0.15)",
-                      border: "1px solid rgba(0,194,184,0.35)",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      cursor: "pointer",
-                    }}>
-                    <Check size={15} color="#00C2B8" />
-                  </motion.button>
-                  <motion.button whileTap={{ scale: 0.88 }} onClick={() => reject(req.id)}
-                    style={{
-                      width: 34, height: 34, borderRadius: "50%",
-                      background: "rgba(255,82,82,0.12)",
-                      border: "1px solid rgba(255,82,82,0.3)",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      cursor: "pointer",
-                    }}>
-                    <XCircle size={15} color="#FF5252" />
-                  </motion.button>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
+              </div>
+              <div style={{ display: "flex", gap: 5 }}>
+                <button onClick={() => remove(req.id)}
+                  style={{ padding: "5px 10px", borderRadius: 10, background: "linear-gradient(135deg,#00C2B8,#006e6a)", border: "none", color: "#000", fontSize: 11, fontWeight: 800, cursor: "pointer" }}>
+                  Accept
+                </button>
+                <button onClick={() => remove(req.id)}
+                  style={{ padding: "5px 10px", borderRadius: 10, background: "rgba(255,82,82,0.15)", border: "1px solid rgba(255,82,82,0.3)", color: "#FF5252", fontSize: 11, fontWeight: 800, cursor: "pointer" }}>
+                  Reject
+                </button>
+              </div>
+            </motion.div>
+          ))
+        )}
       </motion.div>
-    </>
+    </motion.div>
   );
 }

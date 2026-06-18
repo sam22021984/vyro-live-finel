@@ -1,8 +1,9 @@
 /**
- * VYRO LIVE ROOM V2 — Enterprise Audio Live Room
- * Matches reference design: dark teal bg, 5-col seat grid, inline chat, compact bottom bar
+ * VYRO LIVE ROOM V2 — Full Enterprise Audio Live Room
+ * Implements: Header (exit confirm, room info, notifications, more menu)
+ * Seat Grid, Chat, Gift, Tools, PK, Speak Requests, Announcement, Audience, Bottom Bar
  */
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import LiveRoomHeader from "@/components/liveroom2/LiveRoomHeader";
@@ -12,21 +13,8 @@ import GiftPanel2 from "@/components/liveroom2/GiftPanel2";
 import ToolsPanel from "@/components/liveroom2/ToolsPanel";
 import PKBattle from "@/components/liveroom2/PKBattle";
 import SpeakRequestQueue from "@/components/liveroom2/SpeakRequestQueue";
-import RoomSetupSheet from "@/components/liveroom2/RoomSetupSheet";
-import { Gift, Wrench } from "lucide-react";
-
-const MOCK_ROOM = {
-  id: "ROOM-4821",
-  title: "Sajid Alam",
-  cover: "https://api.dicebear.com/7.x/adventurer/svg?seed=sam",
-  level: 7,
-  xp: 6800,
-  xpNext: 10000,
-  onlineUsers: 384,
-  announcement: "⚠️ Warning: Pornography, vulgarity, violence, minors and other related situations are strictly prohibited during the live broadcast. The AI system will check 24 hours a day, and any violations will be severely punished!",
-  hostId: "u1",
-  layout: 15,
-};
+import AnnouncementBanner from "@/components/liveroom2/AnnouncementBanner";
+import { MessageCircle, Gift, Hand, Share2, Wrench } from "lucide-react";
 
 function buildSeats(count) {
   return Array.from({ length: count }, (_, i) => ({
@@ -49,12 +37,19 @@ function buildSeats(count) {
   }));
 }
 
+const AUDIENCE = [
+  { id: "a1", name: "Zara", avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=a1", vip: "vip2", online: true },
+  { id: "a2", name: "Kai",  avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=a2", vip: null,   online: true },
+  { id: "a3", name: "Mia",  avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=a3", vip: "vip1", online: true },
+  { id: "a4", name: "Jay",  avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=a4", vip: null,   online: true },
+  { id: "a5", name: "Aria", avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=a5", vip: "vip3", online: true },
+];
+
 export default function LiveRoomV2() {
   const navigate = useNavigate();
   const location = useLocation();
   const liveRoom = location.state?.room;
 
-  // Merge real room data from GoLive with defaults
   const roomData = {
     id: liveRoom?.id || "ROOM-4821",
     title: liveRoom?.title || "Sajid Alam",
@@ -62,20 +57,18 @@ export default function LiveRoomV2() {
     level: 7,
     xp: 6800,
     xpNext: 10000,
-    onlineUsers: liveRoom?.current_listeners || 0,
-    announcement: liveRoom?.welcome_message || MOCK_ROOM.announcement,
+    onlineUsers: liveRoom?.current_listeners || 384,
+    announcement: liveRoom?.welcome_message || "⚠️ Warning: Pornography, vulgarity, violence, minors and other related situations are strictly prohibited. AI monitors 24/7.",
     hostId: liveRoom?.host_id || "u1",
-    layout: 15,
   };
 
-  const [layout, setLayout] = useState(15);
   const [seats] = useState(() => buildSeats(25));
-  const [activePanel, setActivePanel] = useState(null);
+  const [activePanel, setActivePanel] = useState(null); // chat | gift | tools
   const [showPK, setShowPK] = useState(false);
-  const [showSetup, setShowSetup] = useState(false);
   const [showRequests, setShowRequests] = useState(false);
   const [myHandRaised, setMyHandRaised] = useState(false);
   const [roomTimer, setRoomTimer] = useState(0);
+  const [announcement, setAnnouncement] = useState(roomData.announcement);
 
   useEffect(() => {
     const t = setInterval(() => setRoomTimer(s => s + 1), 1000);
@@ -91,6 +84,20 @@ export default function LiveRoomV2() {
       : `${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
   };
 
+  const BOTTOM_BUTTONS = [
+    { key: "chat",  icon: <MessageCircle size={18} />, label: "Chat",       color: "#00C2B8" },
+    { key: "gift",  icon: <Gift size={18} />,          label: "Gift",       color: "#FFD700" },
+    { key: "hand",  icon: <Hand size={18} />,           label: "Hand",       color: myHandRaised ? "#FF5252" : "#C084FC" },
+    { key: "share", icon: <Share2 size={18} />,         label: "Share",      color: "#60A5FA" },
+    { key: "tools", icon: <Wrench size={18} />,         label: "Tools",      color: "#00C2B8" },
+  ];
+
+  const handleBottomBtn = (key) => {
+    if (key === "hand") { setMyHandRaised(v => !v); return; }
+    if (key === "share") { return; }
+    setActivePanel(prev => prev === key ? null : key);
+  };
+
   return (
     <div style={{
       height: "100dvh",
@@ -101,12 +108,14 @@ export default function LiveRoomV2() {
       overflow: "hidden",
       position: "relative",
     }}>
+
       {/* Header */}
       <LiveRoomHeader
         room={roomData}
         timer={formatTimer(roomTimer)}
-        onBack={() => navigate("/")}
-        onSetup={() => setShowSetup(true)}
+        onBack={() => {}} /* handled inside header with exit confirm */
+        onNavigateBack={() => navigate("/")}
+        onSetup={() => {}}
       />
 
       {/* PK Battle */}
@@ -114,47 +123,60 @@ export default function LiveRoomV2() {
         {showPK && <PKBattle onClose={() => setShowPK(false)} />}
       </AnimatePresence>
 
-      {/* Seat Grid — scrollable */}
+      {/* Scrollable content */}
       <div style={{ flex: 1, overflowY: "auto", padding: "4px 10px 0" }}>
+
+        {/* Seat Grid */}
         <SeatGrid
-          seats={seats.slice(0, layout)}
-          layout={layout}
-          onSeatTap={(seat) => seat.state === "empty" && setMyHandRaised(true)}
+          seats={seats.slice(0, 15)}
+          layout={15}
+          onSeatTap={() => {}}
         />
 
-        {/* Inline announcement warning */}
-        <div style={{
-          margin: "8px 0 4px",
-          background: "rgba(0,0,0,0.35)",
-          borderRadius: 10,
-          padding: "8px 10px",
-          display: "flex",
-          alignItems: "flex-start",
-          gap: 6,
-        }}>
-          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", lineHeight: 1.5, flex: 1 }}>
-            {roomData.announcement}
+        {/* Announcement */}
+        <AnnouncementBanner
+          text={announcement}
+          onEdit={(text) => setAnnouncement(text)}
+        />
+
+        {/* Audience row */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 0 4px", overflowX: "auto" }}>
+          <span style={{ fontSize: 10, color: "rgba(255,255,255,0.35)", fontWeight: 700, flexShrink: 0 }}>
+            👥 {roomData.onlineUsers}
           </span>
+          {AUDIENCE.map(a => (
+            <div key={a.id} style={{ position: "relative", flexShrink: 0 }}>
+              <div style={{
+                width: 30, height: 30, borderRadius: "50%", overflow: "hidden",
+                border: a.vip ? "2px solid #FFD700" : "2px solid rgba(0,194,184,0.4)",
+              }}>
+                <img src={a.avatar} alt={a.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+              <div style={{
+                position: "absolute", bottom: -1, right: -1,
+                width: 8, height: 8, borderRadius: "50%",
+                background: "#22C55E", border: "1.5px solid #0D2B28",
+              }} />
+            </div>
+          ))}
         </div>
 
-        {/* Inline chat messages */}
+        {/* Compact chat feed */}
         <div style={{ paddingBottom: 8 }}>
           <ChatPanel2 compact />
         </div>
       </div>
 
-      {/* Request to Speak / Lock row */}
-      <div style={{
-        display: "flex", gap: 8, padding: "6px 12px 4px",
-      }}>
+      {/* Request to Speak row */}
+      <div style={{ display: "flex", gap: 8, padding: "6px 12px 4px" }}>
         <motion.button
           whileTap={{ scale: 0.92 }}
           onClick={() => setMyHandRaised(v => !v)}
           style={{
             padding: "6px 16px", borderRadius: 20,
-            background: myHandRaised ? "rgba(0,194,184,0.25)" : "rgba(0,0,0,0.4)",
-            border: "1px solid rgba(0,194,184,0.5)",
-            color: "#00C2B8",
+            background: myHandRaised ? "rgba(255,82,82,0.2)" : "rgba(0,0,0,0.4)",
+            border: `1px solid ${myHandRaised ? "rgba(255,82,82,0.6)" : "rgba(0,194,184,0.5)"}`,
+            color: myHandRaised ? "#FF5252" : "#00C2B8",
             fontSize: 12, fontWeight: 700, cursor: "pointer",
             display: "flex", alignItems: "center", gap: 5,
           }}>
@@ -162,6 +184,7 @@ export default function LiveRoomV2() {
         </motion.button>
         <motion.button
           whileTap={{ scale: 0.92 }}
+          onClick={() => setShowRequests(true)}
           style={{
             padding: "6px 14px", borderRadius: 20,
             background: "rgba(0,0,0,0.4)",
@@ -170,76 +193,44 @@ export default function LiveRoomV2() {
             fontSize: 12, fontWeight: 700, cursor: "pointer",
             display: "flex", alignItems: "center", gap: 5,
           }}>
-          🔒 Lock
+          📋 Queue
         </motion.button>
       </div>
 
-      {/* Bottom Action Bar — matches reference: All·Message·Gift pill + Gift icon + Tools icon */}
+      {/* ── Bottom Action Bar — 5 persistent buttons ── */}
       <div style={{
-        display: "flex", alignItems: "center",
-        padding: "8px 12px 12px",
-        gap: 8,
-        background: "rgba(0,0,0,0.5)",
-        backdropFilter: "blur(16px)",
+        display: "flex", alignItems: "center", justifyContent: "space-around",
+        padding: "10px 8px 14px",
+        background: "rgba(0,0,0,0.55)",
+        backdropFilter: "blur(20px)",
         borderTop: "1px solid rgba(255,255,255,0.06)",
       }}>
-        {/* Chat tabs pill */}
-        <motion.div
-          whileTap={{ scale: 0.97 }}
-          onClick={() => setActivePanel(activePanel === "chat" ? null : "chat")}
-          style={{
-            flex: 1, height: 36, borderRadius: 18,
-            background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.12)",
-            display: "flex", alignItems: "center",
-            padding: "0 12px",
-            cursor: "pointer",
-            gap: 6,
-          }}>
-          {["All", "Message", "Gift"].map((label, i) => (
-            <span key={label} style={{
-              fontSize: 11, fontWeight: 700,
-              color: i === 0 ? "#00C2B8" : "rgba(255,255,255,0.45)",
-            }}>{label}{i < 2 ? " ·" : ""}</span>
-          ))}
-        </motion.div>
-
-        {/* Gift */}
-        <motion.button whileTap={{ scale: 0.88 }}
-          onClick={() => setActivePanel(activePanel === "gift" ? null : "gift")}
-          style={{
-            width: 40, height: 40, borderRadius: "50%",
-            background: activePanel === "gift"
-              ? "linear-gradient(135deg,#FFD700,#FFA500)"
-              : "rgba(255,215,0,0.12)",
-            border: "1px solid rgba(255,215,0,0.4)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer",
-          }}>
-          <Gift size={17} color="#FFD700" />
-        </motion.button>
-
-        {/* Tools */}
-        <motion.button whileTap={{ scale: 0.88 }}
-          onClick={() => setActivePanel(activePanel === "tools" ? null : "tools")}
-          style={{
-            width: 40, height: 40, borderRadius: "50%",
-            background: activePanel === "tools"
-              ? "linear-gradient(135deg,#00C2B8,#006e6a)"
-              : "rgba(0,194,184,0.12)",
-            border: "1px solid rgba(0,194,184,0.4)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer",
-          }}>
-          <Wrench size={17} color="#00C2B8" />
-        </motion.button>
+        {BOTTOM_BUTTONS.map(btn => (
+          <motion.button
+            key={btn.key}
+            whileTap={{ scale: 0.85 }}
+            onClick={() => handleBottomBtn(btn.key)}
+            style={{
+              display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
+              background: (activePanel === btn.key || (btn.key === "hand" && myHandRaised))
+                ? `${btn.color}22`
+                : "rgba(255,255,255,0.06)",
+              border: `1px solid ${(activePanel === btn.key || (btn.key === "hand" && myHandRaised)) ? btn.color + "66" : "rgba(255,255,255,0.1)"}`,
+              borderRadius: 14, padding: "8px 14px",
+              cursor: "pointer", minWidth: 52,
+              color: (activePanel === btn.key || (btn.key === "hand" && myHandRaised)) ? btn.color : "rgba(255,255,255,0.5)",
+            }}>
+            <div style={{ color: "inherit" }}>{btn.icon}</div>
+            <span style={{ fontSize: 9, fontWeight: 700 }}>{btn.label}</span>
+          </motion.button>
+        ))}
       </div>
 
-      {/* Slide-up Panels */}
+      {/* ── Slide-up Panels ── */}
       <AnimatePresence>
         {activePanel && (
           <div onClick={() => setActivePanel(null)}
-            style={{ position: "fixed", inset: 0, zIndex: 199, background: "rgba(0,0,0,0.4)" }} />
+            style={{ position: "fixed", inset: 0, zIndex: 199, background: "rgba(0,0,0,0.45)" }} />
         )}
         {activePanel === "chat" && (
           <motion.div key="chat-panel"
@@ -247,12 +238,10 @@ export default function LiveRoomV2() {
             transition={{ type: "spring", damping: 28, stiffness: 300 }}
             style={{
               position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 200,
-              height: "68vh",
-              background: "#111",
+              height: "68vh", background: "#111",
               borderRadius: "22px 22px 0 0",
               border: "1px solid rgba(0,194,184,0.18)",
-              overflow: "hidden",
-              display: "flex", flexDirection: "column",
+              overflow: "hidden", display: "flex", flexDirection: "column",
             }}>
             <div style={{ display:"flex", justifyContent:"center", padding: "10px 0 4px", flexShrink: 0 }}>
               <div style={{ width:36, height:4, borderRadius:2, background:"rgba(255,255,255,0.15)" }} />
@@ -266,8 +255,7 @@ export default function LiveRoomV2() {
             transition={{ type: "spring", damping: 28, stiffness: 300 }}
             style={{
               position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 200,
-              height: "58vh",
-              background: "#111",
+              height: "58vh", background: "#111",
               borderRadius: "22px 22px 0 0",
               border: "1px solid rgba(255,215,0,0.18)",
               overflow: "hidden",
@@ -284,8 +272,7 @@ export default function LiveRoomV2() {
             transition={{ type: "spring", damping: 28, stiffness: 300 }}
             style={{
               position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 200,
-              height: "72vh",
-              background: "#111",
+              height: "72vh", background: "#111",
               borderRadius: "22px 22px 0 0",
               border: "1px solid rgba(0,194,184,0.18)",
               overflow: "hidden",
@@ -301,11 +288,6 @@ export default function LiveRoomV2() {
       {/* Speak Requests */}
       <AnimatePresence>
         {showRequests && <SpeakRequestQueue onClose={() => setShowRequests(false)} />}
-      </AnimatePresence>
-
-      {/* Room Setup */}
-      <AnimatePresence>
-        {showSetup && <RoomSetupSheet onClose={() => setShowSetup(false)} />}
       </AnimatePresence>
     </div>
   );
