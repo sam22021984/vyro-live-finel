@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "@/lib/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import MeHeader from "@/components/me/MeHeader";
 import MeVIPSection from "@/components/me/MeVIPSection";
@@ -23,6 +25,11 @@ const TABS = ["Profile", "Stats", "History", "Settings"];
 export default function Me() {
   const [activeTab, setActiveTab] = useState("Profile");
   const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const { isAuthenticated, isLoadingAuth } = useAuth();
+
+  if (!isLoadingAuth && !isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div style={{

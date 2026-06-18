@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
+import { useAuth } from "@/lib/AuthContext";
 
 const OWNER_BADGES = [
   { label: "App Owner",     icon: "🚀", bg: "linear-gradient(135deg,#1F6BFF,#0D1B3E)" },
@@ -18,28 +19,23 @@ const USER_BADGES = [
 
 export default function MeHeader() {
   const [profile, setProfile] = useState(null);
-  const [authUser, setAuthUser] = useState(null);
-  const [isOwner, setIsOwner] = useState(false);
+  const { user: authUser, isAuthenticated } = useAuth();
+  const isOwner = authUser?.role === "admin";
 
   useEffect(() => {
-    loadProfile();
-  }, []);
+    if (isAuthenticated && authUser?.id) {
+      loadProfile(authUser.id);
+    }
+  }, [isAuthenticated, authUser?.id]);
 
-  const loadProfile = async () => {
+  const loadProfile = async (userId) => {
     try {
-      const me = await base44.auth.me();
-      setAuthUser(me);
-
-      // Fetch this user's profile record (isolated by user_id)
-      const profiles = await base44.entities.UserProfile.filter({ user_id: me.id });
+      const profiles = await base44.entities.UserProfile.filter({ user_id: userId });
       if (profiles && profiles.length > 0) {
         setProfile(profiles[0]);
       }
-
-      // Owner detection: role === 'admin' and no other profiles exist (first user)
-      setIsOwner(me.role === "admin");
     } catch {
-      // Not logged in or profile not found — fail silently
+      // Profile not found — fail silently
     }
   };
 

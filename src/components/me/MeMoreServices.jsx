@@ -37,7 +37,6 @@ export default function MeMoreServices() {
   };
 
   const handleLogout = async () => {
-    localStorage.clear();
     await base44.auth.logout("/login");
   };
 
