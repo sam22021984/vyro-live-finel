@@ -49,7 +49,8 @@ export default function FloatingNav() {
             transition={{ duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <div
-              className="pointer-events-auto flex items-end gap-0 px-2 py-1.5"
+              className="pointer-events-auto flex items-end gap-0"
+              style={{ padding: "2px 8px" }}
               style={{
                 borderRadius: 40,
                 background: "rgba(255, 255, 255, 0.14)",
@@ -83,7 +84,7 @@ export default function FloatingNav() {
                       />
                       <div style={{
                         position: "relative", zIndex: 1,
-                        width: 36, height: 36, borderRadius: "50%",
+                        width: 30, height: 30, borderRadius: "50%",
                         background: "linear-gradient(145deg, #9333EA 0%, #3B82F6 50%, #EC4899 100%)",
                         boxShadow: "0 0 28px rgba(147,51,234,0.65), 0 4px 24px rgba(0,0,0,0.45), inset 0 2px 2px rgba(255,255,255,0.40)",
                         display: "flex", alignItems: "center", justifyContent: "center",
@@ -94,7 +95,7 @@ export default function FloatingNav() {
                           width: 26, height: 8, borderRadius: "50%",
                           background: "rgba(255,255,255,0.35)", filter: "blur(3px)",
                         }} />
-                        <Icon size={16} color="#fff" strokeWidth={2.1} style={{ position: "relative" }} />
+                        <Icon size={13} color="#fff" strokeWidth={2.1} style={{ position: "relative" }} />
                       </div>
                       <span style={{
                         fontSize: 9, fontWeight: 800, letterSpacing: "0.04em",
@@ -117,7 +118,7 @@ export default function FloatingNav() {
                     style={{ border: "none", background: "none", cursor: "pointer" }}
                   >
                     <div style={{
-                      position: "relative", width: 28, height: 28, borderRadius: "50%",
+                      position: "relative", width: 24, height: 24, borderRadius: "50%",
                       background: isActive
                         ? "radial-gradient(circle at 38% 30%, rgba(147,51,234,0.28), rgba(0,0,0,0.18))"
                         : "radial-gradient(circle at 38% 30%, rgba(255,255,255,0.20), rgba(255,255,255,0.05))",
