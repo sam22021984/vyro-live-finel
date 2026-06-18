@@ -291,7 +291,7 @@ export default function GoLive() {
       </div>
 
       {/* ── Scrollable Body ── */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "14px 14px 100px" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "14px 14px 120px" }}>
 
         {/* ── Cover Photo ── */}
         <Section title="Room Cover Photo" accent="#3B82F6">
@@ -648,14 +648,8 @@ export default function GoLive() {
             </div>
           ))}
         </div>
-      </div>
 
-      {/* ── Sticky Go Live Button ── */}
-      <div style={{
-        position: "sticky", bottom: 0, padding: "12px 14px 20px",
-        background: "linear-gradient(to top, #0D0D1A 80%, transparent)",
-        zIndex: 40,
-      }}>
+        {/* ── Go Live Button (above nav bar) ── */}
         <motion.button
           whileTap={canGoLive ? { scale: 0.96 } : {}}
           onClick={() => canGoLive && !startMutation.isPending && startMutation.mutate()}
