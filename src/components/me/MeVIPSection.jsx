@@ -118,17 +118,39 @@ export default function MeVIPSection() {
         <span style={{ fontSize: 16, color: "#D1D5DB" }}>›</span>
       </motion.div>
 
-      {/* Tier grid title */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <span style={{ fontSize: 11, fontWeight: 800, color: "#9CA3AF", letterSpacing: "0.05em" }}>VIP MEMBERSHIP LEVELS</span>
-        <span style={{ fontSize: 9, fontWeight: 700, color: "#7C3AED", background: "rgba(124,58,237,0.07)", borderRadius: 8, padding: "2px 7px" }}>8 Tiers</span>
-      </div>
-
-      {/* Tier grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 8, width: "100%" }}>
-        {VIPS.map((v, i) => (
-          <TierCard key={v.label} v={v} i={i} isActive={v.tier === ACTIVE_TIER} onClick={() => navigate("/vip-membership")} />
-        ))}
+      {/* VIP Entry Effect & Avatar Frame */}
+      <div style={{ display: "flex", gap: 10, marginTop: 2 }}>
+        {/* Entry Effect */}
+        <div style={{
+          flex: 1, borderRadius: 14, padding: "10px 12px",
+          background: `linear-gradient(135deg,${activeVIP.gradient.match(/#[A-Fa-f0-9]{6}/)?.[0] || "#3B82F6"}22,${activeVIP.gradient.match(/#[A-Fa-f0-9]{6}/g)?.[1] || "#60A5FA"}10)`,
+          border: `1px solid ${activeVIP.border}30`,
+          display: "flex", flexDirection: "column", gap: 4,
+        }}>
+          <div style={{ fontSize: 9, fontWeight: 800, color: "#9CA3AF", letterSpacing: "0.06em" }}>ENTRY EFFECT</div>
+          <div style={{ fontSize: 18 }}>✨</div>
+          <div style={{ fontSize: 10, fontWeight: 700, color: "#1a1a2e" }}>{activeVIP.label} Entry</div>
+          <div style={{ fontSize: 9, color: "#6B7280" }}>Special entrance animation</div>
+        </div>
+        {/* Avatar Frame */}
+        <div style={{
+          flex: 1, borderRadius: 14, padding: "10px 12px",
+          background: `linear-gradient(135deg,${activeVIP.gradient.match(/#[A-Fa-f0-9]{6}/)?.[0] || "#3B82F6"}22,${activeVIP.gradient.match(/#[A-Fa-f0-9]{6}/g)?.[1] || "#60A5FA"}10)`,
+          border: `1px solid ${activeVIP.border}30`,
+          display: "flex", flexDirection: "column", gap: 4, alignItems: "flex-start",
+        }}>
+          <div style={{ fontSize: 9, fontWeight: 800, color: "#9CA3AF", letterSpacing: "0.06em" }}>AVATAR FRAME</div>
+          <div style={{ position: "relative", display: "inline-block" }}>
+            <motion.div animate={{ rotate: 360 }} transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+              style={{ position: "absolute", inset: -3, borderRadius: "50%", background: activeVIP.gradient, opacity: 0.6, zIndex: 0 }} />
+            <div style={{
+              width: 32, height: 32, borderRadius: "50%", position: "relative", zIndex: 1,
+              background: activeVIP.gradient, display: "flex", alignItems: "center", justifyContent: "center",
+              border: "2px solid white", fontSize: 14,
+            }}>{activeVIP.crown}</div>
+          </div>
+          <div style={{ fontSize: 10, fontWeight: 700, color: "#1a1a2e" }}>{activeVIP.label} Frame</div>
+        </div>
       </div>
     </div>
   );

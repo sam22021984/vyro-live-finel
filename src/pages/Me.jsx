@@ -63,28 +63,7 @@ export default function Me() {
           position: "absolute", inset: 0,
           background: "linear-gradient(180deg, transparent 30%, rgba(253,252,255,0.95) 100%)",
         }} />
-        {/* Action Buttons — minimal: share + more */}
-        <div style={{ position: "absolute", top: 12, right: 12, display: "flex", gap: 8 }}>
-          {["🔗"].map((icon, i) => (
-            <motion.button key={i} whileTap={{ scale: 0.88 }}
-              style={{
-                width: 36, height: 36, borderRadius: 18,
-                background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)",
-                border: "1px solid rgba(255,255,255,0.6)",
-                fontSize: 16, cursor: "pointer",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-              }}>{icon}</motion.button>
-          ))}
-          <motion.button whileTap={{ scale: 0.88 }}
-            onClick={() => setShowMoreMenu(true)}
-            style={{
-              width: 36, height: 36, borderRadius: 18,
-              background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255,255,255,0.6)",
-              fontSize: 16, cursor: "pointer",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-            }}>⋮</motion.button>
-        </div>
+
       </div>
 
       <div style={{ padding: "0 16px", marginTop: -70, width: "100%", maxWidth: 600, boxSizing: "border-box", overflowX: "hidden" }}>
