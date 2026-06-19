@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { Search } from "lucide-react";
 import MeHeader from "@/components/me/MeHeader";
+import MeGlobalSearch from "@/components/me/MeGlobalSearch";
 import MeVIPSection from "@/components/me/MeVIPSection";
 import MeLevelCards from "@/components/me/MeLevelCards";
 import MeStats from "@/components/me/MeStats";
@@ -25,6 +27,7 @@ const TABS = ["Profile", "Stats", "History", "Settings"];
 export default function Me() {
   const [activeTab, setActiveTab] = useState("Profile");
   const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
   const { isAuthenticated, isLoadingAuth } = useAuth();
 
   if (!isLoadingAuth && !isAuthenticated) {
@@ -63,8 +66,30 @@ export default function Me() {
           position: "absolute", inset: 0,
           background: "linear-gradient(180deg, transparent 30%, rgba(253,252,255,0.95) 100%)",
         }} />
-
-      </div>
+        {/* Action Buttons — Search + More */}
+        <div style={{ position: "absolute", top: 12, right: 12, display: "flex", gap: 8 }}>
+          <motion.button whileTap={{ scale: 0.88 }}
+            onClick={() => setShowSearch(true)}
+            style={{
+              width: 36, height: 36, borderRadius: 18,
+              background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)",
+              border: "1px solid rgba(255,255,255,0.6)",
+              cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            }}>
+            <Search size={17} color="#7C3AED" />
+          </motion.button>
+          <motion.button whileTap={{ scale: 0.88 }}
+            onClick={() => setShowMoreMenu(true)}
+            style={{
+              width: 36, height: 36, borderRadius: 18,
+              background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)",
+              border: "1px solid rgba(255,255,255,0.6)",
+              fontSize: 16, cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            }}>⋮</motion.button>
+        </div>
+        </div>
 
       <div style={{ padding: "0 16px", marginTop: -70, width: "100%", maxWidth: 600, boxSizing: "border-box", overflowX: "hidden" }}>
         <MeHeader />
@@ -169,6 +194,10 @@ export default function Me() {
 
       <AnimatePresence>
         {showMoreMenu && <MeMoreMenu onClose={() => setShowMoreMenu(false)} />}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showSearch && <MeGlobalSearch onClose={() => setShowSearch(false)} />}
       </AnimatePresence>
     </div>
   );
