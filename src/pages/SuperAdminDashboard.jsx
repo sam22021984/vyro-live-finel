@@ -721,7 +721,7 @@ export default function SuperAdminDashboard() {
         {/* Hero banner */}
         <div style={{ ...S.glass(),padding:"16px",marginBottom:12 }}>
           <div style={{ height:3,borderRadius:2,background:"linear-gradient(90deg,#6366F1,#A855F7,#10B981)",marginBottom:12 }}/>
-          <div style={{ fontSize:10,fontWeight:800,color:"#818CF8",marginBottom:3,letterSpacing:"0.08em" }}>VYRO LIVE · PLATFORM OPERATIONS ADMINISTRATION · REPORTS TO: BUSINESS MANAGER</div>
+          <div style={{ fontSize:10,fontWeight:800,color:"#818CF8",marginBottom:3,letterSpacing:"0.08em" }}>VYRO LIVE · PLATFORM OPERATIONS ADMINISTRATION · REPORTS TO: COUNTRY MANAGER</div>
           <div style={{ fontSize:18,fontWeight:900,color:"#fff",marginBottom:4 }}>Super Admin Control Center</div>
           <div style={{ fontSize:11,color:"#DCE3F0",lineHeight:1.7,marginBottom:12 }}>Central operations hub — agencies, talent agents, hosts, admins, applications, compliance, security, and analytics.</div>
           {/* Global Search */}
