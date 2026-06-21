@@ -29,6 +29,7 @@ const SERVICES = [
   { id: "supabase_write_audit",     title: "Write Audit",       icon: "🔬", path: "/supabase-write-audit" },
   { id: "supabase_provision_audit",   title: "FK Chain",        icon: "🔗", path: "/supabase-provision-audit" },
   { id: "supabase_validation",        title: "Validation",      icon: "🔬", path: "/supabase-validation" },
+  { id: "supabase_trigger_report",    title: "Trigger Report",  icon: "🧪", path: "/supabase-trigger-report" },
 ];
 
 export default function MeMoreServices() {
