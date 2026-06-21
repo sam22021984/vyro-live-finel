@@ -2,7 +2,7 @@
  * Support Center — Help Desk Style UI
  * Access: Home → More Services → Support
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
@@ -164,10 +164,51 @@ function FeedbackSection() {
 }
 
 function CustomerSupport() {
-  const [tickets] = useState([
-    { id: "#TK-4821", subject: "Coins not credited after recharge", status: "open",     date: "Jun 14" },
-    { id: "#TK-4799", subject: "Cannot access live room",           status: "resolved", date: "Jun 10" },
-  ]);
+  const [tickets,  setTickets]  = useState([]);
+  const [subject,  setSubject]  = useState("");
+  const [body,     setBody]     = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const { user: authUser } = await import("@/lib/AuthContext").then(m => ({ user: null }));
+        // Dynamically get user id
+        const meRes = await import("@/api/base44Client").then(m => m.base44.auth.me());
+        if (!meRes?.id) return;
+        const res = await import("@/api/base44Client").then(m =>
+          m.base44.functions.invoke('supabaseQuery', {
+            table: 'support_tickets', method: 'GET',
+            select: 'id,subject,status,created_at',
+            filters: { user_id: `eq.${meRes.id}` },
+            order: 'created_at.desc', limit: 20,
+          })
+        );
+        setTickets(res?.data?.data || []);
+      } catch { /* ignore */ }
+    };
+    load();
+  }, []);
+
+  const handleSubmit = async () => {
+    if (!subject.trim() || submitting) return;
+    setSubmitting(true);
+    try {
+      const meRes = await import("@/api/base44Client").then(m => m.base44.auth.me());
+      await import("@/api/base44Client").then(m =>
+        m.base44.functions.invoke('supabaseQuery', {
+          table: 'support_tickets', method: 'POST',
+          body: { user_id: meRes?.id, subject: subject.trim(), body: body.trim(), status: 'open', created_at: new Date().toISOString() },
+        })
+      );
+      setTickets(prev => [{ id: "new", subject: subject.trim(), status: "open", created_at: new Date().toISOString() }, ...prev]);
+      setSubject(""); setBody(""); setShowForm(false);
+      toast.success("✅ Ticket submitted! We'll respond within 24h.");
+    } catch { toast.error("Failed to submit. Please try again."); }
+    setSubmitting(false);
+  };
+
   const STATUS_STYLE = {
     open:     { bg: "#EFF6FF", color: "#1F6BFF" },
     resolved: { bg: "#ECFDF5", color: "#10B981" },
@@ -195,10 +236,10 @@ function CustomerSupport() {
       </div>
       {/* Create ticket */}
       <motion.button whileTap={{ scale: 0.98 }}
-        onClick={() => toast.info("Ticket form opening...")}
+        onClick={() => setShowForm(v => !v)}
         style={{
           width: "100%", display: "flex", alignItems: "center", gap: 12,
-          background: "#fff", borderRadius: 14, padding: "14px 16px", marginBottom: 14,
+          background: "#fff", borderRadius: 14, padding: "14px 16px", marginBottom: 10,
           border: "1px solid #F0F0F8", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", cursor: "pointer",
         }}>
         <span style={{ fontSize: 22 }}>📝</span>
@@ -208,22 +249,43 @@ function CustomerSupport() {
         </div>
         <ChevronRight size={16} color="#9CA3AF" />
       </motion.button>
+      <AnimatePresence>
+        {showForm && (
+          <motion.div initial={{ height:0,opacity:0 }} animate={{ height:"auto",opacity:1 }} exit={{ height:0,opacity:0 }}
+            style={{ overflow:"hidden", marginBottom:10 }}>
+            <div style={{ background:"#fff", borderRadius:14, padding:"14px", border:"1px solid #E5E7EB" }}>
+              <input value={subject} onChange={e=>setSubject(e.target.value)} placeholder="Subject"
+                style={{ width:"100%", background:"#F5F7FA", border:"1px solid #E5E7EB", borderRadius:10, padding:"10px 12px", fontSize:13, outline:"none", marginBottom:8, boxSizing:"border-box" }}/>
+              <textarea value={body} onChange={e=>setBody(e.target.value)} placeholder="Describe your issue..." rows={4}
+                style={{ width:"100%", background:"#F5F7FA", border:"1px solid #E5E7EB", borderRadius:10, padding:"10px 12px", fontSize:13, outline:"none", resize:"none", fontFamily:"inherit", boxSizing:"border-box" }}/>
+              <motion.button whileTap={{ scale:0.96 }} onClick={handleSubmit} disabled={!subject.trim()||submitting}
+                style={{ width:"100%", marginTop:10, padding:"12px", borderRadius:12, border:"none", cursor:subject.trim()?"pointer":"default",
+                  background:subject.trim()?"linear-gradient(135deg,#1F6BFF,#60A5FA)":"#F3F4F6",
+                  color:subject.trim()?"#fff":"#9CA3AF", fontWeight:800, fontSize:13 }}>
+                {submitting ? "Submitting…" : "Submit Ticket"}
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* My tickets */}
       <div style={{ fontSize: 12, fontWeight: 800, color: "#9CA3AF", marginBottom: 10 }}>MY TICKETS</div>
-      {tickets.map(t => {
-        const s = STATUS_STYLE[t.status];
+      {tickets.length === 0 && <div style={{ textAlign:"center", color:"#9CA3AF", fontSize:12, padding:"12px 0" }}>No tickets yet.</div>}
+      {tickets.map((t, idx) => {
+        const s = STATUS_STYLE[t.status] || STATUS_STYLE.open;
+        const date = t.created_at ? new Date(t.created_at).toLocaleDateString("en-QA",{month:"short",day:"numeric"}) : "";
         return (
-          <div key={t.id} style={{
+          <div key={t.id||idx} style={{
             background: "#fff", borderRadius: 14, padding: "13px 14px", marginBottom: 8,
             border: "1px solid #F0F0F8", boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
             display: "flex", alignItems: "center", gap: 12,
           }}>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: "#9CA3AF" }}>{t.id} · {t.date}</div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "#9CA3AF" }}>{date}</div>
               <div style={{ fontSize: 13, fontWeight: 700, color: "#0D1B3E", marginTop: 2 }}>{t.subject}</div>
             </div>
             <span style={{ fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 20, background: s.bg, color: s.color }}>
-              {t.status.toUpperCase()}
+              {(t.status||"open").toUpperCase()}
             </span>
           </div>
         );

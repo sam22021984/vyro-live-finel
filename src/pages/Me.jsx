@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
+import { base44 } from "@/api/base44Client";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search } from "lucide-react";
 import MeHeader from "@/components/me/MeHeader";
@@ -24,11 +25,36 @@ import MeSpecialBadges from "@/components/me/MeSpecialBadges";
 
 const TABS = ["Profile", "Stats", "History", "Settings"];
 
+function useLiveSocialCounts(authUserId) {
+  const [counts, setCounts] = useState({ following: 0, followers: 0, friends: 0, visitors: 0 });
+  useEffect(() => {
+    if (!authUserId) return;
+    const load = async () => {
+      try {
+        const profiles = await base44.entities.UserProfile.filter({ user_id: authUserId });
+        const p = profiles?.[0] || {};
+        setCounts({
+          following: p.following_count || 0,
+          followers: p.followers_count || 0,
+          friends:   p.friends_count   || 0,
+          visitors:  p.visitors_count  || 0,
+        });
+      } catch { /* ignore */ }
+    };
+    load();
+    const t = setInterval(load, 30000);
+    return () => clearInterval(t);
+  }, [authUserId]);
+  return counts;
+}
+
 export default function Me() {
   const [activeTab, setActiveTab] = useState("Profile");
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const { isAuthenticated, isLoadingAuth } = useAuth();
+  const { isAuthenticated, isLoadingAuth, user: authUser } = useAuth();
+  const socialCounts = useLiveSocialCounts(authUser?.id);
+  const fmtN = n => n >= 1000 ? `${(n/1000).toFixed(1)}K` : String(n);
 
   if (!isLoadingAuth && !isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -104,10 +130,10 @@ export default function Me() {
           width: "100%",
         }}>
           {[
-            { label: "Following", count: "1.2K" },
-            { label: "Followers", count: "48.5K" },
-            { label: "Friends",   count: "320" },
-            { label: "Visitors",  count: "9.1K" },
+            { label: "Following", count: fmtN(socialCounts.following) },
+            { label: "Followers", count: fmtN(socialCounts.followers) },
+            { label: "Friends",   count: fmtN(socialCounts.friends)   },
+            { label: "Visitors",  count: fmtN(socialCounts.visitors)  },
           ].map((item, i, arr) => (
             <motion.button key={item.label} whileTap={{ scale: 0.94 }}
               style={{
