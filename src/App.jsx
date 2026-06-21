@@ -55,6 +55,7 @@ import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import VIPMembership from '@/pages/VIPMembership';
 import SupabaseAudit from '@/pages/SupabaseAudit';
 import SupabaseWriteAudit from '@/pages/SupabaseWriteAudit';
+import SupabaseProvisionAudit from '@/pages/SupabaseProvisionAudit';
 import Mall from '@/pages/Mall';
 import TrustReputation from '@/pages/TrustReputation';
 import LuckyIDStore from '@/pages/LuckyIDStore';
@@ -132,6 +133,7 @@ const AuthenticatedApp = () => {
         <Route path="/lucky-id-store" element={<LuckyIDStore />} />
         <Route path="/supabase-audit" element={<SupabaseAudit />} />
         <Route path="/supabase-write-audit" element={<SupabaseWriteAudit />} />
+        <Route path="/supabase-provision-audit" element={<SupabaseProvisionAudit />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

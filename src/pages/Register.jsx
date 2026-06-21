@@ -123,9 +123,9 @@ export default function Register() {
         is_lucky_id: false,
       });
 
-      // Provision all Supabase records (non-blocking — don't fail registration if Supabase is down)
+      // Provision all Supabase records via FK-safe chain (non-blocking)
       try {
-        await base44.functions.invoke('supabaseOnboard', {
+        await base44.functions.invoke('supabaseProvision', {
           display_name: displayName.trim(),
           avatar_url: avatarUrl,
           phone: fullPhone,
@@ -133,7 +133,7 @@ export default function Register() {
           application_id: appId,
         });
       } catch {
-        // Supabase onboarding is secondary — Base44 profile saved above is the source of truth
+        // Supabase provisioning is secondary — Base44 profile is the source of truth
       }
 
       window.location.href = "/";
