@@ -27,6 +27,30 @@ Deno.serve(async (req) => {
 
     if (!table) return Response.json({ error: 'table is required' }, { status: 400 });
 
+    // Security: whitelist of tables accessible via this proxy
+    const ALLOWED_TABLES = [
+      'vip_tiers','vip_benefits','vip_rewards','vip_profiles','vip_events','vip_reports',
+      'user_wallets','wallets','coin_wallets','global_wallets','coin_reward_transactions','coin_global_price',
+      'daily_tasks','daily_bonus','reward_claims','reward_settings','reward_leaderboards',
+      'referrals','live_streams','live_users','stream_profiles','stream_levels',
+      'gift_catalog','room_gifts','user_gifting_stats',
+      'support_tickets','kyc_requests',
+      'leaderboard','user_medals','user_xp','user_inventory','user_presence','user_settings',
+      'social_friends','social_relationships','relationships','social_invites','families',
+      'application_ids','application_id_history','application_notifications',
+      'room_moderation','room_notifications','room_settings','room_likes','seat_requests',
+      'commissions','call_sessions','muted_chats',
+      'post_comments','post_shares','saved_posts','social_media_posts',
+      'bonus_campaigns','country_kpis','country_vip_analytics',
+      'admin_kpis','finance_dashboard','revenue_summary',
+      'control_center_modules','bm_dashboard_modules','bd_dashboard_modules','role_access_matrix',
+      'immortal_core_status',
+    ];
+
+    if (!ALLOWED_TABLES.includes(table)) {
+      return Response.json({ error: `Table '${table}' is not accessible via this proxy` }, { status: 403 });
+    }
+
     const params = new URLSearchParams({ select });
     if (limit) params.set('limit', String(limit));
     if (order) params.set('order', order);

@@ -53,6 +53,7 @@ import EventManagerDashboard from '@/pages/EventManagerDashboard';
 import SuperAdminDashboard from '@/pages/SuperAdminDashboard';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import VIPMembership from '@/pages/VIPMembership';
+import SupabaseAudit from '@/pages/SupabaseAudit';
 import Mall from '@/pages/Mall';
 import TrustReputation from '@/pages/TrustReputation';
 import LuckyIDStore from '@/pages/LuckyIDStore';
@@ -128,6 +129,7 @@ const AuthenticatedApp = () => {
         <Route path="/mall" element={<Mall />} />
         <Route path="/trust-reputation" element={<TrustReputation />} />
         <Route path="/lucky-id-store" element={<LuckyIDStore />} />
+        <Route path="/supabase-audit" element={<SupabaseAudit />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
