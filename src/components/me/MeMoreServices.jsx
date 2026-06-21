@@ -27,7 +27,8 @@ const SERVICES = [
   { id: "lucky_id_store",       title: "Lucky ID Store",        icon: "⭐", path: "/lucky-id-store" },
   { id: "supabase_audit",       title: "DB Audit",              icon: "🔍", path: "/supabase-audit" },
   { id: "supabase_write_audit",     title: "Write Audit",       icon: "🔬", path: "/supabase-write-audit" },
-  { id: "supabase_provision_audit", title: "FK Chain",          icon: "🔗", path: "/supabase-provision-audit" },
+  { id: "supabase_provision_audit",   title: "FK Chain",        icon: "🔗", path: "/supabase-provision-audit" },
+  { id: "supabase_validation",        title: "Validation",      icon: "🔬", path: "/supabase-validation" },
 ];
 
 export default function MeMoreServices() {
