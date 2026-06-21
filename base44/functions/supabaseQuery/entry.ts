@@ -29,18 +29,30 @@ Deno.serve(async (req) => {
 
     // Security: whitelist of tables accessible via this proxy
     const ALLOWED_TABLES = [
+      // Core identity tables (required as FK parents for all user tables)
+      'profiles','users',
+      // VIP system
       'vip_tiers','vip_benefits','vip_rewards','vip_profiles','vip_events','vip_reports',
+      // Wallets & coins
       'user_wallets','wallets','coin_wallets','global_wallets','coin_reward_transactions','coin_global_price',
+      // Tasks & rewards
       'daily_tasks','daily_bonus','reward_claims','reward_settings','reward_leaderboards',
+      // Live & social
       'referrals','live_streams','live_users','stream_profiles','stream_levels',
       'gift_catalog','room_gifts','user_gifting_stats',
+      // Support
       'support_tickets','kyc_requests',
+      // User data
       'leaderboard','user_medals','user_xp','user_inventory','user_presence','user_settings',
       'social_friends','social_relationships','relationships','social_invites','families',
       'application_ids','application_id_history','application_notifications',
+      // Room
       'room_moderation','room_notifications','room_settings','room_likes','seat_requests',
+      // Comms
       'commissions','call_sessions','muted_chats',
+      // Community
       'post_comments','post_shares','saved_posts','social_media_posts',
+      // Admin
       'bonus_campaigns','country_kpis','country_vip_analytics',
       'admin_kpis','finance_dashboard','revenue_summary',
       'control_center_modules','bm_dashboard_modules','bd_dashboard_modules','role_access_matrix',

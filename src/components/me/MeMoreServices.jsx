@@ -26,6 +26,7 @@ const SERVICES = [
   { id: "trust_reputation",     title: "Trust & Reputation",    icon: "🛡️", path: "/trust-reputation" },
   { id: "lucky_id_store",       title: "Lucky ID Store",        icon: "⭐", path: "/lucky-id-store" },
   { id: "supabase_audit",       title: "DB Audit",              icon: "🔍", path: "/supabase-audit" },
+  { id: "supabase_write_audit", title: "Write Audit",           icon: "🔬", path: "/supabase-write-audit" },
 ];
 
 export default function MeMoreServices() {

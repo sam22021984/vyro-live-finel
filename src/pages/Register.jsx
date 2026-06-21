@@ -123,6 +123,19 @@ export default function Register() {
         is_lucky_id: false,
       });
 
+      // Provision all Supabase records (non-blocking — don't fail registration if Supabase is down)
+      try {
+        await base44.functions.invoke('supabaseOnboard', {
+          display_name: displayName.trim(),
+          avatar_url: avatarUrl,
+          phone: fullPhone,
+          country_code: countryCode,
+          application_id: appId,
+        });
+      } catch {
+        // Supabase onboarding is secondary — Base44 profile saved above is the source of truth
+      }
+
       window.location.href = "/";
     } catch (err) {
       setError(err.message || "Failed to save profile");
