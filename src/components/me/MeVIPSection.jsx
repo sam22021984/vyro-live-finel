@@ -1,5 +1,7 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { base44 } from "@/api/base44Client";
 
 const VIPS = [
   { label: "VIP 1",    short: "V1",   tier: 1, gradient: "linear-gradient(135deg,#6B7280,#9CA3AF)", glow: "rgba(107,114,128,0.4)", crown: "👑", border: "#9CA3AF" },
@@ -12,9 +14,10 @@ const VIPS = [
   { label: "MISSVIP",  short: "MISS", tier: 8, rainbow: true,                                        glow: "rgba(245,158,11,0.7)",  crown: "🌈", border: "transparent" },
 ];
 
-// Currently active VIP — VVIP (tier 2)
-const ACTIVE_TIER = 2;
-const activeVIP = VIPS.find(v => v.tier === ACTIVE_TIER);
+const TIER_CODE_MAP = {
+  VIP1:   1, VVIP: 2, SVIP: 3, SSVIP: 4, MSVIP: 5,
+  MSSVIP: 6, MISVIP: 7, MISSVIP: 8, ULTRA: 9, LEGEND: 10, ROYAL: 11,
+};
 
 const TierCard = ({ v, i, isActive, onClick }) => (
   <motion.div
@@ -73,6 +76,30 @@ const TierCard = ({ v, i, isActive, onClick }) => (
 
 export default function MeVIPSection() {
   const navigate = useNavigate();
+  const [activeTierData, setActiveTierData] = useState(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await base44.functions.invoke("supabaseQuery", {
+          table: "vip_tiers", method: "GET", select: "*",
+          filters: { tier_code: "eq.VVIP", is_active: "eq.true" }, limit: 1,
+        });
+        if (res?.data?.data?.length) {
+          setActiveTierData(res.data.data[0]);
+        }
+      } catch { /* use static fallback */ }
+    };
+    load();
+  }, []);
+
+  // Use live daily_reward_coins if available
+  const activeVIP = { ...VIPS.find(v => v.tier === 2) };
+  if (activeTierData) {
+    activeVIP.dailyCoins = activeTierData.daily_reward_coins;
+    activeVIP.priceCoins = activeTierData.price_coins;
+    activeVIP.cashback   = activeTierData.cashback_percent;
+  }
 
   return (
     <div style={{
@@ -109,11 +136,19 @@ export default function MeVIPSection() {
           </div>
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
-            <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{activeVIP.label}</span>
-            <span style={{ fontSize: 8, fontWeight: 800, color: "#10B981", background: "rgba(16,185,129,0.12)", borderRadius: 6, padding: "1px 6px", border: "1px solid rgba(16,185,129,0.2)" }}>ACTIVE</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
+          <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{activeVIP.label}</span>
+          <span style={{ fontSize: 8, fontWeight: 800, color: "#10B981", background: "rgba(16,185,129,0.12)", borderRadius: 6, padding: "1px 6px", border: "1px solid rgba(16,185,129,0.2)" }}>ACTIVE</span>
+        </div>
+        <div style={{ fontSize: 10, color: "#6B7280" }}>Tier {activeVIP.tier} · Expires Jul 5, 2026</div>
+        {activeTierData && (
+          <div style={{ display: "flex", gap: 8, marginTop: 3 }}>
+            <span style={{ fontSize: 9, fontWeight: 700, color: "#F59E0B" }}>🪙 {activeTierData.daily_reward_coins}/day</span>
+            {activeTierData.cashback_percent > 0 && (
+              <span style={{ fontSize: 9, fontWeight: 700, color: "#10B981" }}>💸 {activeTierData.cashback_percent}% cashback</span>
+            )}
           </div>
-          <div style={{ fontSize: 10, color: "#6B7280" }}>Tier {activeVIP.tier} · Expires Jul 5, 2026</div>
+        )}
         </div>
         <span style={{ fontSize: 16, color: "#D1D5DB" }}>›</span>
       </motion.div>

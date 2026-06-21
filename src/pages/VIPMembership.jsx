@@ -3,10 +3,11 @@
  * Access: Profile > More Services > VIP Membership
  * Theme: Dark Luxury Enterprise · Gold Platinum · Premium Glassmorphism
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 
 /* ─────────────── DATA ─────────────── */
 const VIP_LEVELS = [
@@ -105,7 +106,7 @@ function PBar({ value, color, height=5 }) {
 }
 
 /* ─────────────── MODULE: UPGRADE ─────────────── */
-function UpgradeModule({ currentVip, onBack }) {
+function UpgradeModule({ currentVip, vipLevels = VIP_LEVELS, onBack }) {
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [selectedDur, setSelectedDur] = useState("1m");
   const [payWith, setPayWith] = useState("coins");
@@ -114,7 +115,7 @@ function UpgradeModule({ currentVip, onBack }) {
   const dur = DURATIONS.find(d => d.id===selectedDur);
   const calcCoins = (vip) => Math.round(vip.price_coins * (dur?.mult||1));
   const calcCash  = (vip) => {
-    const base = parseFloat(vip.price_cash.replace(/[^0-9.]/g,""));
+    const base = parseFloat((vip.price_cash||"$0").replace(/[^0-9.]/g,""));
     return `$${(base*(dur?.mult||1)).toFixed(0)}`;
   };
 
@@ -141,7 +142,7 @@ function UpgradeModule({ currentVip, onBack }) {
         {step===1 && (
           <>
             <div style={S.sec}>👑 SELECT VIP LEVEL</div>
-            {VIP_LEVELS.map((vip,i) => (
+            {vipLevels.map((vip,i) => (
               <motion.div key={vip.id} initial={{ opacity:0,y:5 }} animate={{ opacity:1,y:0 }} transition={{ delay:i*0.03 }}
                 whileTap={{ scale:0.97 }} onClick={() => setSelectedLevel(vip.id)}
                 style={{ ...S.glass(),padding:"13px 14px",marginBottom:10,cursor:"pointer",
@@ -177,7 +178,8 @@ function UpgradeModule({ currentVip, onBack }) {
 
         {/* STEP 2: Duration */}
         {step===2 && (() => {
-          const vip = VIP_LEVELS.find(v => v.id===selectedLevel);
+          const vip = vipLevels.find(v => v.id===selectedLevel);
+          if (!vip) return null;
           return (
             <>
               <div style={{ display:"flex",gap:10,alignItems:"center",marginBottom:14 }}>
@@ -229,8 +231,9 @@ function UpgradeModule({ currentVip, onBack }) {
 
         {/* STEP 3: Confirm */}
         {step===3 && (() => {
-          const vip = VIP_LEVELS.find(v => v.id===selectedLevel);
+          const vip = vipLevels.find(v => v.id===selectedLevel);
           const dur2 = DURATIONS.find(d => d.id===selectedDur);
+          if (!vip || !dur2) return null;
           return (
             <>
               <div style={{ ...S.glass(),padding:"18px",marginBottom:14,textAlign:"center" }}>
@@ -462,13 +465,13 @@ function SettingsModule({ onBack }) {
 }
 
 /* ─────────────── MODULE: ALL LEVELS ─────────────── */
-function AllLevelsModule({ onBack }) {
+function AllLevelsModule({ onBack, vipLevels = VIP_LEVELS }) {
   const [openId, setOpenId] = useState(null);
   return (
     <div style={S.page}>
-      <BackHeader title="👑 All VIP Levels" subtitle="11 VIP Tiers · Full System" onBack={onBack}/>
+      <BackHeader title="👑 All VIP Levels" subtitle={`${vipLevels.length} VIP Tiers · Full System`} onBack={onBack}/>
       <div style={{ padding:"14px" }}>
-        {VIP_LEVELS.map((vip,i) => (
+        {vipLevels.map((vip,i) => (
           <motion.div key={vip.id} initial={{ opacity:0,y:5 }} animate={{ opacity:1,y:0 }} transition={{ delay:i*0.04 }}>
             <motion.div whileTap={{ scale:0.98 }} onClick={() => setOpenId(openId===vip.id?null:vip.id)}
               style={{ ...S.glass(),padding:"13px 14px",marginBottom:openId===vip.id?0:10,cursor:"pointer",
@@ -523,22 +526,98 @@ function AllLevelsModule({ onBack }) {
   );
 }
 
-/* ─────────────── MAIN DASHBOARD ─────────────── */
-const CURRENT_VIP = VIP_LEVELS[1]; // VVIP as demo
-const NEXT_VIP    = VIP_LEVELS[2];
+/* ─────────────── SUPABASE TIER MAPPER ─────────────── */
+// Maps a Supabase vip_tiers row to the VIP_LEVELS shape used by the UI
+const TIER_VISUAL = {
+  VIP1:     { icon:"🛡️", color:"#60A5FA", gradient:"linear-gradient(135deg,#93C5FD,#3B82F6,#1E40AF)", glow:"rgba(59,130,246,0.5)",   stone:"Crystal Shield",         tier:1  },
+  VVIP:     { icon:"👑", color:"#FCD34D", gradient:"linear-gradient(135deg,#FDE68A,#F59E0B,#D97706)", glow:"rgba(245,158,11,0.5)",   stone:"Golden Crystal Crown",   tier:2  },
+  SVIP:     { icon:"💎", color:"#38BDF8", gradient:"linear-gradient(135deg,#7DD3FC,#0EA5E9,#0369A1)", glow:"rgba(14,165,233,0.5)",   stone:"Royal Sapphire Crown",   tier:3  },
+  SSVIP:    { icon:"🏆", color:"#E2E8F0", gradient:"linear-gradient(135deg,#F1F5F9,#CBD5E1,#64748B)", glow:"rgba(203,213,225,0.5)",  stone:"Imperial Diamond Shield",tier:4  },
+  MSVIP:    { icon:"🔥", color:"#F97316", gradient:"linear-gradient(135deg,#FED7AA,#F97316,#C2410C)", glow:"rgba(249,115,22,0.5)",   stone:"Master Royal Crown",     tier:5  },
+  MSSVIP:   { icon:"🦅", color:"#C084FC", gradient:"linear-gradient(135deg,#E9D5FF,#A855F7,#7E22CE)", glow:"rgba(168,85,247,0.5)",   stone:"Royal Phoenix Crown",    tier:6  },
+  MISVIP:   { icon:"⚜️", color:"#FFC83D", gradient:"linear-gradient(135deg,#FEF3C7,#FFC83D,#92400E)", glow:"rgba(255,200,61,0.55)",  stone:"Imperial Emperor Badge", tier:7  },
+  MISSVIP:  { icon:"💠", color:"#818CF8", gradient:"linear-gradient(135deg,#C7D2FE,#6366F1,#3730A3)", glow:"rgba(99,102,241,0.55)",  stone:"Ultimate Diamond King",  tier:8  },
+  ULTRA:    { icon:"🐉", color:"#EF4444", gradient:"linear-gradient(135deg,#FCA5A5,#EF4444,#991B1B)", glow:"rgba(239,68,68,0.55)",   stone:"Royal Dragon Crown",     tier:9  },
+  LEGEND:   { icon:"🌌", color:"#A5F3FC", gradient:"linear-gradient(135deg,#CFFAFE,#06B6D4,#164E63)", glow:"rgba(6,182,212,0.55)",   stone:"Galaxy Legendary Crown", tier:10 },
+  ROYAL:    { icon:"🔱", color:"#FFC83D", gradient:"linear-gradient(135deg,#FFC83D,#EF4444,#A855F7)", glow:"rgba(255,200,61,0.65)",  stone:"Royal Emperor Throne",   tier:11, isMax:true },
+};
 
+function mapSupabaseTier(row) {
+  const v = TIER_VISUAL[row.tier_code] || TIER_VISUAL.VIP1;
+  return {
+    id:           row.id,
+    code:         row.tier_code,
+    level:        row.tier_name,
+    price_coins:  row.price_coins,
+    price_cash:   `$${row.price_usd}`,
+    daily_coins:  row.daily_reward_coins,
+    cashback:     row.cashback_percent,
+    support:      row.support_level,
+    badge:        row.badge,
+    profile_frame:row.profile_frame,
+    chat_bubble:  row.chat_bubble,
+    entrance:     row.entrance_effect,
+    username_style: row.username_style,
+    design:       [row.profile_frame, row.badge, row.entrance_effect, row.username_style].filter(Boolean),
+    benefits:     [
+      row.badge, row.profile_frame, row.chat_bubble, row.username_style,
+      row.entrance_effect, row.vehicle_effect,
+      row.cashback_percent > 0 ? `${row.cashback_percent}% Gift Cashback` : null,
+      row.support_level === "priority" ? "Priority Support" : "Basic Support",
+      row.monthly_bonus_coins > 0 ? `${fmt(row.monthly_bonus_coins)} Monthly Bonus Coins` : null,
+    ].filter(Boolean),
+    ...v,
+  };
+}
+
+/* ─────────────── MAIN DASHBOARD ─────────────── */
 export default function VIPMembership() {
   const navigate = useNavigate();
   const [module, setModule] = useState(null); // null=home
+  const [vipLevels, setVipLevels] = useState(VIP_LEVELS);
+  const [loadingTiers, setLoadingTiers] = useState(true);
 
-  if (module==="upgrade")   return <UpgradeModule   currentVip={CURRENT_VIP} onBack={() => setModule(null)}/>;
+  useEffect(() => {
+    const loadTiers = async () => {
+      try {
+        const res = await base44.functions.invoke("supabaseQuery", {
+          table: "vip_tiers", method: "GET", select: "*",
+          filters: { is_active: "eq.true" }, order: "tier_code.asc", limit: 20,
+        });
+        if (res?.data?.data?.length) {
+          setVipLevels(res.data.data.map(mapSupabaseTier));
+        }
+      } catch {
+        // fallback to static VIP_LEVELS already set
+      } finally {
+        setLoadingTiers(false);
+      }
+    };
+    loadTiers();
+  }, []);
+
+  const CURRENT_VIP = vipLevels[1] || vipLevels[0];
+  const NEXT_VIP    = vipLevels[2] || vipLevels[1];
+
+  if (module==="upgrade")   return <UpgradeModule   vipLevels={vipLevels} currentVip={CURRENT_VIP} onBack={() => setModule(null)}/>;
   if (module==="customize") return <CustomizeModule  onBack={() => setModule(null)}/>;
   if (module==="rewards")   return <RewardsModule    onBack={() => setModule(null)}/>;
   if (module==="settings")  return <SettingsModule   onBack={() => setModule(null)}/>;
-  if (module==="levels")    return <AllLevelsModule   onBack={() => setModule(null)}/>;
+  if (module==="levels")    return <AllLevelsModule  vipLevels={vipLevels} onBack={() => setModule(null)}/>;
 
   const daysLeft = 18;
   const progress = ((daysLeft/30)*100).toFixed(0);
+
+  if (loadingTiers) {
+    return (
+      <div style={{ ...S.page, display:"flex", alignItems:"center", justifyContent:"center" }}>
+        <div style={{ textAlign:"center" }}>
+          <div style={{ fontSize:32, marginBottom:12 }}>👑</div>
+          <div style={{ color:"#FFC83D", fontSize:13, fontWeight:800 }}>Loading VIP Tiers...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={S.page}>
