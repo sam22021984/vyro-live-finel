@@ -72,5 +72,62 @@
   "required": [
     "participant_ids",
     "other_user_id"
-  ]
+  ],
+  "rls": {
+    "create": {
+      "data.participant_ids": {
+        "$in": [
+          "{{user.id}}"
+        ]
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.participant_ids": {
+            "$in": [
+              "{{user.id}}"
+            ]
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.participant_ids": {
+            "$in": [
+              "{{user.id}}"
+            ]
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.participant_ids": {
+            "$in": [
+              "{{user.id}}"
+            ]
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
 }
